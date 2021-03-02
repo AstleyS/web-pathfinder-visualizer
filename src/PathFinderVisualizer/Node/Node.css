@@ -1,0 +1,16 @@
+.node {
+  width: 20px;
+  height: 20px;
+
+  display: inline-block;
+
+  border: 2px solid;
+}
+
+.node-start {
+  background: green;
+}
+
+.node-finish {
+  background: red;
+}
