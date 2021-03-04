@@ -16,20 +16,20 @@ export default class PathFinderVisualizer extends React.Component {
     }
 
     componentDidMount() {
-        const nodes = [];
-        for (let row = 0; row < 20; row++) {
-            const currentRow = [];
-            for (let col = 0; col < 30; col++) {
-                const currentNode = {
-                    col, row,
-                    isStart: row === 5 && col === 5,
-                    isFinish: row === 10 && col === 20
-                }
-                currentRow.push(currentNode)
-            }
-            nodes.push(currentRow);
-        }
-        this.setState({nodes})
+        // Generate a grid with args1 rows and args2 columns 
+        // and starting node in **coordinates** args3 
+        // and ending node in **coordinates** args4 
+        let nodes = generateGrid(20, 30, [5, 5],[0, 0]);
+        this.setState({nodes});
+    }
+
+    resetGrid() {
+        // Reset any stylization
+        let nodes = document.querySelectorAll('.node');
+        nodes.forEach((node) => {
+            if (node.style.background !== '') node.style.background = '';
+        })
+        this.componentDidMount();
     }
 
     bfs(grid, nodeS, nodeF) {
@@ -72,8 +72,27 @@ export default class PathFinderVisualizer extends React.Component {
                    <button onClick={() => this.bfs(nodes, nodeS, nodeF)}>BFS</button>
                    <button onClick={() => this.dfs(nodes, nodeS, nodeF)}>DFS</button>
                    <button onClick={() => this.dijsktra(nodes, nodeS, nodeF)}>Dijkstra</button>
+                   <button className="resetGrid" onClick={() => this.resetGrid()}>Clear path</button>
                </div>
            </div>
         )
     }
+}
+
+// This function generates the grid
+function generateGrid(maxRow, maxCol, start, finish) {
+    const nodes = [];
+        for (let row = 0; row < maxRow - 1; row++) {
+            const currentRow = [];
+            for (let col = 0; col < maxCol - 1; col++) {
+                const currentNode = {
+                    col, row,
+                    isStart: row === start[1] && col === start[0],
+                    isFinish: row === finish[1] && col === finish[0]
+                }
+                currentRow.push(currentNode)
+            }
+            nodes.push(currentRow);
+        }
+    return nodes;
 }

@@ -13,3 +13,7 @@
 .buttons button {
   margin: 0 2px;
 }
+
+.buttons .resetGrid {
+  margin-left: 2px;
+}
