@@ -10,7 +10,7 @@ export default class Node extends React.Component {
 
     render() {
         const { isStart, isFinish, coordinates } = this.props;
-        const extraClassName = isStart ? 'node-start': isFinish ? 'node-finish' : '';
+        const extraClassName = isStart ? 'node-start visited': isFinish ? 'node-finish' : '';
 
         return <div id={`${ coordinates }`} className={`node ${ extraClassName }`}></div>;
     }

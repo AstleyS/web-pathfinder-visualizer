@@ -19,7 +19,7 @@ export default class PathFinderVisualizer extends React.Component {
         // Generate a grid with args1 rows and args2 columns 
         // and starting node in **coordinates** args3 
         // and ending node in **coordinates** args4 
-        let nodes = generateGrid(20, 30, [5, 5],[0, 0]);
+        let nodes = generateGrid(20, 30, [5, 5],[16, 18]);
         this.setState({nodes});
     }
 
@@ -32,16 +32,16 @@ export default class PathFinderVisualizer extends React.Component {
         this.componentDidMount();
     }
 
-    bfs(grid, nodeS, nodeF) {
-        bfsAlgo(grid, nodeS, nodeF);
+    bfs(dimension, nodeS, nodeF) {
+        bfsAlgo(dimension, nodeS, nodeF);
     }
     
-    dfs(grid, nodeS, nodeF) {
-        console.log(dfsAlgo(grid, nodeS, nodeF));
+    dfs(dimension, nodeS, nodeF) {
+        console.log(dfsAlgo(dimension, nodeS, nodeF));
     }
     
-    dijsktra(grid, nodeS, nodeF) {
-        console.log(dijkstraAlgo(grid, nodeS, nodeF));
+    dijsktra(dimension, nodeS, nodeF) {
+        console.log(dijkstraAlgo(dimension, nodeS, nodeF));
     }
 
     render() {
@@ -69,9 +69,9 @@ export default class PathFinderVisualizer extends React.Component {
                     })
                }
                <div className="buttons">
-                   <button onClick={() => this.bfs(nodes, nodeS, nodeF)}>BFS</button>
-                   <button onClick={() => this.dfs(nodes, nodeS, nodeF)}>DFS</button>
-                   <button onClick={() => this.dijsktra(nodes, nodeS, nodeF)}>Dijkstra</button>
+                   <button onClick={() => this.bfs(nodes.length, nodeS, nodeF)}>BFS</button>
+                   <button onClick={() => this.dfs(nodes.length, nodeS, nodeF)}>DFS</button>
+                   <button onClick={() => this.dijsktra(nodes.length, nodeS, nodeF)}>Dijkstra</button>
                    <button className="resetGrid" onClick={() => this.resetGrid()}>Clear path</button>
                </div>
            </div>
@@ -82,11 +82,12 @@ export default class PathFinderVisualizer extends React.Component {
 // This function generates the grid
 function generateGrid(maxRow, maxCol, start, finish) {
     const nodes = [];
-        for (let row = 0; row < maxRow - 1; row++) {
+        for (let row = 0; row < maxRow; row++) {
             const currentRow = [];
-            for (let col = 0; col < maxCol - 1; col++) {
+            for (let col = 0; col < maxCol; col++) {
                 const currentNode = {
-                    col, row,
+                    col, 
+                    row,
                     isStart: row === start[1] && col === start[0],
                     isFinish: row === finish[1] && col === finish[0]
                 }

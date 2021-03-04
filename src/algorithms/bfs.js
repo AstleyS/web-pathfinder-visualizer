@@ -1,84 +1,88 @@
-export const bfsAlgo = (grid, nodeS, nodeF) => {
+export const bfsAlgo = (dimension, nodeS, nodeF) => {
 
-    // This variable holds the open nodes (coordinates) [x, y]
+    // This variable holds the open nodes (coordinate) [x, y]
     const paths = [[nodeS["col"], nodeS["row"]]];
-    // This variable holds the paths visited
-    const visited = [];
    
     let i = 0;
-    console.log({paths})
     while (paths) {
-        console.log(`%c Na loop ${i}`, 'color: red');
+        console.log(`%c Loop ${i}`, 'color: red');
+
         let node = paths.shift();
-        validNeighbours(paths, visited, node, grid.length);
+        validNeighbours(paths, node, dimension);
+        
         console.log({node})
-        if (findNodeF(paths, nodeF)) break;
-        visited.push(node);
+
+        if (findNodeF(paths, nodeS, nodeF)) break;
         i++;
     }
 }
 
 // This functions checks the neighbours and change the state (background color) of the valid ones
-function validNeighbours(paths, visited, node, dimension) {
+function validNeighbours(paths, node, dimension) {
 
-    // Getting the coordinates of the given node
+    // Getting the coordinate of the given node
     const x = node[0];
     const y = node[1];
 
     // Checks UP
     if (y - 1 >= 0) {
         // Check if it was visited already
-        if (!wasVisited(visited, [x, y - 1]))
+        if (!wasVisited([x, y - 1]))
             paths.push([x, y - 1]); // If not add to the paths
+            addColor([x, y - 1]);
     }
     // Checks DOWN
     if (y + 1 <= dimension - 1) {
-        if (!wasVisited(visited, [x, y + 1]))
+        if (!wasVisited([x, y + 1]))
             paths.push([x, y + 1]);
+            addColor([x, y + 1]);
     }
     // Checks LEFT
     if (x - 1 >= 0) {
-        if (!wasVisited(visited, [x - 1, y]))
+        if (!wasVisited([x - 1, y]))
             paths.push([x - 1, y]);
+            addColor([x - 1, y]);
     }
     // Checks RIGHT
     if (x + 1 <= dimension - 1) {
-        if (!wasVisited(visited, [x + 1, y]))
+        if (!wasVisited([x + 1, y]))
             paths.push([x + 1, y]);
-    }
-    
-    // For each node in the path, we will change its color
-    paths.forEach(node => {
-        document.getElementById(`${node[0]},${node[1]}`).style.background = "lightblue";
-    });
+            addColor([x + 1, y]);
+    }   
 }
 
-function findNodeF(paths, nodeF) {
+function findNodeF(paths, nodeS, nodeF) {
     // Traversing throught the nodes
     for (let i = 0; i < paths.length; i++) {
-        let node = paths[i];
         // console.log(`%c Current Node[${i}] x:${node[0]} y:${node[1]}`, 'color: blue');
         // Check if the node is the same as the one passed by args (the destination)
         // Row  is the y axis and column is the x axis
+        let node = paths[i];
         if ( node[1] === nodeF["row"] && node[0] === nodeF["col"]) {
             console.log(`%c Found`, 'color: brown');
-            document.getElementById(`${node[0]},${node[1]}`).style.backgroundColor = "yellow";
+            document.getElementById(`${node[0]},${node[1]}`).style.background = "yellow";
+            
+            // Need to figure how to preserve the nodeS background... It worked before without this
+            document.getElementById(`${nodeS["col"]},${nodeS["row"]}`).style.background = "green";
             return true;
         }
     }
-    return false
+    return false;
 }
 
-
 // This function checks if the node was already visited
-function wasVisited(visited, coordinates) {
-    // Traversing throught the nodes
-    for(let i = 0; i < visited.length; i++) {
-        let node = visited[i];
-        // Check if the node is the same as the one passed by args 
-        if (node[0] === coordinates[0] && node[1] === coordinates[1]) {
-            return true;
-        }
-    }
-    return false
+function wasVisited(coordinate) {
+    const node = document.getElementById(`${coordinate[0]},${coordinate[1]}`);
+    
+    // Check if the node as a visited "flag"
+    if (node.classList.contains("visited")) return true;
+
+    // If not, adds
+    node.classList.add("visited");
+    return false;
+}
+
+// This function adds color to the cell of the grid where the node is
+function addColor(coordinate) {
+    document.getElementById(`${coordinate[0]},${coordinate[1]}`).style.background = "lightblue";
 }

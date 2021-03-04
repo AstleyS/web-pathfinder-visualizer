@@ -1,3 +1,3 @@
-export const dijkstraAlgo = (grid, nodeS, nodeF) => {
+export const dijkstraAlgo = (dimension, nodeS, nodeF) => {
 
 } 

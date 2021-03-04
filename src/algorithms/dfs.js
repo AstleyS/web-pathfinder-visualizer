@@ -1,3 +1,3 @@
-export const dfsAlgo = (grid, nodeS, nodeF) => {
+export const dfsAlgo = (dimension, nodeS, nodeF) => {
     
 } 
