@@ -1,6 +1,15 @@
 .grid {
-    width: 100%;
-    margin: 1rem auto 0;
-    
-    position: absolute;
+  width: 100%;
+  margin: 1rem auto 0;
+
+  position: absolute;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.buttons button {
+  margin: 0 2px;
 }

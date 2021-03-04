@@ -1,6 +1,9 @@
 import React from 'react';
 import './PathFinderVisualizer.css';
 import Node from './Node/Node';
+import { bfsAlgo } from '../algorithms/bfs';
+import { dfsAlgo } from '../algorithms/dfs';
+import { dijkstraAlgo } from '../algorithms/dijkstra';
 
 export default class PathFinderVisualizer extends React.Component {
 
@@ -29,8 +32,22 @@ export default class PathFinderVisualizer extends React.Component {
         this.setState({nodes})
     }
 
+    bfs(grid, nodeS, nodeF) {
+        bfsAlgo(grid, nodeS, nodeF);
+    }
+    
+    dfs(grid, nodeS, nodeF) {
+        console.log(dfsAlgo(grid, nodeS, nodeF));
+    }
+    
+    dijsktra(grid, nodeS, nodeF) {
+        console.log(dijkstraAlgo(grid, nodeS, nodeF));
+    }
+
     render() {
         const {nodes} = this.state;
+        let nodeS;
+        let nodeF;
         console.log({nodes})
         return (
            <div className="grid">
@@ -39,16 +56,23 @@ export default class PathFinderVisualizer extends React.Component {
                       return <div key={rIndex} className="grid-row">
                         {
                           row.map((node, nodeIndex) => {
-                              const {isStart, isFinish} = node;
-                            return <Node 
-                            id={nodeIndex} key={nodeIndex}
-                            isStart = {isStart} isFinish = {isFinish}
+                            const { isStart, isFinish, col, row} = node;
+                            if (isStart) nodeS = node;
+                            if (isFinish) nodeF = node;
+                            return <Node  
+                                coordinates={`${col},${row}`} key={nodeIndex}
+                                isStart = {isStart} isFinish = {isFinish}
                             ></Node>
                           })
                         }
                         </div>
                     })
                }
+               <div className="buttons">
+                   <button onClick={() => this.bfs(nodes, nodeS, nodeF)}>BFS</button>
+                   <button onClick={() => this.dfs(nodes, nodeS, nodeF)}>DFS</button>
+                   <button onClick={() => this.dijsktra(nodes, nodeS, nodeF)}>Dijkstra</button>
+               </div>
            </div>
         )
     }
