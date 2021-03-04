@@ -1,5 +1,6 @@
 export const bfsAlgo = (dimension, nodeS, nodeF) => {
-
+    
+    // QUEUE (FIFO)
     // This variable holds the open nodes (coordinate) [x, y]
     const paths = [[nodeS["col"], nodeS["row"]]];
    
@@ -7,12 +8,13 @@ export const bfsAlgo = (dimension, nodeS, nodeF) => {
     while (paths) {
         console.log(`%c Loop ${i}`, 'color: red');
 
+        // Removes node from the start of the queue || start of the array
         let node = paths.shift();
         validNeighbours(paths, node, dimension);
         
         console.log({node})
 
-        if (findNodeF(paths, nodeS, nodeF)) break;
+        if (findNodeF(paths, nodeF)) break;
         i++;
     }
 }
@@ -27,31 +29,39 @@ function validNeighbours(paths, node, dimension) {
     // Checks UP
     if (y - 1 >= 0) {
         // Check if it was visited already
-        if (!wasVisited([x, y - 1]))
-            paths.push([x, y - 1]); // If not add to the paths
+        if (!wasVisited([x, y - 1])) {
+            // If not, adds the node to the start of the queue || start of the array
+            paths.push([x, y - 1]);
             addColor([x, y - 1]);
+        }
     }
-    // Checks DOWN
-    if (y + 1 <= dimension - 1) {
-        if (!wasVisited([x, y + 1]))
-            paths.push([x, y + 1]);
-            addColor([x, y + 1]);
-    }
-    // Checks LEFT
-    if (x - 1 >= 0) {
-        if (!wasVisited([x - 1, y]))
-            paths.push([x - 1, y]);
-            addColor([x - 1, y]);
-    }
+    
     // Checks RIGHT
     if (x + 1 <= dimension - 1) {
-        if (!wasVisited([x + 1, y]))
+        if (!wasVisited([x + 1, y])) {
             paths.push([x + 1, y]);
             addColor([x + 1, y]);
-    }   
+        }
+    }
+    
+    // Checks DOWN
+    if (y + 1 <= dimension - 1) {
+        if (!wasVisited([x, y + 1])) {
+            paths.push([x, y + 1]);
+            addColor([x, y + 1]);
+        }
+    }
+    
+    // Checks LEFT
+    if (x - 1 >= 0) {
+        if (!wasVisited([x - 1, y])) {
+            paths.push([x - 1, y]);
+            addColor([x - 1, y]);
+        }
+    }
 }
 
-function findNodeF(paths, nodeS, nodeF) {
+function findNodeF(paths, nodeF) {
     // Traversing throught the nodes
     for (let i = 0; i < paths.length; i++) {
         // console.log(`%c Current Node[${i}] x:${node[0]} y:${node[1]}`, 'color: blue');
@@ -61,9 +71,7 @@ function findNodeF(paths, nodeS, nodeF) {
         if ( node[1] === nodeF["row"] && node[0] === nodeF["col"]) {
             console.log(`%c Found`, 'color: brown');
             document.getElementById(`${node[0]},${node[1]}`).style.background = "yellow";
-            
-            // Need to figure how to preserve the nodeS background... It worked before without this
-            document.getElementById(`${nodeS["col"]},${nodeS["row"]}`).style.background = "green";
+
             return true;
         }
     }

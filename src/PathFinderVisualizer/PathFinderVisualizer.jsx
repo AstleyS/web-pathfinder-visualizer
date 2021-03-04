@@ -37,11 +37,11 @@ export default class PathFinderVisualizer extends React.Component {
     }
     
     dfs(dimension, nodeS, nodeF) {
-        console.log(dfsAlgo(dimension, nodeS, nodeF));
+        // dfsAlgo(dimension, nodeS, nodeF)
     }
     
     dijsktra(dimension, nodeS, nodeF) {
-        console.log(dijkstraAlgo(dimension, nodeS, nodeF));
+        dijkstraAlgo(dimension, nodeS, nodeF);
     }
 
     render() {
