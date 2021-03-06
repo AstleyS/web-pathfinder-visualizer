@@ -1,19 +1,17 @@
 .grid {
-  width: 100%;
-  margin: 1rem auto 0;
-
-  position: absolute;
+    width: 100%;
+    margin-top: 2rem;
 }
 
 .buttons {
-  display: flex;
-  justify-content: center;
+    display: flex;
+    justify-content: center;
 }
 
 .buttons button {
-  margin: 0 2px;
+    margin: 1rem 5px 0;
 }
 
 .buttons .resetGrid {
-  margin-left: 2px;
+    margin-left: 5px;
 }
