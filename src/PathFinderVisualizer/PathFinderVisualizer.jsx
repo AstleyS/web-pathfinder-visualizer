@@ -4,6 +4,7 @@ import Node from './Node/Node';
 // Import the algorithm functions
 import { bfsOrDfs } from '../algorithms/bfsOrDfs';
 import { dijkstraAlgo } from '../algorithms/dijkstra';
+import { aStarAlgo } from '../algorithms/aStar';
 
 export default class PathFinderVisualizer extends React.Component {
 
@@ -56,6 +57,11 @@ export default class PathFinderVisualizer extends React.Component {
     dijsktra(dimension, nodeS, nodeF) {
         dijkstraAlgo(dimension, nodeS, nodeF);
     }
+    
+    // This function handles the user click when choosing A*
+    aStar(dimension, nodeS, nodeF) {
+        aStarAlgo(dimension, nodeS, nodeF);
+    }
 
     render() {
         // Getting the nodes/grid
@@ -86,6 +92,7 @@ export default class PathFinderVisualizer extends React.Component {
                    <button onClick={() => this.bfs(nodes.length, nodeS, nodeF)}>BFS</button>
                    <button onClick={() => this.dfs(nodes.length, nodeS, nodeF)}>DFS</button>
                    <button onClick={() => this.dijsktra(nodes.length, nodeS, nodeF)}>Dijkstra</button>
+                   <button onClick={() => this.aStar(nodes.length, nodeS, nodeF)}>A*</button>
                    <button className="resetGrid" onClick={() => this.resetGrid()}>Clear path</button>
                </div>
            </div>
