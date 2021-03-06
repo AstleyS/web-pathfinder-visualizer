@@ -19,7 +19,7 @@ export default class PathFinderVisualizer extends React.Component {
         // Generate a grid with args1 rows and args2 columns 
         // and starting node in **coordinates** args3 
         // and ending node in **coordinates** args4 
-        let nodes = generateGrid(20, 30, [5, 5],[16, 18]);
+        let nodes = generateGrid(20, 30, [5, 5],[10, 8]);
         this.setState({nodes});
     }
 
@@ -32,12 +32,26 @@ export default class PathFinderVisualizer extends React.Component {
         this.componentDidMount();
     }
 
+    
     bfs(dimension, nodeS, nodeF) {
-        bfsAlgo(dimension, nodeS, nodeF);
+        const nodes = bfsAlgo(dimension, nodeS, nodeF);
+        console.log({nodes});
+        this.animateBFS(nodes);
     }
+
+    // Animate each visited node
+    animateBFS(visitedNodes) {
+        for (let i = 0; i < visitedNodes.length; i++) {
+            let node = visitedNodes[i];
+            setTimeout(() => {
+                document.getElementById(`${node[0]},${node[1]}`).style.background = "lightblue";
+            } , 145 * i);
+        }
+    }
+
     
     dfs(dimension, nodeS, nodeF) {
-        // dfsAlgo(dimension, nodeS, nodeF)
+        dfsAlgo(dimension, nodeS, nodeF);
     }
     
     dijsktra(dimension, nodeS, nodeF) {

@@ -1,8 +1,10 @@
+// This function implements the BFS algorithm and returns the visited nodes
 export const bfsAlgo = (dimension, nodeS, nodeF) => {
     
     // QUEUE (FIFO)
     // This variable holds the open nodes (coordinate) [x, y]
     const paths = [[nodeS["col"], nodeS["row"]]];
+    let visited = []
    
     let i = 0;
     while (paths) {
@@ -10,17 +12,24 @@ export const bfsAlgo = (dimension, nodeS, nodeF) => {
 
         // Removes node from the start of the queue || start of the array
         let node = paths.shift();
-        validNeighbours(paths, node, dimension);
         
+        validNeighbours(paths, visited, node, dimension);
+
         console.log({node})
 
-        if (findNodeF(paths, nodeF)) break;
+        if (findNodeF(paths, visited, nodeF)) {
+            break;
+        }
+
         i++;
     }
+
+    return visited;
+
 }
 
-// This functions checks the neighbours and change the state (background color) of the valid ones
-function validNeighbours(paths, node, dimension) {
+// This functions checks the neighbours and returns a list of the visited (valid) ones 
+function validNeighbours(paths, visited, node, dimension) {
 
     // Getting the coordinate of the given node
     const x = node[0];
@@ -32,7 +41,7 @@ function validNeighbours(paths, node, dimension) {
         if (!wasVisited([x, y - 1])) {
             // If not, adds the node to the start of the queue || start of the array
             paths.push([x, y - 1]);
-            addColor([x, y - 1]);
+            visited.push([x, y - 1]);
         }
     }
     
@@ -40,7 +49,7 @@ function validNeighbours(paths, node, dimension) {
     if (x + 1 <= dimension - 1) {
         if (!wasVisited([x + 1, y])) {
             paths.push([x + 1, y]);
-            addColor([x + 1, y]);
+            visited.push([x + 1, y]);
         }
     }
     
@@ -48,7 +57,7 @@ function validNeighbours(paths, node, dimension) {
     if (y + 1 <= dimension - 1) {
         if (!wasVisited([x, y + 1])) {
             paths.push([x, y + 1]);
-            addColor([x, y + 1]);
+            visited.push([x, y + 1]);
         }
     }
     
@@ -56,12 +65,12 @@ function validNeighbours(paths, node, dimension) {
     if (x - 1 >= 0) {
         if (!wasVisited([x - 1, y])) {
             paths.push([x - 1, y]);
-            addColor([x - 1, y]);
+            visited.push([x - 1, y]);
         }
     }
 }
 
-function findNodeF(paths, nodeF) {
+function findNodeF(paths, visited, nodeF) {
     // Traversing throught the nodes
     for (let i = 0; i < paths.length; i++) {
         // console.log(`%c Current Node[${i}] x:${node[0]} y:${node[1]}`, 'color: blue');
@@ -70,8 +79,12 @@ function findNodeF(paths, nodeF) {
         let node = paths[i];
         if ( node[1] === nodeF["row"] && node[0] === nodeF["col"]) {
             console.log(`%c Found`, 'color: brown');
-            document.getElementById(`${node[0]},${node[1]}`).style.background = "yellow";
+            
+            // Getting the coordinates to remove nodeF from visited nodes
+            let index = visited.indexOf([node[0],node[1]]);
+            visited.splice(index, 1);
 
+            document.getElementById(`${node[0]},${node[1]}`).style.background = "yellow";
             return true;
         }
     }
@@ -88,9 +101,4 @@ function wasVisited(coordinate) {
     // If not, adds
     node.classList.add("visited");
     return false;
-}
-
-// This function adds color to the cell of the grid where the node is
-function addColor(coordinate) {
-    document.getElementById(`${coordinate[0]},${coordinate[1]}`).style.background = "lightblue";
 }
