@@ -1,25 +1,28 @@
 // This function implements the BFS algorithm and returns the visited nodes
-export const bfsAlgo = (dimension, nodeS, nodeF) => {
+export const bfsOrDfs = (algo, dimension, nodeS, nodeF) => {
     
-    // QUEUE (FIFO)
+    // If BFS = QUEUE (FIFO)
+    // If DFS = STACK (LIFO)
+
     // This variable holds the open nodes (coordinate) [x, y]
     const paths = [[nodeS["col"], nodeS["row"]]];
     let visited = []
    
     let i = 0;
+    // While the are nodes to visit
     while (paths) {
         console.log(`%c Loop ${i}`, 'color: red');
 
-        // Removes node from the start of the queue || start of the array
-        let node = paths.shift();
-        
-        validNeighbours(paths, visited, node, dimension);
-
+        // If BFS, removes node from the start of the queue || start of the array
+        // If DFS, removes node from the top of the stack || end of the array
+        let node = algo === 'BFS' ? paths.shift(): paths.pop();
         console.log({node})
+        
+        // Check the valid neighbours
+        validNeighbours(algo, paths, visited, node, dimension);
 
-        if (findNodeF(paths, visited, nodeF)) {
-            break;
-        }
+        // Check if we found the node
+        if (findNodeF(paths, visited, nodeF)) break;
 
         i++;
     }
@@ -29,7 +32,7 @@ export const bfsAlgo = (dimension, nodeS, nodeF) => {
 }
 
 // This functions checks the neighbours and returns a list of the visited (valid) ones 
-function validNeighbours(paths, visited, node, dimension) {
+function validNeighbours(algo, paths, visited, node, dimension) {
 
     // Getting the coordinate of the given node
     const x = node[0];
@@ -39,33 +42,28 @@ function validNeighbours(paths, visited, node, dimension) {
     if (y - 1 >= 0) {
         // Check if it was visited already
         if (!wasVisited([x, y - 1])) {
-            // If not, adds the node to the start of the queue || start of the array
-            paths.push([x, y - 1]);
-            visited.push([x, y - 1]);
+            addVisitedNode(algo, paths, visited, [x, y - 1])
         }
     }
     
     // Checks RIGHT
     if (x + 1 <= dimension - 1) {
         if (!wasVisited([x + 1, y])) {
-            paths.push([x + 1, y]);
-            visited.push([x + 1, y]);
+            addVisitedNode(algo, paths, visited, [x + 1, y]);
         }
     }
     
     // Checks DOWN
     if (y + 1 <= dimension - 1) {
         if (!wasVisited([x, y + 1])) {
-            paths.push([x, y + 1]);
-            visited.push([x, y + 1]);
+            addVisitedNode(algo, paths, visited, [x, y + 1]);
         }
     }
     
     // Checks LEFT
     if (x - 1 >= 0) {
         if (!wasVisited([x - 1, y])) {
-            paths.push([x - 1, y]);
-            visited.push([x - 1, y]);
+            addVisitedNode(algo, paths, visited, [x - 1, y]);
         }
     }
 }
@@ -98,7 +96,20 @@ function wasVisited(coordinate) {
     // Check if the node as a visited "flag"
     if (node.classList.contains("visited")) return true;
 
-    // If not, adds
+    // If not, adds it
     node.classList.add("visited");
     return false;
+}
+
+function addVisitedNode(algo, paths, visited, coordinate) {
+    // If not and BFS, adds the node to the end of the queue || end of the array
+    if (algo === 'BFS') {
+        paths.push(coordinate);
+        visited.push(coordinate);
+
+    // If not and DFS, adds the node to the top of the stack || start of the array
+    } else {
+        paths.unshift(coordinate);
+        visited.unshift(coordinate);
+    }
 }

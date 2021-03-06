@@ -1,8 +1,8 @@
 import React from 'react';
 import './PathFinderVisualizer.css';
 import Node from './Node/Node';
-import { bfsAlgo } from '../algorithms/bfs';
-import { dfsAlgo } from '../algorithms/dfs';
+// Import the algorithm functions
+import { bfsOrDfs } from '../algorithms/bfsOrDfs';
 import { dijkstraAlgo } from '../algorithms/dijkstra';
 
 export default class PathFinderVisualizer extends React.Component {
@@ -23,42 +23,42 @@ export default class PathFinderVisualizer extends React.Component {
         this.setState({nodes});
     }
 
+    // This function resets the grid
     resetGrid() {
         // Reset any stylization
-        let nodes = document.querySelectorAll('.node');
+        let nodes = document.querySelectorAll('.node'); 
         nodes.forEach((node) => {
             if (node.style.background !== '') node.style.background = '';
-        })
-        this.componentDidMount();
+        });
+
+        // Not working properly
+        // this.componentDidMount();
     }
 
     
+    // This function handles the user click when choosing BFS
     bfs(dimension, nodeS, nodeF) {
-        const nodes = bfsAlgo(dimension, nodeS, nodeF);
-        console.log({nodes});
-        this.animateBFS(nodes);
+        // This variable holds the result of the BFS algorithm visisted nodes
+        const nodes = bfsOrDfs('BFS', dimension, nodeS, nodeF);
+        animateAlgorithm(nodes);
+        //console.log({nodes});
     }
 
-    // Animate each visited node
-    animateBFS(visitedNodes) {
-        for (let i = 0; i < visitedNodes.length; i++) {
-            let node = visitedNodes[i];
-            setTimeout(() => {
-                document.getElementById(`${node[0]},${node[1]}`).style.background = "lightblue";
-            } , 145 * i);
-        }
-    }
 
-    
+    // This function handles the user click when choosing DFS
     dfs(dimension, nodeS, nodeF) {
-        dfsAlgo(dimension, nodeS, nodeF);
+        const nodes = bfsOrDfs('DFS', dimension, nodeS, nodeF);
+        animateAlgorithm(nodes);
+        //console.log({nodes});
     }
     
+    // This function handles the user click when choosing Dijsktra
     dijsktra(dimension, nodeS, nodeF) {
         dijkstraAlgo(dimension, nodeS, nodeF);
     }
 
     render() {
+        // Getting the nodes/grid
         const {nodes} = this.state;
         let nodeS;
         let nodeF;
@@ -98,16 +98,33 @@ function generateGrid(maxRow, maxCol, start, finish) {
     const nodes = [];
         for (let row = 0; row < maxRow; row++) {
             const currentRow = [];
+
             for (let col = 0; col < maxCol; col++) {
+                // Defining the node object
+                // Col, Row, isStart, isFinish 
                 const currentNode = {
                     col, 
                     row,
                     isStart: row === start[1] && col === start[0],
                     isFinish: row === finish[1] && col === finish[0]
                 }
+                // Saving the column nodes in each row
                 currentRow.push(currentNode)
             }
+
+            // Saving the rows
             nodes.push(currentRow);
         }
     return nodes;
+}
+
+// This function animates each visited node
+function animateAlgorithm(visitedNodes) {
+    for (let i = 0; i < visitedNodes.length; i++) {
+        let node = visitedNodes[i];
+        // With setTimeout, we change the color of each visited node with 145ms  between them
+        setTimeout(() => {
+            document.getElementById(`${node[0]},${node[1]}`).style.background = "lightblue";
+        } , 145 * i);
+    }
 }
