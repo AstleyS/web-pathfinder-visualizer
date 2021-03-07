@@ -38,29 +38,34 @@ export default class PathFinderVisualizer extends React.Component {
 
     
     // This function handles the user click when choosing BFS
-    bfs(dimension, nodeS, nodeF) {
+    bfs(grid, nodeS, nodeF) {
+        // DIMENSION: 0 = ROW | 1 = COLUMN
+        const dimension = [grid.length, grid[0].length];
+
         // This variable holds the result of the BFS algorithm visisted nodes
         const nodes = bfsOrDfs('BFS', dimension, nodeS, nodeF);
         animateAlgorithm(nodes);
-        //console.log({nodes});
     }
-
-
+    
+    
     // This function handles the user click when choosing DFS
-    dfs(dimension, nodeS, nodeF) {
+    dfs(grid, nodeS, nodeF) {
+        // DIMENSION: 0 = ROW | 1 = COLUMN
+        const dimension = [grid.length, grid[0].length];
+        
+        // This variable holds the result of the DFS algorithm visisted nodes
         const nodes = bfsOrDfs('DFS', dimension, nodeS, nodeF);
         animateAlgorithm(nodes);
-        //console.log({nodes});
     }
     
     // This function handles the user click when choosing Dijsktra
-    dijsktra(dimension, nodeS, nodeF) {
-        dijkstraAlgo(dimension, nodeS, nodeF);
+    dijsktra(nodes, nodeS, nodeF) {
+        dijkstraAlgo(nodes, nodeS, nodeF);
     }
     
     // This function handles the user click when choosing A*
-    aStar(dimension, nodeS, nodeF) {
-        aStarAlgo(dimension, nodeS, nodeF);
+    aStar(nodes, nodeS, nodeF) {
+        aStarAlgo(nodes, nodeS, nodeF);
     }
 
     render() {
@@ -89,11 +94,11 @@ export default class PathFinderVisualizer extends React.Component {
                     })
                }
                <div className="buttons">
-                   <button onClick={() => this.bfs(nodes.length, nodeS, nodeF)}>BFS</button>
-                   <button onClick={() => this.dfs(nodes.length, nodeS, nodeF)}>DFS</button>
-                   <button onClick={() => this.dijsktra(nodes.length, nodeS, nodeF)}>Dijkstra</button>
-                   <button onClick={() => this.aStar(nodes.length, nodeS, nodeF)}>A*</button>
-                   <button className="resetGrid" onClick={() => this.resetGrid()}>Clear path</button>
+                   <button onClick={() => this.bfs(nodes, nodeS, nodeF)}>BFS</button>
+                   <button onClick={() => this.dfs(nodes, nodeS, nodeF)}>DFS</button>
+                   <button onClick={() => this.dijsktra(nodes, nodeS, nodeF)}>Dijkstra</button>
+                   <button onClick={() => this.aStar(nodes, nodeS, nodeF)}>A*</button>
+                   <button className="resetGrid" /*onClick={() => this.resetGrid()*} */>Clear path</button>
                </div>
            </div>
         )

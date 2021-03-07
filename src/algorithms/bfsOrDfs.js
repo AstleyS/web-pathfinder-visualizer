@@ -2,7 +2,10 @@
 export const bfsOrDfs = (algo, dimension, nodeS, nodeF) => {
     
     // If BFS = QUEUE (FIFO)
+    /* PUSH: ADD AT LAST | POP: REMOVE AT LAST*/
+    
     // If DFS = STACK (LIFO)
+    /* UNSHIFT: ADD AT BEGINNING | SHIFT: REMOVE AT BEGINNING */
 
     // This variable holds the open nodes (coordinate) [x, y]
     const paths = [[nodeS["col"], nodeS["row"]]];
@@ -22,17 +25,24 @@ export const bfsOrDfs = (algo, dimension, nodeS, nodeF) => {
         validNeighbours(algo, paths, visited, node, dimension);
 
         // Check if we found the node
-        if (findNodeF(paths, visited, nodeF)) break;
-
+        if (findNodeF(paths, visited, nodeF)) {
+            console.log({paths})
+            break;
+        }
         i++;
     }
 
+    console.log({visited})
     return visited;
 
 }
 
 // This functions checks the neighbours and returns a list of the visited (valid) ones 
 function validNeighbours(algo, paths, visited, node, dimension) {
+
+    /* DIMENSION: 0 = ROW | 1 = COLUMN */
+    const maxRows = dimension[0]; 
+    const maxColums = dimension[1]; 
 
     // Getting the coordinate of the given node
     const x = node[0];
@@ -41,22 +51,26 @@ function validNeighbours(algo, paths, visited, node, dimension) {
     // Checks UP
     if (y - 1 >= 0) {
         // Check if it was visited already
+        // if DFS, break
         if (!wasVisited([x, y - 1])) {
             addVisitedNode(algo, paths, visited, [x, y - 1])
+            if (algo === 'DFS') return ;
         }
     }
     
     // Checks RIGHT
-    if (x + 1 <= dimension - 1) {
+    if (x + 1 <= maxColums - 1) {
         if (!wasVisited([x + 1, y])) {
             addVisitedNode(algo, paths, visited, [x + 1, y]);
+            if (algo === 'DFS') return ;
         }
     }
     
     // Checks DOWN
-    if (y + 1 <= dimension - 1) {
+    if (y + 1 <= maxRows - 1) {
         if (!wasVisited([x, y + 1])) {
             addVisitedNode(algo, paths, visited, [x, y + 1]);
+            if (algo === 'DFS') return ;
         }
     }
     
@@ -64,6 +78,7 @@ function validNeighbours(algo, paths, visited, node, dimension) {
     if (x - 1 >= 0) {
         if (!wasVisited([x - 1, y])) {
             addVisitedNode(algo, paths, visited, [x - 1, y]);
+            if (algo === 'DFS') return ;
         }
     }
 }
@@ -110,6 +125,6 @@ function addVisitedNode(algo, paths, visited, coordinate) {
     // If not and DFS, adds the node to the top of the stack || start of the array
     } else {
         paths.unshift(coordinate);
-        visited.unshift(coordinate);
+        visited.push(coordinate);
     }
 }
