@@ -25,7 +25,10 @@ export const bfsOrDfs = (algo, dimension, nodeS, nodeF) => {
         validNeighbours(algo, paths, visited, node, dimension);
 
         // Check if we found the node
+        // 0: true or false
         if (findNodeF(paths, visited, nodeF)) {
+            if (algo === 'BFS') visited.splice(-1, 1);
+            
             console.log({paths})
             break;
         }
@@ -83,24 +86,6 @@ function validNeighbours(algo, paths, visited, node, dimension) {
     }
 }
 
-function findNodeF(paths, visited, nodeF) {
-    // Traversing throught the nodes
-    for (let i = 0; i < paths.length; i++) {
-        // console.log(`%c Current Node[${i}] x:${node[0]} y:${node[1]}`, 'color: blue');
-        // Check if the node is the same as the one passed by args (the destination)
-        // Row  is the y axis and column is the x axis
-        let node = paths[i];
-        if ( node["row"] === nodeF["row"] && node["col"] === nodeF["col"]) {
-            console.log(`%c Found`, 'color: brown');
-            
-            // We need  to remove nodeF from visited nodes. NodeF is the last "visited" node. 
-            visited.splice(-1, 1);
-            return true;
-        }
-    }
-    return false;
-}
-
 // This function checks if the node was already visited
 function wasVisited(coordinate) {
     const node = document.getElementById(`${coordinate[0]},${coordinate[1]}`);
@@ -113,6 +98,7 @@ function wasVisited(coordinate) {
     return false;
 }
 
+// This function adds the visited node accordingly to the algorithm
 function addVisitedNode(algo, paths, visited, previousNode, coordinate) {
 
     const x = coordinate[0];
@@ -132,3 +118,24 @@ function addVisitedNode(algo, paths, visited, previousNode, coordinate) {
         visited.push(node);
     }
 }
+
+// This function checks if we reached the finish node
+function findNodeF(paths, nodeF) {
+    // Traversing throught the nodes
+    for (let i = 0; i < paths.length; i++) {
+        // console.log(`%c Current Node[${i}] x:${node[0]} y:${node[1]}`, 'color: blue');
+        // Check if the node is the same as the one passed by args (the destination)
+        // Row  is the y axis and column is the x axis
+        let node = paths[i];
+        console.log({node, nodeF})
+        if (node["row"] === nodeF["row"] && node["col"] === nodeF["col"]) {
+            console.log(`%c Found`, 'color: brown');
+            
+            return true;
+        }
+    }
+    return false;
+}
+
+
+

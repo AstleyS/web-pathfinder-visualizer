@@ -69,7 +69,7 @@ export default class PathFinderVisualizer extends React.Component {
         // This variable holds the result of the DFS algorithm visisted nodes
         const nodes = bfsOrDfs('DFS', dimension, nodeS, nodeF);
         animateAlgorithm(nodes);
-        //animatePath(nodeF);
+        animatePath(nodeF);
     }
     
     // This function handles the user click when choosing Dijsktra
@@ -152,7 +152,7 @@ function animateAlgorithm(visitedNodes) {
         // With setTimeout, we change the color of each visited node with 145ms  between them
         setTimeout(() => {
             if (i === visitedNodes.length - 1) {
-                document.getElementById(`${node["col"]},${node["row"]}`).style.background = "yellow";
+            //    document.getElementById(`${node["col"]},${node["row"]}`).style.background = "yellow";
             } else {
                 document.getElementById(`${node["col"]},${node["row"]}`).style.background = "lightblue";
             }
