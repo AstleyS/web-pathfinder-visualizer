@@ -1,10 +1,22 @@
 import React from 'react';
 import './PathFinderVisualizer.css';
 import Node from './Node/Node';
+import NodeObj from './Node/NodeObj'
 // Import the algorithm functions
 import { bfsOrDfs } from '../algorithms/bfsOrDfs';
 import { dijkstraAlgo } from '../algorithms/dijkstra';
 import { aStarAlgo } from '../algorithms/aStar';
+
+const ROW = 20;
+const COLUMN = 30;
+
+const START_X = 5;
+const START_Y = 5;
+
+const FINISH_X = 29;
+const FINISH_Y = 19;
+
+const SPEED = 145; 
 
 export default class PathFinderVisualizer extends React.Component {
 
@@ -20,7 +32,7 @@ export default class PathFinderVisualizer extends React.Component {
         // Generate a grid with args1 rows and args2 columns 
         // and starting node in **coordinates** args3 
         // and ending node in **coordinates** args4 
-        let nodes = generateGrid(20, 30, [5, 5],[10, 8]);
+        let nodes = generateGrid(ROW, COLUMN, [START_X, START_Y],[FINISH_X, FINISH_Y]);
         this.setState({nodes});
     }
 
@@ -45,6 +57,7 @@ export default class PathFinderVisualizer extends React.Component {
         // This variable holds the result of the BFS algorithm visisted nodes
         const nodes = bfsOrDfs('BFS', dimension, nodeS, nodeF);
         animateAlgorithm(nodes);
+        animatePath(nodes[nodes.length - 1], nodes.length);
     }
     
     
@@ -56,6 +69,7 @@ export default class PathFinderVisualizer extends React.Component {
         // This variable holds the result of the DFS algorithm visisted nodes
         const nodes = bfsOrDfs('DFS', dimension, nodeS, nodeF);
         animateAlgorithm(nodes);
+        //animatePath(nodeF);
     }
     
     // This function handles the user click when choosing Dijsktra
@@ -114,12 +128,13 @@ function generateGrid(maxRow, maxCol, start, finish) {
             for (let col = 0; col < maxCol; col++) {
                 // Defining the node object
                 // Col, Row, isStart, isFinish 
-                const currentNode = {
-                    col, 
+                const currentNode = new NodeObj(
+                    col,
                     row,
-                    isStart: row === start[1] && col === start[0],
-                    isFinish: row === finish[1] && col === finish[0]
-                }
+                    row === start[1] && col === start[0],
+                    row === finish[1] && col === finish[0]
+                )
+
                 // Saving the column nodes in each row
                 currentRow.push(currentNode)
             }
@@ -136,7 +151,40 @@ function animateAlgorithm(visitedNodes) {
         let node = visitedNodes[i];
         // With setTimeout, we change the color of each visited node with 145ms  between them
         setTimeout(() => {
-            document.getElementById(`${node[0]},${node[1]}`).style.background = "lightblue";
-        } , 145 * i);
+            if (i === visitedNodes.length - 1) {
+                document.getElementById(`${node["col"]},${node["row"]}`).style.background = "yellow";
+            } else {
+                document.getElementById(`${node["col"]},${node["row"]}`).style.background = "lightblue";
+            }
+
+        } , SPEED * i);
+    }
+}
+
+// This function animates the path from the starting node to the finishing node 
+// The animated path will be the one which as the minimum previous nodes
+function animatePath(nodeF, lastTime) {
+    
+    let dest = nodeF.previous;
+    console.log({dest});
+    const finalPath = [];
+    
+    // while we dont reach the start node, backtracks
+    while(dest !== null) {
+        finalPath.push(dest);
+        dest = dest.previous;    
+    }
+    
+    console.log({finalPath});
+    
+    // The last node is the nodeS, so we wont count it
+    for (let i = finalPath.length - 2; i >= 0; i--) {
+        setTimeout(() => {
+            const node = finalPath[i]
+            console.log({node});
+            document.getElementById(`${node["col"]},${node["row"]}`).style.background = "purple";
+    
+            // time of the last animation + time for the next animations
+        } , (lastTime * SPEED + 50) + ( SPEED * (finalPath.length - i) ));
     }
 }
