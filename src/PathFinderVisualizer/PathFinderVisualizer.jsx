@@ -10,11 +10,15 @@ import { aStarAlgo } from '../algorithms/aStar';
 const ROW = 20;
 const COLUMN = 30;
 
-const START_X = 5;
-const START_Y = 5;
+// Has to be less than columns
+const START_X = 8;
+// Has to be less than row
+const START_Y = 16;
 
-const FINISH_X = 6;
-const FINISH_Y = 8;
+// Has to be less than columns
+const FINISH_X = 29;
+// Has to be less than row
+const FINISH_Y = 19;
 
 const SPEED = 110; // The less the more
 
@@ -149,10 +153,12 @@ function generateGrid(maxRow, maxCol, start, finish) {
 function animateAlgorithm(visitedNodes) {
     for (let i = 0; i < visitedNodes.length; i++) {
         let node = visitedNodes[i];
-        // With setTimeout, we change the color of each visited node with 145ms  between them
-        setTimeout(() => {
-            document.getElementById(`${node["col"]},${node["row"]}`).style.background = "lightblue";
-        } , SPEED * i);
+        if (i !== visitedNodes.length - 1) {
+            // With setTimeout, we change the color of each visited node with 145ms  between them
+            setTimeout(() => {
+                document.getElementById(`${node["col"]},${node["row"]}`).style.background = "lightblue";
+            } , SPEED * i);
+        }
     }
 }
 
@@ -160,15 +166,14 @@ function animateAlgorithm(visitedNodes) {
 // The animated path will be the one which as the minimum previous nodes
 function animatePath(nodes) {
 
-    // HOW the HECK DFS works like this?
-    
     let lastTime = nodes.length
 
+    // Get the last node a.k.a last visited node
     let dest = nodes[nodes.length - 1]
     console.log({dest});
     const finalPath = [];
 
-    // while we dont reach the start node, backtracks
+    // While we dont reach the start node, backtracks
      while(dest !== null) {
         finalPath.push(dest);
         dest = dest.previous;    
@@ -180,9 +185,12 @@ function animatePath(nodes) {
     for (let i = finalPath.length - 2; i >= 0; i--) {
         setTimeout(() => {
             const node = finalPath[i]
-            document.getElementById(`${node["col"]},${node["row"]}`).style.background = "purple";
-        
-                // time of the last animation + time for the next animations
+            if (i === 0) {
+                document.getElementById(`${node["col"]},${node["row"]}`).style.background = "yellow";
+            } else {
+                document.getElementById(`${node["col"]},${node["row"]}`).style.background = "purple";
+            }
+           // time of the last animation + time for the next animations
         } , (lastTime * SPEED + 50) + ( SPEED * (finalPath.length - i) ));
     }
 }

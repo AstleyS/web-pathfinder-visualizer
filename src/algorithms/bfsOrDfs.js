@@ -28,13 +28,14 @@ export const bfsOrDfs = (algo, dimension, nodeS, nodeF) => {
         // Check if we found the node
         // 0: true or false
         if (findNodeF(paths, nodeF)) {
-            visited.splice(-1, 1);
             break;
         }
+        
         i++;
     }
 
     console.log({visited})
+    console.log({paths})
     return visited;
 
 }
@@ -126,7 +127,6 @@ function findNodeF(paths, nodeF) {
         // Check if the node is the same as the one passed by args (the destination)
         // Row  is the y axis and column is the x axis
         let node = paths[i];
-        console.log({nodeF})
         if (node["row"] === nodeF["row"] && node["col"] === nodeF["col"]) {
             console.log(`%c Found`, 'color: brown');
             
