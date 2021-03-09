@@ -1,5 +1,6 @@
 // This function implements the BFS algorithm and returns the visited nodes
 import Node from '../PathFinderVisualizer/Node/NodeObj'
+
 export const bfsOrDfs = (algo, dimension, nodeS, nodeF) => {
     // If BFS = QUEUE (FIFO)
     /* PUSH: ADD AT LAST | POP: REMOVE AT LAST*/
@@ -26,10 +27,8 @@ export const bfsOrDfs = (algo, dimension, nodeS, nodeF) => {
 
         // Check if we found the node
         // 0: true or false
-        if (findNodeF(paths, visited, nodeF)) {
-            if (algo === 'BFS') visited.splice(-1, 1);
-            
-            console.log({paths})
+        if (findNodeF(paths, nodeF)) {
+            visited.splice(-1, 1);
             break;
         }
         i++;
@@ -127,7 +126,7 @@ function findNodeF(paths, nodeF) {
         // Check if the node is the same as the one passed by args (the destination)
         // Row  is the y axis and column is the x axis
         let node = paths[i];
-        console.log({node, nodeF})
+        console.log({nodeF})
         if (node["row"] === nodeF["row"] && node["col"] === nodeF["col"]) {
             console.log(`%c Found`, 'color: brown');
             
@@ -136,6 +135,3 @@ function findNodeF(paths, nodeF) {
     }
     return false;
 }
-
-
-

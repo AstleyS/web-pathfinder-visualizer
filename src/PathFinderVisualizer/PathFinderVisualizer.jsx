@@ -13,10 +13,10 @@ const COLUMN = 30;
 const START_X = 5;
 const START_Y = 5;
 
-const FINISH_X = 29;
-const FINISH_Y = 19;
+const FINISH_X = 6;
+const FINISH_Y = 8;
 
-const SPEED = 145; 
+const SPEED = 110; // The less the more
 
 export default class PathFinderVisualizer extends React.Component {
 
@@ -57,7 +57,7 @@ export default class PathFinderVisualizer extends React.Component {
         // This variable holds the result of the BFS algorithm visisted nodes
         const nodes = bfsOrDfs('BFS', dimension, nodeS, nodeF);
         animateAlgorithm(nodes);
-        animatePath(nodes[nodes.length - 1], nodes.length);
+        animatePath(nodes);
     }
     
     
@@ -69,7 +69,7 @@ export default class PathFinderVisualizer extends React.Component {
         // This variable holds the result of the DFS algorithm visisted nodes
         const nodes = bfsOrDfs('DFS', dimension, nodeS, nodeF);
         animateAlgorithm(nodes);
-        animatePath(nodeF);
+        animatePath(nodes);
     }
     
     // This function handles the user click when choosing Dijsktra
@@ -151,40 +151,38 @@ function animateAlgorithm(visitedNodes) {
         let node = visitedNodes[i];
         // With setTimeout, we change the color of each visited node with 145ms  between them
         setTimeout(() => {
-            if (i === visitedNodes.length - 1) {
-            //    document.getElementById(`${node["col"]},${node["row"]}`).style.background = "yellow";
-            } else {
-                document.getElementById(`${node["col"]},${node["row"]}`).style.background = "lightblue";
-            }
-
+            document.getElementById(`${node["col"]},${node["row"]}`).style.background = "lightblue";
         } , SPEED * i);
     }
 }
 
 // This function animates the path from the starting node to the finishing node 
 // The animated path will be the one which as the minimum previous nodes
-function animatePath(nodeF, lastTime) {
+function animatePath(nodes) {
+
+    // HOW the HECK DFS works like this?
     
-    let dest = nodeF.previous;
+    let lastTime = nodes.length
+
+    let dest = nodes[nodes.length - 1]
     console.log({dest});
     const finalPath = [];
-    
+
     // while we dont reach the start node, backtracks
-    while(dest !== null) {
+     while(dest !== null) {
         finalPath.push(dest);
         dest = dest.previous;    
     }
-    
+        
     console.log({finalPath});
-    
+        
     // The last node is the nodeS, so we wont count it
     for (let i = finalPath.length - 2; i >= 0; i--) {
         setTimeout(() => {
             const node = finalPath[i]
-            console.log({node});
             document.getElementById(`${node["col"]},${node["row"]}`).style.background = "purple";
-    
-            // time of the last animation + time for the next animations
+        
+                // time of the last animation + time for the next animations
         } , (lastTime * SPEED + 50) + ( SPEED * (finalPath.length - i) ));
     }
 }
