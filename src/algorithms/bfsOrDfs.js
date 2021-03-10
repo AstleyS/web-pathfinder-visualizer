@@ -34,13 +34,13 @@ export const bfsOrDfs = (algo, dimension, nodeS, nodeF) => {
         // If BFS, removes node from the start of the queue || start of the array
         // If DFS, removes node from the top of the stack || end of the array
         let node = algo === 'BFS' ? paths.shift(): paths.pop();
-        console.log({node})
+        console.log({node});
         
         // Check the valid neighbours
         let foundNodeF = validNeighbours(algo, paths, visited, node, dimension, nodeF);
 
         // If node equal to undefined means that we found nodeF
-        if (foundNodeF === undefined) {
+        if (foundNodeF) {
             return [visited, true];
         }
         i++;
@@ -71,7 +71,8 @@ function validNeighbours(algo, paths, visited, node, dimension, nodeF) {
         // if DFS, break
         if (!wasVisited([x, y - 1])) {
             isNodeF = addVisitedNode(algo, paths, visited, node, [x, y - 1], nodeF);
-            if (algo === 'DFS' || isNodeF) return ;
+            if (isNodeF) return true;
+            if (algo === 'DFS') return ;
         }
     }
     
@@ -79,7 +80,8 @@ function validNeighbours(algo, paths, visited, node, dimension, nodeF) {
     if (x + 1 <= maxColums - 1) {
         if (!wasVisited([x + 1, y])) {
             isNodeF = addVisitedNode(algo, paths, visited, node, [x + 1, y], nodeF);
-            if (algo === 'DFS' || isNodeF) return ;
+            if (isNodeF) return true;
+            if (algo === 'DFS') return ;
         }
     }
     
@@ -87,7 +89,8 @@ function validNeighbours(algo, paths, visited, node, dimension, nodeF) {
     if (y + 1 <= maxRows - 1) {
         if (!wasVisited([x, y + 1])) {
             isNodeF = addVisitedNode(algo, paths, visited, node, [x, y + 1], nodeF);
-            if (algo === 'DFS' || isNodeF) return ;
+            if (isNodeF) return true;
+            if (algo === 'DFS') return ;
         }
     }
     
@@ -95,11 +98,12 @@ function validNeighbours(algo, paths, visited, node, dimension, nodeF) {
     if (x - 1 >= 0) {
         if (!wasVisited([x - 1, y])) {
             isNodeF = addVisitedNode(algo, paths, visited, node, [x - 1, y], nodeF);
-            if (algo === 'DFS' || isNodeF) return ;
+            if (isNodeF) return true;
+            if (algo === 'DFS') return ;
         }
     }
 
-    return " ";
+    return ;
 }
 
 // This function checks if the node was already visited
@@ -136,8 +140,7 @@ function addVisitedNode(algo, paths, visited, previousNode, coordinate, nodeF) {
     }
 
     // Check if its end node
-    console.log({nodeF, y, x});
-    if (nodeF["row"] === y && nodeF["col"] == x) {
+    if (nodeF["row"] === y && nodeF["col"] === x) {
         console.log({nodeF, y, x})
         console.log(`%c Found`, 'color: brown');
         return true;
