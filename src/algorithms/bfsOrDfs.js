@@ -1,14 +1,7 @@
 // This function implements the BFS algorithm and returns the visited nodes
-import Node from '../PathFinderVisualizer/Node/NodeObj'
+import Node from '../Node/NodeObj';
 
-export const bfsOrDfs = (algo, dimension, nodeS, nodeF) => {
-
-    if (nodeS["col"] === nodeF["col"] && 
-            nodeS["row"] === nodeF["row"]) {
-                return [[nodeS], false];
-    }
-
-    // If BFS = QUEUE (FIFO)
+// If BFS = QUEUE (FIFO)
     // BFS find the shortest path by repeatedly visiting the adjacent node
     // My analogy: The parent node likes all his children 
     // and once the children becomes a parent, the pattern repeats
@@ -21,6 +14,13 @@ export const bfsOrDfs = (algo, dimension, nodeS, nodeF) => {
     // and once the child becomes a parent, the pattern repeats
     
     /* UNSHIFT: ADD AT BEGINNING | SHIFT: REMOVE AT BEGINNING */
+
+export const bfsOrDfs = (algo, dimension, nodeS, nodeF) => {
+
+    if (nodeS["col"] === nodeF["col"] && 
+            nodeS["row"] === nodeF["row"]) {
+                return [[nodeS], false];
+    }
 
     // This variable holds the open nodes (coordinate) [x, y]
     const paths = [nodeS];
@@ -141,7 +141,7 @@ function addVisitedNode(algo, paths, visited, previousNode, coordinate, nodeF) {
 
     // Check if its end node
     if (nodeF["row"] === y && nodeF["col"] === x) {
-        console.log({nodeF, y, x})
+        node.isFinish = true;
         console.log(`%c Found`, 'color: brown');
         return true;
     }

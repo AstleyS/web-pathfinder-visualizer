@@ -1,7 +1,9 @@
 import React from 'react';
 import './PathFinderVisualizer.css';
-import Node from './Node/Node';
-import NodeObj from './Node/NodeObj'
+
+import Node from '../Node/Node';
+import NodeObj from '../Node/NodeObj';
+
 // Import the algorithm functions
 import { bfsOrDfs } from '../algorithms/bfsOrDfs';
 import { dijkstraAlgo } from '../algorithms/dijkstra';
@@ -63,7 +65,9 @@ export default class PathFinderVisualizer extends React.Component {
         const nodes = bfsOrDfs('BFS', dimension, nodeS, nodeF);
         console.timeEnd("bfs");
         
+        console.time("bfs animate algo");
         animateAlgorithm(nodes[0]);
+        console.timeEnd("bfs animate algo");
         
         if (nodes[1]) animatePath(nodes[0]); 
     }
@@ -78,8 +82,10 @@ export default class PathFinderVisualizer extends React.Component {
         // This variable holds the result of the DFS algorithm visisted nodes
         const nodes = bfsOrDfs('DFS', dimension, nodeS, nodeF);
         console.timeEnd("dfs");
-
+        
+        console.time("dfs animate algo");
         animateAlgorithm(nodes[0]);
+        console.timeEnd("dfs animate algo");
         
         if (nodes[1]) animatePath(nodes[0]); 
     }
@@ -88,8 +94,16 @@ export default class PathFinderVisualizer extends React.Component {
     dijsktra(grid, nodeS, nodeF) {
         const dimension = [grid.length, grid[0].length];
 
-        dijkstraAlgo(dimension, nodeS, nodeF);
-        console.log({nodeF});
+        console.time('dijkstra');
+        const nodes = dijkstraAlgo(dimension, nodeS, nodeF);
+        console.timeEnd('dijkstra');
+
+        console.time("dijkstra animate algo");
+        // slice(0) is the nodeS
+        animateAlgorithm(nodes[0].slice(1));
+        console.timeEnd("dijkstra animate algo");
+
+        if (nodes[1]) animatePath(nodes[0]);
     }
     
     // This function handles the user click when choosing A*
@@ -149,10 +163,10 @@ function generateGrid(maxRow, maxCol, start, finish) {
                     row,
                     row === start[1] && col === start[0],
                     row === finish[1] && col === finish[0]
-                )
+                );
 
                 // Saving the column nodes in each row
-                currentRow.push(currentNode)
+                currentRow.push(currentNode);
             }
 
             // Saving the rows
@@ -168,7 +182,12 @@ function animateAlgorithm(visitedNodes) {
         if (i !== visitedNodes.length - 1) {
             // With setTimeout, we change the color of each visited node with 145ms  between them
             setTimeout(() => {
-                document.getElementById(`${node["col"]},${node["row"]}`).style.background = "lightblue";
+                if (!node.isFinish) {
+                    document.getElementById(`${node["col"]},${node["row"]}`).style.background = "lightblue";
+                } else {
+                    console.log({visitedNodes, i});
+                    document.getElementById(`${node["col"]},${node["row"]}`).style.background = "red";
+                }
             } , SPEED * i);
         }
     }
@@ -197,7 +216,7 @@ function animatePath(nodes) {
     for (let i = finalPath.length - 2; i >= 0; i--) {
         setTimeout(() => {
             const node = finalPath[i]
-            if (i === 0) {
+            if (node.isFinish) {
                 document.getElementById(`${node["col"]},${node["row"]}`).style.background = "yellow";
             } else {
                 document.getElementById(`${node["col"]},${node["row"]}`).style.background = "purple";

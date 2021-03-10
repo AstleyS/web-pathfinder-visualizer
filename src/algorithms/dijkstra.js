@@ -1,3 +1,5 @@
+import Node from '../Node/NodeObj';
+
 export const dijkstraAlgo = (dimension, nodeS, nodeF) => {
 
 
@@ -7,34 +9,42 @@ export const dijkstraAlgo = (dimension, nodeS, nodeF) => {
     nodeS.cost = 0;
     // This variable holds the open nodes
     const paths = [nodeS];
+    const visited = []
     
     let i = 0;
     while (paths.length > 0) {
-        console.log(`%c Loop ${i}`, 'color: red');
+        //console.log(`%c Loop ${i}`, 'color: red');
 
-        let { node } = paths.unshift();
+        let node = paths.shift();
         
         if (findNodeF(node, nodeF)) {
+            node.isFinish = true;
             nodeF.previous = node;
-            return ;
+
+            visited.push(node);
+            return [visited, true];
         }
         
         // Mark as visited
         document.getElementById(`${node["col"]},${node["row"]}`).classList.add('visited');
-        validNeighbours(paths, node, dimension);
+        visited.push(node);
+
+        validNeighbours(paths, visited, node, dimension);
 
         // Order neighbours by the cost to travel to
         paths.sort((a, b) => a.cost - b.cost); 
-        
-}
+        i++;
+    }
+
+    return [visited, false];
 }
 
 function findNodeF(node, nodeF) {
-    return node["row"] === nodeF["row"] && node["col"] === nodeF["col"] 
+    return node["row"] === nodeF["row"] && node["col"] === nodeF["col"];
 }
 
 // This functions checks the neighbours and returns a list of the visited (valid) ones 
-function validNeighbours(paths, node, dimension) {
+function validNeighbours(paths, visited, node, dimension) {
 
     /* GRID DIMENSION: 0 = ROW | 1 = COLUMN */
     const maxRows = dimension[0]; 
@@ -48,28 +58,28 @@ function validNeighbours(paths, node, dimension) {
     if (y - 1 >= 0) {
         // Check if it was visited already
         if (!wasVisited([x, y - 1])) {
-            addVisitedNode(paths, node, [x, y - 1]);
+            addVisitedNode(paths, visited, node, [x, y - 1]);
         }
     }
     
     // Checks RIGHT
     if (x + 1 <= maxColums - 1) {
         if (!wasVisited([x + 1, y])) {
-            addVisitedNode(paths, node, [x + 1, y]);
+            addVisitedNode(paths, visited, node, [x + 1, y]);
         }
     }
     
     // Checks DOWN
     if (y + 1 <= maxRows - 1) {
         if (!wasVisited([x, y + 1])) {
-            addVisitedNode(paths, node, [x, y + 1]);
+            addVisitedNode(paths, visited, node, [x, y + 1]);
         }
     }
     
     // Checks LEFT
     if (x - 1 >= 0) {
         if (!wasVisited([x - 1, y])) {
-            addVisitedNode(paths, node, [x - 1, y]);
+            addVisitedNode(paths, visited, node, [x - 1, y]);
         }
     }
 }
@@ -85,7 +95,7 @@ function wasVisited(coordinate) {
 }
 
 // This function adds the adjacent nodes
-function addVisitedNode(paths, previousNode, coordinate) {
+function addVisitedNode(paths, visited, previousNode, coordinate) {
 
     const prevX = previousNode["col"];
     const prevY = previousNode["row"];
@@ -107,6 +117,7 @@ function addVisitedNode(paths, previousNode, coordinate) {
     node.previous = previousNode;
 
     paths.push(node);
+    visited.push(node);
 }
 
 
