@@ -1,28 +1,119 @@
 export const dijkstraAlgo = (dimension, nodeS, nodeF) => {
 
+
+    // Priority Queue
     /* UNSHIFT: ADD AT BEGINNING | SHIFT: REMOVE AT BEGINNING */
 
-    // This variable holds the open nodes (coordinate)
-    // const paths = [{ node: nodeS, cost: 0}]
-    // const visited = []
+    nodeS.cost = 0;
+    // This variable holds the open nodes
+    const paths = [nodeS];
     
-    // let i = 0;
-    // while (paths.length > 0) {
-    //     console.log(`%c Loop ${i}`, 'color: red');
+    let i = 0;
+    while (paths.length > 0) {
+        console.log(`%c Loop ${i}`, 'color: red');
 
-    //     let { node, cost } = paths.unshift()
+        let { node } = paths.unshift();
         
-    //     if (findNodeF(node, nodeF)) {
-    //         nodeF.previous = node;
-    //     }
+        if (findNodeF(node, nodeF)) {
+            nodeF.previous = node;
+            return ;
+        }
         
-    //     visited.push(node);
+        // Mark as visited
+        document.getElementById(`${node["col"]},${node["row"]}`).classList.add('visited');
+        validNeighbours(paths, node, dimension);
 
-        // for next in graph[vertex] - set(paths):
-        //     if next[0] not in v:
-        //         custo = custo + next[1]
-        //     # sorted(paths + [next], key = lambda x: x[1])
-        //         q.append((next[0], paths + [vertex], custo))
-        //         q.sort(key=lambda x:x[2])
+        // Order neighbours by the cost to travel to
+        paths.sort((a, b) => a.cost - b.cost); 
+        
+}
+}
 
+function findNodeF(node, nodeF) {
+    return node["row"] === nodeF["row"] && node["col"] === nodeF["col"] 
+}
+
+// This functions checks the neighbours and returns a list of the visited (valid) ones 
+function validNeighbours(paths, node, dimension) {
+
+    /* GRID DIMENSION: 0 = ROW | 1 = COLUMN */
+    const maxRows = dimension[0]; 
+    const maxColums = dimension[1]; 
+
+    // Getting the coordinate of the given node
+    const x = node["col"];
+    const y = node["row"];
+
+    // Checks UP
+    if (y - 1 >= 0) {
+        // Check if it was visited already
+        if (!wasVisited([x, y - 1])) {
+            addVisitedNode(paths, node, [x, y - 1]);
+        }
+    }
+    
+    // Checks RIGHT
+    if (x + 1 <= maxColums - 1) {
+        if (!wasVisited([x + 1, y])) {
+            addVisitedNode(paths, node, [x + 1, y]);
+        }
+    }
+    
+    // Checks DOWN
+    if (y + 1 <= maxRows - 1) {
+        if (!wasVisited([x, y + 1])) {
+            addVisitedNode(paths, node, [x, y + 1]);
+        }
+    }
+    
+    // Checks LEFT
+    if (x - 1 >= 0) {
+        if (!wasVisited([x - 1, y])) {
+            addVisitedNode(paths, node, [x - 1, y]);
+        }
+    }
+}
+
+// This function checks if the node was already visited
+function wasVisited(coordinate) {
+    const node = document.getElementById(`${coordinate[0]},${coordinate[1]}`);
+    
+    // Check if the node as a visited "flag"
+    if (node.classList.contains("visited")) return true;
+
+    return false;
+}
+
+// This function adds the adjacent nodes
+function addVisitedNode(paths, previousNode, coordinate) {
+
+    const prevX = previousNode["col"];
+    const prevY = previousNode["row"];
+    
+    const x = coordinate[0];
+    const y = coordinate[1];
+
+    // Because the direction is horizontal OR vertical
+    // Is safe to do diff(x) + diff(y) because one of them will be 0
+    const cost = Math.abs(x - prevX) + Math.abs(y - prevY) + previousNode.cost;
+
+    const visitedCost = getVisitedCost(paths, x, y);
+
+    // Update the cost if cost is smaller than the node's atual cost
+    const realCost = Math.min(cost, visitedCost);
+
+    let node = new Node(x, y, false, false);
+    node.cost = realCost;
+    node.previous = previousNode;
+
+    paths.push(node);
+}
+
+
+// This function returs the current cost of the node of coordinate (x, y)
+function getVisitedCost(paths, x, y) {
+    for (let node in paths) {
+        if (node["col"] === x && node["row"] === y) return node.cost;
+    }
+    return Infinity;
 }

@@ -85,13 +85,17 @@ export default class PathFinderVisualizer extends React.Component {
     }
     
     // This function handles the user click when choosing Dijsktra
-    dijsktra(nodes, nodeS, nodeF) {
-        dijkstraAlgo(nodes, nodeS, nodeF);
+    dijsktra(grid, nodeS, nodeF) {
+        const dimension = [grid.length, grid[0].length];
+
+        dijkstraAlgo(dimension, nodeS, nodeF);
+        console.log({nodeF});
     }
     
     // This function handles the user click when choosing A*
-    aStar(nodes, nodeS, nodeF) {
-        aStarAlgo(nodes, nodeS, nodeF);
+    aStar(grid, nodeS, nodeF) {
+        const dimension = [grid.length, grid[0].length];
+        aStarAlgo(dimension, nodeS, nodeF);
     }
 
     render() {
