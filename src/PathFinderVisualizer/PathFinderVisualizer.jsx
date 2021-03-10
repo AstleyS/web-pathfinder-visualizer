@@ -11,16 +11,16 @@ const ROW = 20;
 const COLUMN = 30;
 
 // Has to be less than columns
-const START_X = 8;
+const START_X = 5;
 // Has to be less than row
-const START_Y = 16;
+const START_Y = 5;
 
 // Has to be less than columns
-const FINISH_X = 29;
+const FINISH_X = 5;
 // Has to be less than row
-const FINISH_Y = 19;
+const FINISH_Y = 8;
 
-const SPEED = 110; // The less the more
+const SPEED = 50; // The less the more
 
 export default class PathFinderVisualizer extends React.Component {
 
@@ -52,16 +52,20 @@ export default class PathFinderVisualizer extends React.Component {
         // this.componentDidMount();
     }
 
-    
     // This function handles the user click when choosing BFS
     bfs(grid, nodeS, nodeF) {
         // DIMENSION: 0 = ROW | 1 = COLUMN
         const dimension = [grid.length, grid[0].length];
 
+        console.time("algo");
         // This variable holds the result of the BFS algorithm visisted nodes
+        // [0] = visited nodes [1] = found node
         const nodes = bfsOrDfs('BFS', dimension, nodeS, nodeF);
-        animateAlgorithm(nodes);
-        animatePath(nodes);
+        console.timeEnd("algo");
+        
+        animateAlgorithm(nodes[0]);
+        
+        if (nodes[1]) animatePath(nodes[0]); 
     }
     
     
@@ -78,12 +82,12 @@ export default class PathFinderVisualizer extends React.Component {
     
     // This function handles the user click when choosing Dijsktra
     dijsktra(nodes, nodeS, nodeF) {
-        dijkstraAlgo(nodes, nodeS, nodeF);
+        //dijkstraAlgo(nodes, nodeS, nodeF);
     }
     
     // This function handles the user click when choosing A*
     aStar(nodes, nodeS, nodeF) {
-        aStarAlgo(nodes, nodeS, nodeF);
+        //aStarAlgo(nodes, nodeS, nodeF);
     }
 
     render() {

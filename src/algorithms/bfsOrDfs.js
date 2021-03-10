@@ -2,10 +2,24 @@
 import Node from '../PathFinderVisualizer/Node/NodeObj'
 
 export const bfsOrDfs = (algo, dimension, nodeS, nodeF) => {
+
+    if (nodeS["col"] === nodeF["col"] && 
+            nodeS["row"] === nodeF["row"]) {
+                return [[nodeS], false];
+    }
+
     // If BFS = QUEUE (FIFO)
+    // BFS find the shortest path by repeatedly visiting the adjacent node
+    // My analogy: The parent node likes all his children 
+    // and once the children becomes a parent, the pattern repeats
+    
     /* PUSH: ADD AT LAST | POP: REMOVE AT LAST*/
     
     // If DFS = STACK (LIFO)
+    // DFS find the shortest path by repeatedly visiting the open/atual node till not possible
+    // My analogy: The parent node just likes one of his children
+    // and once the child becomes a parent, the pattern repeats
+    
     /* UNSHIFT: ADD AT BEGINNING | SHIFT: REMOVE AT BEGINNING */
 
     // This variable holds the open nodes (coordinate) [x, y]
@@ -23,25 +37,23 @@ export const bfsOrDfs = (algo, dimension, nodeS, nodeF) => {
         console.log({node})
         
         // Check the valid neighbours
-        validNeighbours(algo, paths, visited, node, dimension);
+        let foundNodeF = validNeighbours(algo, paths, visited, node, dimension, nodeF);
 
-        // Check if we found the node
-        // 0: true or false
-        if (findNodeF(paths, nodeF)) {
-            break;
+        // If node equal to undefined means that we found nodeF
+        if (foundNodeF === undefined) {
+            return [visited, true];
         }
-        
         i++;
     }
 
     console.log({visited})
     console.log({paths})
-    return visited;
+    return [visited, false];
 
 }
 
 // This functions checks the neighbours and returns a list of the visited (valid) ones 
-function validNeighbours(algo, paths, visited, node, dimension) {
+function validNeighbours(algo, paths, visited, node, dimension, nodeF) {
 
     /* GRID DIMENSION: 0 = ROW | 1 = COLUMN */
     const maxRows = dimension[0]; 
@@ -51,39 +63,43 @@ function validNeighbours(algo, paths, visited, node, dimension) {
     const x = node["col"];
     const y = node["row"];
 
+    let isNodeF = false;
+
     // Checks UP
     if (y - 1 >= 0) {
         // Check if it was visited already
         // if DFS, break
         if (!wasVisited([x, y - 1])) {
-            addVisitedNode(algo, paths, visited, node, [x, y - 1]);
-            if (algo === 'DFS') return ;
+            isNodeF = addVisitedNode(algo, paths, visited, node, [x, y - 1], nodeF);
+            if (algo === 'DFS' || isNodeF) return ;
         }
     }
     
     // Checks RIGHT
     if (x + 1 <= maxColums - 1) {
         if (!wasVisited([x + 1, y])) {
-            addVisitedNode(algo, paths, visited, node, [x + 1, y]);
-            if (algo === 'DFS') return ;
+            isNodeF = addVisitedNode(algo, paths, visited, node, [x + 1, y], nodeF);
+            if (algo === 'DFS' || isNodeF) return ;
         }
     }
     
     // Checks DOWN
     if (y + 1 <= maxRows - 1) {
         if (!wasVisited([x, y + 1])) {
-            addVisitedNode(algo, paths, visited, node, [x, y + 1]);
-            if (algo === 'DFS') return ;
+            isNodeF = addVisitedNode(algo, paths, visited, node, [x, y + 1], nodeF);
+            if (algo === 'DFS' || isNodeF) return ;
         }
     }
     
     // Checks LEFT
     if (x - 1 >= 0) {
         if (!wasVisited([x - 1, y])) {
-            addVisitedNode(algo, paths, visited, node, [x - 1, y]);
-            if (algo === 'DFS') return ;
+            isNodeF = addVisitedNode(algo, paths, visited, node, [x - 1, y], nodeF);
+            if (algo === 'DFS' || isNodeF) return ;
         }
     }
+
+    return " ";
 }
 
 // This function checks if the node was already visited
@@ -99,7 +115,8 @@ function wasVisited(coordinate) {
 }
 
 // This function adds the visited node accordingly to the algorithm
-function addVisitedNode(algo, paths, visited, previousNode, coordinate) {
+// Return true or false whether the nodeF was found
+function addVisitedNode(algo, paths, visited, previousNode, coordinate, nodeF) {
 
     const x = coordinate[0];
     const y = coordinate[1];
@@ -117,21 +134,14 @@ function addVisitedNode(algo, paths, visited, previousNode, coordinate) {
         paths.unshift(node);
         visited.push(node);
     }
-}
 
-// This function checks if we reached the finish node
-function findNodeF(paths, nodeF) {
-    // Traversing throught the nodes
-    for (let i = 0; i < paths.length; i++) {
-        // console.log(`%c Current Node[${i}] x:${node[0]} y:${node[1]}`, 'color: blue');
-        // Check if the node is the same as the one passed by args (the destination)
-        // Row  is the y axis and column is the x axis
-        let node = paths[i];
-        if (node["row"] === nodeF["row"] && node["col"] === nodeF["col"]) {
-            console.log(`%c Found`, 'color: brown');
-            
-            return true;
-        }
+    // Check if its end node
+    console.log({nodeF, y, x});
+    if (nodeF["row"] === y && nodeF["col"] == x) {
+        console.log({nodeF, y, x})
+        console.log(`%c Found`, 'color: brown');
+        return true;
     }
+    
     return false;
 }
