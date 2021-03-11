@@ -1,10 +1,15 @@
 import Node from '../Node/NodeObj';
 
-export const dijkstraAlgo = (dimension, nodeS, nodeF) => {
-
-
-    // Priority Queue
+// Priority Queue
     /* UNSHIFT: ADD AT BEGINNING | SHIFT: REMOVE AT BEGINNING */
+
+    export const dijkstraAlgo = (dimension, nodeS, nodeF) => {
+
+
+    if (nodeS["col"] === nodeF["col"] && 
+            nodeS["row"] === nodeF["row"]) {
+                return [[nodeS], false];
+    }
 
     nodeS.cost = 0;
     // This variable holds the open nodes
@@ -22,6 +27,7 @@ export const dijkstraAlgo = (dimension, nodeS, nodeF) => {
             nodeF.previous = node;
 
             visited.push(node);
+
             return [visited, true];
         }
         
@@ -33,6 +39,8 @@ export const dijkstraAlgo = (dimension, nodeS, nodeF) => {
 
         // Order neighbours by the cost to travel to
         paths.sort((a, b) => a.cost - b.cost); 
+        console.log({paths});
+        console.log({paths});
         i++;
     }
 
