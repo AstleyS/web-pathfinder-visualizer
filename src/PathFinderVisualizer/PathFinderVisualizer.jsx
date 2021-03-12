@@ -72,7 +72,6 @@ export default class PathFinderVisualizer extends React.Component {
         if (nodes[1]) animatePath(nodes[0]); 
     }
     
-    
     // This function handles the user click when choosing DFS
     dfs(grid, nodeS, nodeF) {
         // DIMENSION: 0 = ROW | 1 = COLUMN
@@ -114,11 +113,14 @@ export default class PathFinderVisualizer extends React.Component {
 
     render() {
         // Getting the nodes/grid
-        const {nodes} = this.state;
+        const { nodes } = this.state;
         let nodeS;
         let nodeF;
-        console.log({nodes})
+        console.log({nodes});
+        console.log(this.props);
         return (
+            <div>
+                <nav></nav>
            <div className="grid">
                {
                   nodes.map((row, rIndex) => {
@@ -144,6 +146,7 @@ export default class PathFinderVisualizer extends React.Component {
                    <button onClick={() => this.aStar(nodes, nodeS, nodeF)}>A*</button>
                    <button className="resetGrid" /*onClick={() => this.resetGrid()*} */>Clear path</button>
                </div>
+           </div>
            </div>
         )
     }

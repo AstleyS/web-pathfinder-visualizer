@@ -16,7 +16,7 @@ import Node from '../Node/NodeObj';
     const paths = [nodeS];
     const visited = []
     
-    let i = 0;
+    //let i = 0;
     while (paths.length > 0) {
         //console.log(`%c Loop ${i}`, 'color: red');
 
@@ -41,7 +41,7 @@ import Node from '../Node/NodeObj';
         paths.sort((a, b) => a.cost - b.cost); 
         console.log({paths});
         console.log({paths});
-        i++;
+        //i++;
     }
 
     return [visited, false];
