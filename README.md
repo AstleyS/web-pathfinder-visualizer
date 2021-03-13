@@ -1,7 +1,6 @@
 # PathFinder Algorithm Visualizer
 
-In this project, I created a PathFinder Algorithm Visualizer with React.js  
-Inspired by Clement Mihailescu
+In this project, I created a PathFinder Algorithm Visualizer with React.js
 
 # Getting Started with Create React App
 

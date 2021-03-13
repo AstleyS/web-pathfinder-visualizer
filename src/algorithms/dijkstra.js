@@ -16,22 +16,29 @@ export const dijkstraAlgo = (dimension, nodeS, nodeF) => {
     const paths = [nodeS];
     let visited = []
     
-    //let i = 0;
+    let i = 0;
     while (paths.length > 0) {
-        //console.log(`%c Loop ${i}`, 'color: red');
+        console.log(`%c Loop ${i}`, 'color: red');
 
         let node = paths.shift();
         
+        // If we found the node then we should get rid of the other nodes 
         if (findNodeF(node, nodeF)) {
 
-            let indexF = visited.forEach((node, index) => {
-                if (node.isFinish) return index
-            })
+            let indexF = 0;
+            for (let i = 0; i < visited.length; i++) {
+                if (visited[i].isFinish) {
+                    indexF = visited.indexOf(visited[i]);
+                    break;
+                }
+            }
+         
             visited = visited.slice(0, indexF + 1);
     
             return [visited, true];
         }
-        
+            
+    
         // Mark as visited
         document.getElementById(`${node["col"]},${node["row"]}`).classList.add('visited');
         visited.push(node);
@@ -41,8 +48,7 @@ export const dijkstraAlgo = (dimension, nodeS, nodeF) => {
         // Order neighbours by the cost to travel to
         paths.sort((a, b) => a.cost - b.cost); 
         //console.log({paths});
-        //console.log({paths});
-        //i++;
+        i++;
     }
 
     return [visited, false];
