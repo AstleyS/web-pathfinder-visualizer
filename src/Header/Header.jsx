@@ -6,11 +6,11 @@ import {Navbar, Nav, NavDropdown, Button } from 'react-bootstrap';
 
 export default class Header extends React.Component {
 
-    chooseAlgo = (algo) => {
-        this.props.getAlgo(algo);   
+    chooseAlgo (algo) {
+        this.props.triggerAlgo(algo);   
     }
 
-    playAlgo = () => {
+    playAlgo() {
         this.props.playAlgo();
     }
 
@@ -21,14 +21,14 @@ export default class Header extends React.Component {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="mr-auto">
-                    <NavDropdown title="Choose Algorithm" id="collasible-nav-dropdown" variant="dark">
-                    <NavDropdown.Item onClick={() => {}}>BFS</NavDropdown.Item>
+                    <NavDropdown title="Choose Algorithm" id="collasible-nav-dropdown" variant="dark" disabled>
+                    <NavDropdown.Item onClick={ this.chooseAlgo.bind(this, 'BFS') }>BFS</NavDropdown.Item>
                     <NavDropdown.Divider/>
-                    <NavDropdown.Item>DFS</NavDropdown.Item>
+                    <NavDropdown.Item onClick={ this.chooseAlgo.bind(this, 'DFS') }>DFS</NavDropdown.Item>
                     <NavDropdown.Divider/>
-                    <NavDropdown.Item>Dijkstra</NavDropdown.Item>
+                    <NavDropdown.Item onClick={ this.chooseAlgo.bind(this, 'Dijkstra') }>Dijkstra</NavDropdown.Item>
                     <NavDropdown.Divider/>
-                    <NavDropdown.Item>A*</NavDropdown.Item>
+                    <NavDropdown.Item onClick={ this.chooseAlgo.bind(this, 'A*') }>A*</NavDropdown.Item>
                     </NavDropdown>
                     <Nav.Link><Button variant="info" disabled>Add Walls</Button></Nav.Link>
                     <Nav.Link><Button variant="success" disabled>Play</Button></Nav.Link>

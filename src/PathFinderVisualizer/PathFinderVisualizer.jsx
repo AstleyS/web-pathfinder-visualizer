@@ -113,11 +113,11 @@ export default class PathFinderVisualizer extends React.Component {
 
     render() {
         // Getting the nodes/grid
-        const { nodes } = this.state;
+        const { nodes, choosenAlgo } = this.state;
         let nodeS;
         let nodeF;
         console.log({nodes});
-        console.log(this.props);
+        console.log({choosenAlgo});
         return (
             <div>
                 <nav></nav>

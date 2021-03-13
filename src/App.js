@@ -10,17 +10,18 @@ export class App extends React.Component {
     super(props);
 
     this.state = {
-      algo: "",
+      algo: '',
       play: false
     }
 
     // this.getAlgo = this.getAlgo.bind(this);
   }
 
-  getAlgo() {
-    console.log('ef'); 
+  getAlgoFromHeader(algo) {
+    console.log('Worked')
+    this.setState({ algo: algo });
   }
-  
+
   // playAlgo() {
   //   this.setState({ play: true}); 
   // }
@@ -28,10 +29,8 @@ export class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <Header></Header>
-        <PathFinderVisualizer 
-          triggerAlgo = {console.log('h3ll')}>
-        </PathFinderVisualizer>
+        <Header triggerAlgo = { this.getAlgoFromHeader.bind(this)}></Header>
+        <PathFinderVisualizer choosenAlgo = {this.state.algo}></PathFinderVisualizer>
       </div>
     );
   }
