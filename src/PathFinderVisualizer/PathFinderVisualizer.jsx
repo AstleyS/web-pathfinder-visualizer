@@ -18,11 +18,11 @@ const START_X = 5;
 const START_Y = 5;
 
 // Has to be less than columns
-const FINISH_X = 7;
+const FINISH_X = 9;
 // Has to be less than row
 const FINISH_Y = 7;
 
-const SPEED = 50; // The less the more
+const SPEED = 60; // The less the more
 
 export default class PathFinderVisualizer extends React.Component {
 
@@ -60,16 +60,22 @@ export default class PathFinderVisualizer extends React.Component {
         const dimension = [grid.length, grid[0].length];
 
         console.time("bfs");
+
         // This variable holds the result of the BFS algorithm visisted nodes
         // [0] = visited nodes [1] = found node
         const nodes = bfsOrDfs('BFS', dimension, nodeS, nodeF);
+        const visited = nodes[0];
+        console.log({visited});
+        
         console.timeEnd("bfs");
         
         console.time("bfs animate algo");
-        animateAlgorithm(nodes[0]);
+        animateAlgorithm(visited);
         console.timeEnd("bfs animate algo");
         
-        if (nodes[1]) animatePath(nodes[0]); 
+        // The first args refers to the time that the animateAlgorithm finished + 50ms
+        // The seconde args return the last node a.k.a nodeF
+        if (nodes[1]) animatePath(SPEED * visited.length + 50, visited[visited.length - 1]); 
     }
     
     // This function handles the user click when choosing DFS
@@ -78,15 +84,21 @@ export default class PathFinderVisualizer extends React.Component {
         const dimension = [grid.length, grid[0].length];
         
         console.time("dfs");
+
         // This variable holds the result of the DFS algorithm visisted nodes
         const nodes = bfsOrDfs('DFS', dimension, nodeS, nodeF);
+        const visited = nodes[0];
+        console.log({visited});
+
         console.timeEnd("dfs");
         
         console.time("dfs animate algo");
-        animateAlgorithm(nodes[0]);
+        animateAlgorithm(visited);
         console.timeEnd("dfs animate algo");
         
-        if (nodes[1]) animatePath(nodes[0]); 
+        // The first args refers to the time that the animateAlgorithm finished + 50ms
+        // The seconde args return the last node a.k.a nodeF
+        if (nodes[1]) animatePath(SPEED * visited.length + 50, visited[visited.length - 1]); 
     }
     
     // This function handles the user click when choosing Dijsktra
@@ -94,15 +106,21 @@ export default class PathFinderVisualizer extends React.Component {
         const dimension = [grid.length, grid[0].length];
 
         console.time('dijkstra');
+        
         const nodes = dijkstraAlgo(dimension, nodeS, nodeF);
+        const visited = nodes[0];
+        console.log({visited});
+
         console.timeEnd('dijkstra');
 
-        console.time("dijkstra animate algo");
-        // slice(0) is the nodeS
-        animateAlgorithm(nodes[0].slice(1));
+        console.time("dijkstra animate algo"); 
+        // With slice(0) we are including nodeS
+        animateAlgorithm(visited.slice(1));
         console.timeEnd("dijkstra animate algo");
 
-        if (nodes[1]) animatePath(nodes[0]);
+        // The first args refers to the time that the animateAlgorithm finished + 50ms
+        // The seconde args return the last node a.k.a nodeF
+        if (nodes[1]) animatePath(SPEED * visited.length + 50, visited[visited.length - 1]);
     }
     
     // This function handles the user click when choosing A*
@@ -119,8 +137,7 @@ export default class PathFinderVisualizer extends React.Component {
         console.log({nodes});
         console.log({choosenAlgo});
         return (
-            <div>
-                <nav></nav>
+            <div className= "container-fluid">
            <div className="grid">
                {
                   nodes.map((row, rIndex) => {
@@ -143,8 +160,8 @@ export default class PathFinderVisualizer extends React.Component {
                    <button onClick={() => this.bfs(nodes, nodeS, nodeF)}>BFS</button>
                    <button onClick={() => this.dfs(nodes, nodeS, nodeF)}>DFS</button>
                    <button onClick={() => this.dijsktra(nodes, nodeS, nodeF)}>Dijkstra</button>
-                   <button onClick={() => this.aStar(nodes, nodeS, nodeF)}>A*</button>
-                   <button className="resetGrid" /*onClick={() => this.resetGrid()*} */>Clear path</button>
+                   <button disabled onClick={() => this.aStar(nodes, nodeS, nodeF)}>A*</button>
+                   <button className="resetGrid" disabled/*onClick={() => this.resetGrid()*} */>Clear path</button>
                </div>
            </div>
            </div>
@@ -188,7 +205,6 @@ function animateAlgorithm(visitedNodes) {
                 if (!node.isFinish) {
                     document.getElementById(`${node["col"]},${node["row"]}`).style.background = "lightblue";
                 } else {
-                    console.log({visitedNodes, i});
                     document.getElementById(`${node["col"]},${node["row"]}`).style.background = "red";
                 }
             } , SPEED * i);
@@ -198,12 +214,10 @@ function animateAlgorithm(visitedNodes) {
 
 // This function animates the path from the starting node to the finishing node 
 // The animated path will be the one which as the minimum previous nodes
-function animatePath(nodes) {
-
-    let lastTime = nodes.length
+function animatePath(lastTime, nodeF) {
 
     // Get the last node a.k.a last visited node
-    let dest = nodes[nodes.length - 1]
+    let dest = nodeF
     console.log({dest});
     const finalPath = [];
 
@@ -225,6 +239,6 @@ function animatePath(nodes) {
                 document.getElementById(`${node["col"]},${node["row"]}`).style.background = "purple";
             }
            // time of the last animation + time for the next animations
-        } , (lastTime * SPEED + 50) + ( SPEED * (finalPath.length - i) ));
+        } , lastTime + ( SPEED * (finalPath.length - i) ));
     }
 }
