@@ -18,8 +18,10 @@ export class App extends React.Component {
   }
 
   getAlgoFromHeader(algo) {
-    console.log('Worked')
+    console.log('Got clicked event');
+    console.log(algo);
     this.setState({ algo: algo });
+    
   }
 
   // playAlgo() {
@@ -30,7 +32,7 @@ export class App extends React.Component {
     return (
       <div className="App">
         <Header triggerAlgo = { this.getAlgoFromHeader.bind(this)}></Header>
-        <PathFinderVisualizer choosenAlgo = {this.state.algo}></PathFinderVisualizer>
+        <PathFinderVisualizer choosenAlgo = { this.state.algo }></PathFinderVisualizer>
       </div>
     );
   }

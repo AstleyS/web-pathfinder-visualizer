@@ -45,7 +45,12 @@ export const dijkstraOrAS = (algo, dimension, nodeS, nodeF) => {
                 }
             }
 
-            visited = visited.slice(0, indexF + 1);
+            if (algo === 'Dijkstra') {
+                visited = visited.slice(0, indexF + 1);
+            } else if (algo === 'AStar') {
+                visited.push(node);
+            }
+
             return [visited, true];
         }
     
@@ -187,7 +192,7 @@ function addVisitedNode(algo, paths, visited, previousNode, coordinate, nodeF) {
     console.log({node});
     
     paths.push(node);
-    visited.push(node);
+    if (algo === 'Dijkstra') visited.push(node);
 }
 
 // This function returs the current cost of the node of coordinate (x, y)
