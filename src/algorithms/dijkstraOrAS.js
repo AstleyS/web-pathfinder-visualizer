@@ -26,7 +26,7 @@ export const dijkstraOrAS = (algo, dimension, nodeS, nodeF) => {
     let i = 0;
     // While there are unvisited nodes and node not found
     // We need also to check if loop didn't reach the maximum iteration possible to prevent browser to crash
-    while (paths.length > 0 || i <= dimension[0] * dimension[1]) {
+    while (paths.length > 0 && i <= dimension[0] * dimension[1]) {
         console.log(`%c Loop ${i}`, 'color: red');
 
         let node = paths.shift();  

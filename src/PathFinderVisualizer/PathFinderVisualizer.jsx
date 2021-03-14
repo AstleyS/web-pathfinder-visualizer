@@ -17,9 +17,9 @@ const START_X = 5;
 const START_Y = 5;
 
 // Has to be less than columns
-const FINISH_X = 20;
+const FINISH_X = 18;
 // Has to be less than row
-const FINISH_Y = 5;
+const FINISH_Y = 6;
 
 const SPEED = 60; // The less the more speed
 
@@ -173,11 +173,11 @@ export default class PathFinderVisualizer extends React.Component {
                     })
                 }
                 <div className="buttons">
-                    <button onMouseEnter={ () => console.log('Mouse') } onClick={() => this.bfs(nodes, nodeS, nodeF)}>BFS</button>
+                    <button onClick={() => this.bfs(nodes, nodeS, nodeF)}>BFS</button>
                     <button onClick={() => this.dfs(nodes, nodeS, nodeF)}>DFS</button>
                     <button onClick={() => this.dijsktra(nodes, nodeS, nodeF)}>Dijkstra</button>
                     <button onClick={() => this.aStar(nodes, nodeS, nodeF)}>A*</button>
-                    <button className="resetGrid" disabled/*onClick={() => this.resetGrid()*} */>Clear path</button>
+                    <button className="resetGrid" disabled/*onClick={() => this.resetGrid()*} */>Clear path | Reload page</button>
                 </div>
                 </div>
             </div>

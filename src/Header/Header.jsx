@@ -21,7 +21,7 @@ export default class Header extends React.Component {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="mr-auto">
-                    <NavDropdown className="btn" title="Choose Algorithm" id="collasible-nav-dropdown" variant="dark">
+                    <NavDropdown disabled className="btn" title="Choose Algorithm" id="collasible-nav-dropdown" variant="dark">
                         <NavDropdown.Item onClick={ this.chooseAlgo.bind(this, 'BFS') }>BFS</NavDropdown.Item>
                         <NavDropdown.Divider/>
                         <NavDropdown.Item onClick={ this.chooseAlgo.bind(this, 'DFS') }>DFS</NavDropdown.Item>
