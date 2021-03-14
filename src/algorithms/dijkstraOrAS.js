@@ -3,7 +3,7 @@ import Node from '../Node/NodeObj';
 // Priority Queue
     /* UNSHIFT: ADD AT BEGINNING | SHIFT: REMOVE AT BEGINNING */
 
-export const dijkstraAlgo = (dimension, nodeS, nodeF) => {
+export const dijkstraOrAS = (algo, dimension, nodeS, nodeF) => {
 
     // Check if nodes are in the same position | Disable this when given use option
     if (nodeS["col"] === nodeF["col"] && 
@@ -12,6 +12,14 @@ export const dijkstraAlgo = (dimension, nodeS, nodeF) => {
     }
 
     nodeS.cost = 0;
+    nodeS.totalCost = 0;
+    
+    // Check if AStar to add heuristic
+    if (algo === 'AStar') {
+        nodeS.heuristic = heuristic(nodeS, nodeF);
+        nodeS.totalCost = nodeS.heuristic + nodeS.cost;
+    }
+    
     // This variable holds the open nodes
     const paths = [nodeS];
     let visited = []
@@ -20,7 +28,7 @@ export const dijkstraAlgo = (dimension, nodeS, nodeF) => {
     while (paths.length > 0) {
         console.log(`%c Loop ${i}`, 'color: red');
 
-        let node = paths.shift();
+        let node = paths.shift();  
         
         // If we found the node then we should get rid of the other nodes 
         if (findNodeF(node, nodeF)) {
@@ -32,9 +40,8 @@ export const dijkstraAlgo = (dimension, nodeS, nodeF) => {
                     break;
                 }
             }
-         
+
             visited = visited.slice(0, indexF + 1);
-    
             return [visited, true];
         }
             
@@ -46,7 +53,7 @@ export const dijkstraAlgo = (dimension, nodeS, nodeF) => {
         validNeighbours(paths, visited, node, dimension, nodeF);
 
         // Order neighbours by the cost to travel to
-        paths.sort((a, b) => a.cost - b.cost); 
+        paths.sort((a, b) => a.totalCost - b.totalCost); 
         //console.log({paths});
         i++;
     }
@@ -54,9 +61,28 @@ export const dijkstraAlgo = (dimension, nodeS, nodeF) => {
     return [visited, false];
 }
 
+// This function calculates the heuristic
+function heuristic(node, nodeF) {
+
+    // Node coordinate
+    const x1 = node["col"];
+    const y1 = node["row"];
+    
+    // Node Finish coordinate
+    const x2 = nodeF[0];
+    const y2 = nodeF[1];
+
+    // The heuristic is the distance between the sqrt((x2-x1)² + (y2-y1)²) 
+    const heuristic = Math.sqrt(((x2-x1) ** 2) + ((y2-y1) ** 2));
+    node.heuristic = heuristic;
+    
+    return heuristic;
+}
+
 // This function checks if a given node is the finish node
-function findNodeF(node, nodeF) {
-    return node["row"] === nodeF["row"] && node["col"] === nodeF["col"];
+function findNodeF(node) {
+    console.log({node});
+    // return node["row"] === nodeF["row"] && node["col"] === nodeF["col"];
 }
 
 // This functions checks the neighbours and returns a list of the visited (valid) ones 
@@ -113,29 +139,36 @@ function wasVisited(coordinate) {
 }
 
 // This function adds the adjacent nodes
-function addVisitedNode(paths, visited, previousNode, coordinate, nodeF) {
+function addVisitedNode(algo, paths, visited, previousNode, coordinate, nodeF) {
 
+    // Previous node coordinate
     const prevX = previousNode["col"];
     const prevY = previousNode["row"];
     
+    // Node (neighbour) coordinate
     const x = coordinate[0];
     const y = coordinate[1];
-
+    
+    let node = new Node(x, y, false, false);
+    
     // Because the direction is horizontal OR vertical
     // Is safe to do diff(x) + diff(y) because one of them will be 0
     // This is equivallent to EDGE + ACCUMULATED COST 
-    const cost = Math.abs(x - prevX) + Math.abs(y - prevY) + previousNode.cost;
-
-    // Getting the cost of the node (the neighbour node)
-    const visitedCost = getVisitedCost(paths, x, y);
-
+    let newCost = Math.abs(x - prevX) + Math.abs(y - prevY) + previousNode.cost;
+    
+    // Getting the cost of the node (the neighbour node) if exists
+    const currentCost = getCurrentCost(algo, paths, x, y);
+    
     // Update the cost if cost is smaller than the node's atual cost
-    const realCost = Math.min(cost, visitedCost);
-
-    let node = new Node(x, y, false, false);
-    node.cost = realCost;
+    const updatedCost = Math.min(newCost, currentCost);
+    
+    node.cost = updatedCost;
     node.previous = previousNode;
 
+    if (algo === 'AStar') {
+        const h = heuristic(node, nodeF);
+        node.totalCost = newCost + h;
+    } 
     
     if (findNodeF(node, nodeF)) {
         node.isFinish = true
@@ -146,9 +179,12 @@ function addVisitedNode(paths, visited, previousNode, coordinate, nodeF) {
 }
 
 // This function returs the current cost of the node of coordinate (x, y)
-function getVisitedCost(paths, x, y) {
+function getCurrentCost(paths, x, y) {
+    // If it exists the returns the cost
     for (let node in paths) {
         if (node["col"] === x && node["row"] === y) return node.cost;
     }
+
+    // If not, return infinity
     return Infinity;
 }

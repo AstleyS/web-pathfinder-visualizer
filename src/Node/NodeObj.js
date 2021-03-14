@@ -5,6 +5,8 @@ export default class NodeObj {
     isFinish;
     previous;
     cost;
+    heuristic;
+    totalCost;
 
     constructor(
         col, row, isStart, isFinish) {
@@ -14,6 +16,8 @@ export default class NodeObj {
             this.isFinish = isFinish;
             this.previous = null;
             this.cost = Infinity;
+            this.heuristic = Infinity;
+            this.totalCost = Infinity;
     }
 
 }

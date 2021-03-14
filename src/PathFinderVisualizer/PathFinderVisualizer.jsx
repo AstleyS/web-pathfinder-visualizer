@@ -6,8 +6,7 @@ import NodeObj from '../Node/NodeObj';
 
 // Import the algorithm functions
 import { bfsOrDfs } from '../algorithms/bfsOrDfs';
-import { dijkstraAlgo } from '../algorithms/dijkstra';
-import { aStarAlgo } from '../algorithms/aStar';
+import { dijkstraOrAS } from '../algorithms/dijkstraOrAS';
 
 const ROW = 20;
 const COLUMN = 30;
@@ -22,7 +21,7 @@ const FINISH_X = 10;
 // Has to be less than row
 const FINISH_Y = 8;
 
-const SPEED = 60; // The less the more
+const SPEED = 60; // The less the more speed
 
 export default class PathFinderVisualizer extends React.Component {
 
@@ -107,7 +106,7 @@ export default class PathFinderVisualizer extends React.Component {
 
         console.time('dijkstra');
         
-        const nodes = dijkstraAlgo(dimension, nodeS, nodeF);
+        const nodes = dijkstraOrAS('Dijkstra', dimension, nodeS, nodeF);
         const visited = nodes[0];
         console.log({visited});
 
@@ -126,7 +125,15 @@ export default class PathFinderVisualizer extends React.Component {
     // This function handles the user click when choosing A*
     aStar(grid, nodeS, nodeF) {
         const dimension = [grid.length, grid[0].length];
-        aStarAlgo(dimension, nodeS, nodeF);
+
+        console.time('AStar');
+        
+        const nodes = dijkstraOrAS('AStar', dimension, nodeS, nodeF);
+        const visited = nodes[0];
+        console.log({visited});
+
+        console.timeEnd('AStar');
+
     }
 
     render() {
@@ -138,33 +145,33 @@ export default class PathFinderVisualizer extends React.Component {
         console.log({choosenAlgo});
         return (
             <div className= "container-fluid">
-           <div className="grid">
-               {
-                  nodes.map((row, rIndex) => {
-                      return <div key={rIndex} className="grid-row">
-                        {
-                          row.map((node, nodeIndex) => {
-                            const { isStart, isFinish, col, row} = node;
-                            if (isStart) nodeS = node;
-                            if (isFinish) nodeF = node;
-                            return <Node  
-                                coordinates={`${col},${row}`} key={nodeIndex}
-                                isStart = {isStart} isFinish = {isFinish}
-                            ></Node>
-                          })
-                        }
+                <div className="grid">
+                {
+                    nodes.map((row, rIndex) => {
+                        return <div key={rIndex} className="grid-row">
+                            {
+                            row.map((node, nodeIndex) => {
+                                const { isStart, isFinish, col, row} = node;
+                                if (isStart) nodeS = node;
+                                if (isFinish) nodeF = node;
+                                return <Node  
+                                    coordinates={`${col},${row}`} key={nodeIndex}
+                                    isStart = {isStart} isFinish = {isFinish}
+                                ></Node>
+                            })
+                            }
                         </div>
                     })
-               }
-               <div className="buttons">
-                   <button onClick={() => this.bfs(nodes, nodeS, nodeF)}>BFS</button>
-                   <button onClick={() => this.dfs(nodes, nodeS, nodeF)}>DFS</button>
-                   <button onClick={() => this.dijsktra(nodes, nodeS, nodeF)}>Dijkstra</button>
-                   <button disabled onClick={() => this.aStar(nodes, nodeS, nodeF)}>A*</button>
-                   <button className="resetGrid" disabled/*onClick={() => this.resetGrid()*} */>Clear path</button>
-               </div>
-           </div>
-           </div>
+                }
+                <div className="buttons">
+                    <button onClick={() => this.bfs(nodes, nodeS, nodeF)}>BFS</button>
+                    <button onClick={() => this.dfs(nodes, nodeS, nodeF)}>DFS</button>
+                    <button onClick={() => this.dijsktra(nodes, nodeS, nodeF)}>Dijkstra</button>
+                    <button disabled onClick={() => this.aStar(nodes, nodeS, nodeF)}>A*</button>
+                    <button className="resetGrid" disabled/*onClick={() => this.resetGrid()*} */>Clear path</button>
+                </div>
+                </div>
+            </div>
         )
     }
 }
