@@ -44,13 +44,12 @@ export const dijkstraOrAS = (algo, dimension, nodeS, nodeF) => {
             visited = visited.slice(0, indexF + 1);
             return [visited, true];
         }
-            
     
         // Mark as visited
         document.getElementById(`${node["col"]},${node["row"]}`).classList.add('visited');
         visited.push(node);
 
-        validNeighbours(paths, visited, node, dimension, nodeF);
+        validNeighbours(algo, paths, visited, node, dimension, nodeF);
 
         // Order neighbours by the cost to travel to
         paths.sort((a, b) => a.totalCost - b.totalCost); 
@@ -80,13 +79,12 @@ function heuristic(node, nodeF) {
 }
 
 // This function checks if a given node is the finish node
-function findNodeF(node) {
-    console.log({node});
-    // return node["row"] === nodeF["row"] && node["col"] === nodeF["col"];
+function findNodeF(node, nodeF) {
+    return node["row"] === nodeF["row"] && node["col"] === nodeF["col"];
 }
 
 // This functions checks the neighbours and returns a list of the visited (valid) ones 
-function validNeighbours(paths, visited, node, dimension, nodeF) {
+function validNeighbours(algo, paths, visited, node, dimension, nodeF) {
 
     /* GRID DIMENSION: 0 = ROW | 1 = COLUMN */
     const maxRows = dimension[0]; 
@@ -100,28 +98,28 @@ function validNeighbours(paths, visited, node, dimension, nodeF) {
     if (y - 1 >= 0) {
         // Check if it was visited already
         if (!wasVisited([x, y - 1])) {
-            addVisitedNode(paths, visited, node, [x, y - 1], nodeF);
+            addVisitedNode(algo, paths, visited, node, [x, y - 1], nodeF);
         }
     }
     
     // Checks RIGHT
     if (x + 1 <= maxColums - 1) {
         if (!wasVisited([x + 1, y])) {
-            addVisitedNode(paths, visited, node, [x + 1, y], nodeF);
+            addVisitedNode(algo, paths, visited, node, [x + 1, y], nodeF);
         }
     }
     
     // Checks DOWN
     if (y + 1 <= maxRows - 1) {
         if (!wasVisited([x, y + 1])) {
-            addVisitedNode(paths, visited, node, [x, y + 1], nodeF);
+            addVisitedNode(algo, paths, visited, node, [x, y + 1], nodeF);
         }
     }
     
     // Checks LEFT
     if (x - 1 >= 0) {
         if (!wasVisited([x - 1, y])) {
-            addVisitedNode(paths, visited, node, [x - 1, y], nodeF);
+            addVisitedNode(algo, paths, visited, node, [x - 1, y], nodeF);
         }
     }
 }
@@ -157,7 +155,7 @@ function addVisitedNode(algo, paths, visited, previousNode, coordinate, nodeF) {
     let newCost = Math.abs(x - prevX) + Math.abs(y - prevY) + previousNode.cost;
     
     // Getting the cost of the node (the neighbour node) if exists
-    const currentCost = getCurrentCost(algo, paths, x, y);
+    const currentCost = getCurrentCost(paths, x, y);
     
     // Update the cost if cost is smaller than the node's atual cost
     const updatedCost = Math.min(newCost, currentCost);
