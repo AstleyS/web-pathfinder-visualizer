@@ -21,6 +21,7 @@ export const dijkstraOrAS = (algo, dimension, nodeS, nodeF) => {
     
     // This variable holds the open nodes
     const paths = [nodeS];
+    // This variable holds the visited nodes
     let visited = []
     
     let i = 0;
@@ -37,24 +38,24 @@ export const dijkstraOrAS = (algo, dimension, nodeS, nodeF) => {
         if (findNodeF(node, nodeF)) {
             console.log(`%c Found`, 'color: brown');
 
-            let indexF = 0;
-            for (let i = 0; i < visited.length; i++) {
-                if (visited[i].isFinish) {
-                    indexF = visited.indexOf(visited[i]);
-                    break;
-                }
-            }
+            // let indexF = 0;
+            // for (let i = 0; i < visited.length; i++) {
+            //     if (visited[i].isFinish) {
+            //         indexF = visited.indexOf(visited[i]);
+            //         break;
+            //     }
+            // }
 
-            if (algo === 'Dijkstra') {
-                visited = visited.slice(0, indexF + 1);
-            } else if (algo === 'AStar') {
-                visited.push(node);
-            }
-
+            // if (algo === 'Dijkstra') {
+            //     visited = visited.slice(0, indexF + 1);
+            // } else if (algo === 'AStar') {}
+            visited.push(node);
+            
             return [visited, true];
         }
     
         // Mark as visited
+        // With the DOM manipulation, I don't have to traverse the {visited} list: O(1) 
         document.getElementById(`${node["col"]},${node["row"]}`).classList.add('visited');
         visited.push(node);
 
@@ -152,7 +153,6 @@ function wasVisited(coordinate) {
 
 // This function adds the adjacent nodes
 function addVisitedNode(algo, paths, visited, previousNode, coordinate, nodeF) {
-
     
     // Previous node coordinate
     const prevX = previousNode.col;
@@ -170,7 +170,7 @@ function addVisitedNode(algo, paths, visited, previousNode, coordinate, nodeF) {
     // This is equivallent to EDGE + ACCUMULATED COST 
     const newCost = Math.abs(x - prevX) + Math.abs(y - prevY) + previousNode.cost;
     
-    // Getting the cost of the node (the neighbour node) if exists
+    // Getting the cost of the node (the neighbour node) if already in paths
     const currentCost = getCurrentCost(paths, x, y);
     
     // Update the cost if cost is smaller than the node's atual cost
@@ -179,12 +179,13 @@ function addVisitedNode(algo, paths, visited, previousNode, coordinate, nodeF) {
     node.cost = updatedCost;
     node.previous = previousNode;
 
+    // If the algo is A* then we need to add the heuristic and update the total cost
     if (algo === 'AStar') {
         const h = heuristic(node, nodeF);
         node.totalCost = newCost + h;
     }
-    
-    
+
+    // If we find the nodeF then we will flag it
     if (findNodeF(node, nodeF)) {
         node.isFinish = true;
     }
@@ -192,12 +193,11 @@ function addVisitedNode(algo, paths, visited, previousNode, coordinate, nodeF) {
     console.log({node});
     
     paths.push(node);
-    if (algo === 'Dijkstra') visited.push(node);
 }
 
 // This function returs the current cost of the node of coordinate (x, y)
 function getCurrentCost(paths, x, y) {
-    // If it exists the returns the cost
+    // If it was opened, returns the cost
     for (let node in paths) {
         if (node.col === x && node.row === y) return node.cost;
     }
