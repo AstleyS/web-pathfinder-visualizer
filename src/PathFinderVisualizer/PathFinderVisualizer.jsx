@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './PathFinderVisualizer.css';
 
 import Node from '../Node/Node';
 import NodeObj from '../Node/NodeObj';
 
 // Import the algorithm functions
-import { bfsOrDfs } from '../algorithms/bfsOrDfs';
-import { dijkstraOrAS } from '../algorithms/dijkstraOrAS';
+import { bfsOrDfs as bfsOrDfsAlgo } from '../algorithms/bfsOrDfs';
+import { dijkstraOrAS as dijkstraOrASAlgo } from '../algorithms/dijkstraOrAS';
 
 const ROW = 20;
 const COLUMN = 30;
@@ -23,149 +23,27 @@ const FINISH_Y = 7;
 
 const SPEED = 60; // The less the more speed
 
-export default class PathFinderVisualizer extends React.Component {
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            nodes: []
-        }
-    }
-
-    componentDidMount() {
-        // Generate a grid with args1 rows and args2 columns 
-        // and starting node in **coordinates** args3 
-        // and ending node in **coordinates** args4 
-        let nodes = generateGrid(ROW, COLUMN, [START_X, START_Y],[FINISH_X, FINISH_Y]);
-        this.setState({nodes});
-    }
-
-    // This function resets the grid
-    resetGrid() {
-        // Reset any stylization
-        let nodes = document.querySelectorAll('.node'); 
-        nodes.forEach((node) => {
-            if (node.style.background !== '') node.style.background = '';
-        });
-
-        // Not working properly
-        // this.componentDidMount();
-    }
-
-    // This function handles the user click when choosing BFS
-    bfs(grid, nodeS, nodeF) {
-        // DIMENSION: 0 = ROW | 1 = COLUMN
-        const dimension = [grid.length, grid[0].length];
-
-        console.time("bfs");
-
-        // This variable holds the result of the BFS algorithm visisted nodes
-        // [0] = visited nodes [1] = found node
-        const nodes = bfsOrDfs('BFS', dimension, nodeS, nodeF);
-        const visited = nodes[0];
-        console.log({visited});
-        
-        console.timeEnd("bfs");
-        
-        console.time("bfs animate algo");
-        animateAlgorithm(visited);
-        console.timeEnd("bfs animate algo");
-        
-        // The first args refers to the time that the animateAlgorithm finished + 50ms
-        // The seconde args return the last node a.k.a nodeF
-        if (nodes[1]) animatePath(SPEED * visited.length + 75, visited[visited.length - 1]); 
-    }
+export default function PathFinderVisualizer() {
+    let nodeS;
+    let nodeF;
     
-    // This function handles the user click when choosing DFS
-    dfs(grid, nodeS, nodeF) {
-        // DIMENSION: 0 = ROW | 1 = COLUMN
-        const dimension = [grid.length, grid[0].length];
-        
-        console.time("dfs");
+    const [nodes, setNodes] = useState(generateGrid(ROW, COLUMN, [START_X, START_Y], [FINISH_X, FINISH_Y])) 
+    console.log({nodes});
 
-        // This variable holds the result of the DFS algorithm visisted nodes
-        const nodes = bfsOrDfs('DFS', dimension, nodeS, nodeF);
-        const visited = nodes[0];
-        console.log({visited});
-
-        console.timeEnd("dfs");
-        
-        console.time("dfs animate algo");
-        animateAlgorithm(visited);
-        console.timeEnd("dfs animate algo");
-        
-        // The first args refers to the time that the animateAlgorithm finished + 50ms
-        // The seconde args return the last node a.k.a nodeF
-        if (nodes[1]) animatePath(SPEED * visited.length + 75, visited[visited.length - 1]); 
-    }
-    
-    // This function handles the user click when choosing Dijsktra
-    dijsktra(grid, nodeS, nodeF) {
-        const dimension = [grid.length, grid[0].length];
-
-        console.time('dijkstra');
-        
-        const nodes = dijkstraOrAS('Dijkstra', dimension, nodeS, nodeF);
-        const visited = nodes[0];
-        console.log({visited});
-
-        console.timeEnd('dijkstra');
-
-        console.time("dijkstra animate algo"); 
-        // With slice(0) we are including nodeS
-        animateAlgorithm(visited.slice(1));
-        console.timeEnd("dijkstra animate algo");
-
-        // The first args refers to the time that the animateAlgorithm finished + 50ms
-        // The seconde args return the last node a.k.a nodeF
-        if (nodes[1]) animatePath(SPEED * visited.length + 75, visited[visited.length - 1]);
-    }
-    
-    // This function handles the user click when choosing A*
-    aStar(grid, nodeS, nodeF) {
-        const dimension = [grid.length, grid[0].length];
-
-        console.time('AStar');
-        
-        const nodes = dijkstraOrAS('AStar', dimension, nodeS, nodeF);
-        const visited = nodes[0];
-        console.log({visited});
-
-        console.timeEnd('AStar');
-
-        console.time("aStar animate algo"); 
-        // With slice(0) we are including nodeS
-        animateAlgorithm(visited.slice(1));
-        console.timeEnd("aStar animate algo");
-
-        // The first args refers to the time that the animateAlgorithm finished + 50ms
-        // The seconde args return the last node a.k.a nodeF
-        if (nodes[1]) animatePath(SPEED * visited.length + 75, visited[visited.length - 1]);
-
-    }
-
-    render() {
-        // Getting the nodes/grid
-        const { nodes, choosenAlgo } = this.state;
-        let nodeS;
-        let nodeF;
-        console.log({nodes});
-        console.log({choosenAlgo});
-        return (
-            <div className= "container-fluid">
-                <div className="grid">
+    return (
+        <div className= "container-fluid">
+            <div className="grid">
                 {
                     nodes.map((row, rIndex) => {
-                        return <div key={rIndex} className="grid-row" >
+                        return <div key={ rIndex } className="grid-row" >
                             {
                             row.map((node, nodeIndex) => {
-                                const { isStart, isFinish, col, row} = node;
+                                const { isStart, isFinish, col, row } = node;
                                 if (isStart) nodeS = node;
                                 if (isFinish) nodeF = node;
-                                return <Node  
-                                    coordinates={`${col},${row}`} key={nodeIndex}
-                                    isStart = {isStart} isFinish = {isFinish}
+                                return <Node
+                                    coordinates={`${col},${row}`} key={ nodeIndex }
+                                    isStart = { isStart } isFinish = { isFinish }
                                 ></Node>
                             })
                             }
@@ -173,16 +51,15 @@ export default class PathFinderVisualizer extends React.Component {
                     })
                 }
                 <div className="buttons">
-                    <button onClick={() => this.bfs(nodes, nodeS, nodeF)}>BFS</button>
-                    <button onClick={() => this.dfs(nodes, nodeS, nodeF)}>DFS</button>
-                    <button onClick={() => this.dijsktra(nodes, nodeS, nodeF)}>Dijkstra</button>
-                    <button onClick={() => this.aStar(nodes, nodeS, nodeF)}>A*</button>
-                    <button className="resetGrid" disabled/*onClick={() => this.resetGrid()*} */>Clear path | Reload page</button>
+                    <button onClick={() => bfsOrDFS('BFS', nodes, nodeS, nodeF)}>BFS</button>
+                    <button onClick={() => bfsOrDFS('DFS', nodes, nodeS, nodeF)}>DFS</button>
+                    <button onClick={() => dijkstraOrAS('Dijkstra', nodes, nodeS, nodeF)}>Dijkstra</button>
+                    <button onClick={() => dijkstraOrAS('AStar', nodes, nodeS, nodeF)}>A*</button>
+                    <button onClick={() => resetGrid(setNodes) }>Clear path | Reload page</button>
                 </div>
                 </div>
             </div>
-        )
-    }
+    )
 }
 
 // This function generates the grid
@@ -209,6 +86,48 @@ function generateGrid(maxRow, maxCol, start, finish) {
             nodes.push(currentRow);
         }
     return nodes;
+}
+
+// This function handles the user click when choosing BFS or DFS
+function bfsOrDFS(algo, grid, nodeS, nodeF) {
+    // DIMENSION: 0 = ROW | 1 = COLUMN
+    const dimension = [grid.length, grid[0].length];
+
+    console.time("runtime");
+
+    // This variable holds the result of the BFS algorithm visisted nodes
+    // [0] = visited nodes [1] = found node
+    const nodes = bfsOrDfsAlgo(algo, dimension, nodeS, nodeF);
+    const visited = nodes[0];
+    console.log({visited});
+        
+    console.timeEnd("runtime");
+        
+   animateAlgorithm(visited);
+   
+   // The first args refers to the time that the animateAlgorithm finished + 50ms
+   // The seconde args return the last node a.k.a nodeF
+   if (nodes[1]) animatePath(SPEED * visited.length + 75, visited[visited.length - 1]); 
+}
+
+// This function handles the user click when choosing Dijsktra
+function dijkstraOrAS(algo, grid, nodeS, nodeF) {
+    const dimension = [grid.length, grid[0].length];
+
+    console.time('runtime');
+    
+    const nodes = dijkstraOrASAlgo(algo, dimension, nodeS, nodeF);
+    const visited = nodes[0];
+    console.log({visited});
+
+    console.timeEnd('runtime');
+
+    // With slice(0) we are including nodeS
+    animateAlgorithm(visited.slice(1));
+
+    // The first args refers to the time that the animateAlgorithm finished + 50ms
+    // The seconde args return the last node a.k.a nodeF
+    if (nodes[1]) animatePath(SPEED * visited.length + 75, visited[visited.length - 1]);
 }
 
 // This function animates each visited node
@@ -257,4 +176,16 @@ function animatePath(lastTime, nodeF) {
            // time of the last animation + time for the next animations
         } , lastTime + ( SPEED * (finalPath.length - i) ));
     }
+}
+
+// This function resets the grid
+function resetGrid(setNodes) {
+    // Reset any stylization
+    let nodes = document.querySelectorAll('.node');
+    nodes.forEach((node) => {
+        if (node.style.background !== '') node.style.background = '';
+    });
+
+    setNodes(generateGrid(ROW, COLUMN, [START_X, START_Y], [FINISH_X, FINISH_Y]))
+
 }

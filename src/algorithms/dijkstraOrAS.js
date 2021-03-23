@@ -6,8 +6,8 @@ import Node from '../Node/NodeObj';
 export const dijkstraOrAS = (algo, dimension, nodeS, nodeF) => {
 
     // Check if nodes are in the same position | Disable this when given use option
-    if (nodeS["col"] === nodeF["col"] && 
-            nodeS["row"] === nodeF["row"]) {
+    if (nodeS.col === nodeF.col && 
+            nodeS.row === nodeF.row) {
                 return [[nodeS], false];
     }
 
@@ -44,7 +44,7 @@ export const dijkstraOrAS = (algo, dimension, nodeS, nodeF) => {
     
         // Mark as visited
         // With the DOM manipulation, I don't have to traverse the {visited} list: O(1) 
-        document.getElementById(`${node["col"]},${node["row"]}`).classList.add('visited');
+        document.getElementById(`${node.col},${node.row}`).classList.add('visited');
         visited.push(node);
 
         validNeighbours(algo, paths, node, dimension, nodeF);

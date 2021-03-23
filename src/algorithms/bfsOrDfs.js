@@ -22,13 +22,14 @@ export const bfsOrDfs = (algo, dimension, nodeS, nodeF) => {
                 return [[nodeS], false];
     }
 
-    // This variable holds the open nodes (coordinate) [x, y]
+    // This variable holds the open nodes
     const paths = [nodeS];
+    // This variable holds the visited nodes
     let visited = []
 
     let i = 0;
     // While the are nodes to visit
-    while (paths.length > 0) {
+    while (paths.length > 0 && i <= dimension[0] * dimension[1]) {
         console.log(`%c Loop ${i}`, 'color: red');
 
         // If BFS, removes node from the start of the queue || start of the array
@@ -46,9 +47,6 @@ export const bfsOrDfs = (algo, dimension, nodeS, nodeF) => {
         
         i++;
     }
-
-    console.log({visited})
-    console.log({paths})
     return [visited, false];
 
 }
@@ -107,12 +105,12 @@ function validNeighbours(algo, paths, visited, node, dimension, nodeF) {
     return ;
 }
 
-// This function checks if the node was already visited
+// This function checks if the node was already visited or if it's a wall
 function wasVisited(coordinate) {
     const node = document.getElementById(`${coordinate[0]},${coordinate[1]}`);
     
     // Check if the node as a visited "flag"
-    if (node.classList.contains("visited")) return true;
+    if (node.classList.contains("visited") || node.classList.contains("wall")) return true;
 
     // If not, adds it
     node.classList.add("visited");
@@ -133,9 +131,8 @@ function addVisitedNode(algo, paths, visited, previousNode, coordinate, nodeF) {
     if (algo === 'BFS') {
         paths.push(node);
         visited.push(node);
-
     // If DFS, adds the node to the top of the stack || start of the array
-    } else {
+    } else if (algo === 'DFS') {
         paths.unshift(node);
         visited.push(node);
     }
