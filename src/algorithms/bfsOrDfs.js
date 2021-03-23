@@ -17,8 +17,8 @@ import Node from '../Node/NodeObj';
 
 export const bfsOrDfs = (algo, dimension, nodeS, nodeF) => {
 
-    if (nodeS["col"] === nodeF["col"] && 
-            nodeS["row"] === nodeF["row"]) {
+    if (nodeS.col === nodeF.col && 
+            nodeS.row === nodeF.row) {
                 return [[nodeS], false];
     }
 
@@ -43,6 +43,7 @@ export const bfsOrDfs = (algo, dimension, nodeS, nodeF) => {
         if (foundNodeF) {
             return [visited, true];
         }
+        
         i++;
     }
 
@@ -60,8 +61,8 @@ function validNeighbours(algo, paths, visited, node, dimension, nodeF) {
     const maxColums = dimension[1]; 
 
     // Getting the coordinate of the given node
-    const x = node["col"];
-    const y = node["row"];
+    const x = node.col;
+    const y = node.row;
 
     let isNodeF = false;
 
@@ -140,7 +141,7 @@ function addVisitedNode(algo, paths, visited, previousNode, coordinate, nodeF) {
     }
 
     // Check if its end node
-    if (nodeF["row"] === y && nodeF["col"] === x) {
+    if (nodeF.row === y && nodeF.col === x) {
         node.isFinish = true;
         console.log(`%c Found`, 'color: brown');
         return true;

@@ -17,9 +17,9 @@ const START_X = 5;
 const START_Y = 5;
 
 // Has to be less than columns
-const FINISH_X = 10;
+const FINISH_X = 9;
 // Has to be less than row
-const FINISH_Y = 6;
+const FINISH_Y = 7;
 
 const SPEED = 60; // The less the more speed
 
@@ -219,9 +219,9 @@ function animateAlgorithm(visitedNodes) {
             // With setTimeout, we change the color of each visited node with 145ms  between them
             setTimeout(() => {
                 if (!node.isFinish) {
-                    document.getElementById(`${node["col"]},${node["row"]}`).style.background = "lightblue";
+                    document.getElementById(`${node.col},${node.row}`).style.background = "lightblue";
                 } else {
-                    document.getElementById(`${node["col"]},${node["row"]}`).style.background = "red";
+                    document.getElementById(`${node.col},${node.row}`).style.background = "red";
                 }
             } , SPEED * i);
         }
@@ -250,9 +250,9 @@ function animatePath(lastTime, nodeF) {
         setTimeout(() => {
             const node = finalPath[i]
             if (node.isFinish) {
-                document.getElementById(`${node["col"]},${node["row"]}`).style.background = "yellow";
+                document.getElementById(`${node.col},${node.row}`).style.background = "yellow";
             } else {
-                document.getElementById(`${node["col"]},${node["row"]}`).style.background = "purple";
+                document.getElementById(`${node.col},${node.row}`).style.background = "purple";
             }
            // time of the last animation + time for the next animations
         } , lastTime + ( SPEED * (finalPath.length - i) ));

@@ -37,18 +37,6 @@ export const dijkstraOrAS = (algo, dimension, nodeS, nodeF) => {
         // If we found the node then we should get rid of the other nodes 
         if (findNodeF(node, nodeF)) {
             console.log(`%c Found`, 'color: brown');
-
-            // let indexF = 0;
-            // for (let i = 0; i < visited.length; i++) {
-            //     if (visited[i].isFinish) {
-            //         indexF = visited.indexOf(visited[i]);
-            //         break;
-            //     }
-            // }
-
-            // if (algo === 'Dijkstra') {
-            //     visited = visited.slice(0, indexF + 1);
-            // } else if (algo === 'AStar') {}
             visited.push(node);
             
             return [visited, true];
@@ -59,12 +47,12 @@ export const dijkstraOrAS = (algo, dimension, nodeS, nodeF) => {
         document.getElementById(`${node["col"]},${node["row"]}`).classList.add('visited');
         visited.push(node);
 
-        validNeighbours(algo, paths, visited, node, dimension, nodeF);
+        validNeighbours(algo, paths, node, dimension, nodeF);
 
         // Order neighbours by the cost to travel to
         if (algo === 'AStar') {
             paths.sort((a, b) => a.totalCost - b.totalCost);
-        } else {
+        } else if (algo === 'Dijkstra') {
             paths.sort((a, b) => a.cost - b.cost);
         } 
         //console.log({paths});
@@ -99,7 +87,7 @@ function findNodeF(node, nodeF) {
 }
 
 // This functions checks the neighbours and returns a list of the visited (valid) ones 
-function validNeighbours(algo, paths, visited, node, dimension, nodeF) {
+function validNeighbours(algo, paths, node, dimension, nodeF) {
 
     /* GRID DIMENSION: 0 = ROW | 1 = COLUMN */
     const maxRows = dimension[0]; 
@@ -113,28 +101,28 @@ function validNeighbours(algo, paths, visited, node, dimension, nodeF) {
     if (y - 1 >= 0) {
         // Check if it was visited already
         if (!wasVisited([x, y - 1])) {
-            addVisitedNode(algo, paths, visited, node, [x, y - 1], nodeF);
+            addVisitedNode(algo, paths, node, [x, y - 1], nodeF);
         }
     }
     
     // Checks RIGHT
     if (x + 1 <= maxColums - 1) {
         if (!wasVisited([x + 1, y])) {
-            addVisitedNode(algo, paths, visited, node, [x + 1, y], nodeF);
+            addVisitedNode(algo, paths, node, [x + 1, y], nodeF);
         }
     }
     
     // Checks DOWN
     if (y + 1 <= maxRows - 1) {
         if (!wasVisited([x, y + 1])) {
-            addVisitedNode(algo, paths, visited, node, [x, y + 1], nodeF);
+            addVisitedNode(algo, paths, node, [x, y + 1], nodeF);
         }
     }
     
     // Checks LEFT
     if (x - 1 >= 0) {
         if (!wasVisited([x - 1, y])) {
-            addVisitedNode(algo, paths, visited, node, [x - 1, y], nodeF);
+            addVisitedNode(algo, paths, node, [x - 1, y], nodeF);
         }
     }
 }
@@ -152,7 +140,7 @@ function wasVisited(coordinate) {
 }
 
 // This function adds the adjacent nodes
-function addVisitedNode(algo, paths, visited, previousNode, coordinate, nodeF) {
+function addVisitedNode(algo, paths, previousNode, coordinate, nodeF) {
     
     // Previous node coordinate
     const prevX = previousNode.col;
@@ -162,7 +150,7 @@ function addVisitedNode(algo, paths, visited, previousNode, coordinate, nodeF) {
     const x = coordinate[0];
     const y = coordinate[1];
     
-    let node = new Node(x, y, false, false);
+    let node = getNode(paths, x, y);
     console.log('Neighbour');
     
     // Because the direction is horizontal OR vertical
@@ -170,8 +158,8 @@ function addVisitedNode(algo, paths, visited, previousNode, coordinate, nodeF) {
     // This is equivallent to EDGE + ACCUMULATED COST 
     const newCost = Math.abs(x - prevX) + Math.abs(y - prevY) + previousNode.cost;
     
-    // Getting the cost of the node (the neighbour node) if already in paths
-    const currentCost = getCurrentCost(paths, x, y);
+    // Getting the cost of the node (the neighbour node) if already in paths. IF not returns Infinity
+    const currentCost = node.cost;
     
     // Update the cost if cost is smaller than the node's atual cost
     const updatedCost = Math.min(newCost, currentCost);
@@ -182,7 +170,7 @@ function addVisitedNode(algo, paths, visited, previousNode, coordinate, nodeF) {
     // If the algo is A* then we need to add the heuristic and update the total cost
     if (algo === 'AStar') {
         const h = heuristic(node, nodeF);
-        node.totalCost = newCost + h;
+        node.totalCost = node.cost + h;
     }
 
     // If we find the nodeF then we will flag it
@@ -193,15 +181,16 @@ function addVisitedNode(algo, paths, visited, previousNode, coordinate, nodeF) {
     console.log({node});
     
     paths.push(node);
+    console.log({paths});
 }
 
 // This function returs the current cost of the node of coordinate (x, y)
-function getCurrentCost(paths, x, y) {
-    // If it was opened, returns the cost
-    for (let node in paths) {
-        if (node.col === x && node.row === y) return node.cost;
+function getNode(paths, x, y) {
+    // If it was already opened, returns the node
+    for (let node of paths) {
+        if (node.col === x && node.row === y) return node;
     }
 
-    // If not, return infinity
-    return Infinity;
+    // Else, returns a new node
+    return new Node(x, y, false, false);
 }
