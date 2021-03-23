@@ -27,7 +27,7 @@ export default function PathFinderVisualizer() {
     let nodeS;
     let nodeF;
     
-    const [nodes, setNodes] = useState(generateGrid(ROW, COLUMN, [START_X, START_Y], [FINISH_X, FINISH_Y])) 
+    const [nodes, setNodes] = useState(generateGrid(ROW, COLUMN, [START_X, START_Y], [FINISH_X, FINISH_Y])); 
     console.log({nodes});
 
     return (
@@ -57,8 +57,8 @@ export default function PathFinderVisualizer() {
                     <button onClick={() => dijkstraOrAS('AStar', nodes, nodeS, nodeF)}>A*</button>
                     <button onClick={() => resetGrid(setNodes) }>Clear path | Reload page</button>
                 </div>
-                </div>
             </div>
+        </div>
     )
 }
 
@@ -184,6 +184,7 @@ function resetGrid(setNodes) {
     let nodes = document.querySelectorAll('.node');
     nodes.forEach((node) => {
         if (node.style.background !== '') node.style.background = '';
+        if (node.classList.contains('visited') && !node.classList.contains('node-start') ) node.classList.remove('visited');
     });
 
     setNodes(generateGrid(ROW, COLUMN, [START_X, START_Y], [FINISH_X, FINISH_Y]))
