@@ -6,14 +6,14 @@ import Node from '../Node/NodeObj';
     // My analogy: The parent node likes all his children 
     // and once the children becomes a parent, the pattern repeats
     
-    /* PUSH: ADD AT LAST | POP: REMOVE AT LAST*/
+    /* SHIFT: REMOVE AT BEGINNING | PUSH: ADD AT LAST */
     
-    // If DFS = STACK (LIFO)
+// If DFS = STACK (LIFO)
     // DFS find the shortest path by repeatedly visiting the open/atual node till not possible
     // My analogy: The parent node just likes one of his children
     // and once the child becomes a parent, the pattern repeats
     
-    /* UNSHIFT: ADD AT BEGINNING | SHIFT: REMOVE AT BEGINNING */
+    /* POP: REMOVE AT LAS | UNSHIFT: ADD AT BEGINNING */
 
 export const bfsOrDfs = (algo, dimension, nodeS, nodeF) => {
 

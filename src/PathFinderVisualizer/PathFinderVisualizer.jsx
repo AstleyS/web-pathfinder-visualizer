@@ -65,7 +65,7 @@ export default function PathFinderVisualizer({algo, playAlgo, reset}) {
     } 
 
     return (
-        <div className= "container-fluid">
+        <div className = "container-fluid">
             <div className="grid">
                 {
                     nodes.map((row, rIndex) => {
@@ -84,7 +84,6 @@ export default function PathFinderVisualizer({algo, playAlgo, reset}) {
                 }
             </div>
         </div>
-        
     )
 }
 
@@ -123,6 +122,8 @@ function bfsOrDFS(algo, grid, nodeS, nodeF, setPlay) {
 
     // This variable holds the result of the BFS algorithm visisted nodes
     // [0] = visited nodes [1] = found node
+    
+    console.log({nodeS, nodeF});
     const nodes = bfsOrDfsAlgo(algo, dimension, nodeS, nodeF);
     const visited = nodes[0];
     console.log({visited});
@@ -161,7 +162,7 @@ function animateAlgorithm(visitedNodes) {
     for (let i = 0; i < visitedNodes.length; i++) {
         let node = visitedNodes[i];
         if (i !== visitedNodes.length - 1) {
-            // With setTimeout, we change the color of each visited node with 145ms  between them
+            // With setTimeout, we change the color of each visited node with SPEED time between them
             setTimeout(() => {
                 if (!node.isFinish) {
                     document.getElementById(`${node.col},${node.row}`).style.background = "lightblue";
@@ -226,7 +227,7 @@ function clearPath(setResetPath) {
 function changeAfterPlay(setPlay) {
 
     // Change choose algo dropdown state
-    document.getElementById('collasible-nav-dropdown').disabled = false;
+    document.getElementById('collasible-nav-dropdown').classList.remove('disabled');;
 
     // Change play button state
     document.getElementById('play-btn').classList.replace('btn-danger', 'btn-success');

@@ -71,7 +71,7 @@ function changeOnAlgo(algo) {
 function changeOnPlay() {
 
     // Change choose algo dropdown state
-    document.getElementById('collasible-nav-dropdown').disabled = true; // NOT WORKING PROPERLY
+    document.getElementById('collasible-nav-dropdown').classList.add('disabled');
 
     // Change play button state
     document.getElementById('play-btn').classList.replace('btn-success', 'btn-danger');
