@@ -12,7 +12,7 @@ export default function App() {
   return (
     <div className="App">
       <Header setAlgo = { setAlgo } setPlay = { setPlay } setResetPath = { setResetPath }></Header>
-      <PathFinderVisualizer myAlgo = { algo } play = { play } reset = { resetPath } ></PathFinderVisualizer>
+      <PathFinderVisualizer algo = { algo } playAlgo = { { play, setPlay } } reset = { { resetPath, setResetPath } } ></PathFinderVisualizer>
     </div>
   );
 }

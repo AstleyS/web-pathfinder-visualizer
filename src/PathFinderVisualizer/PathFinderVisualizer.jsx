@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './PathFinderVisualizer.css';
 
 import Node from '../Node/Node';
@@ -23,35 +23,46 @@ const FINISH_Y = 7;
 
 const SPEED = 60; // The less the more speed
 
-export default function PathFinderVisualizer({myAlgo, play, reset}) {
-    let nodeS;
-    let nodeF;
+export default function PathFinderVisualizer({algo, playAlgo, reset}) {
+
+    // Decostructing the objects passed by arguments 
+    const { play, setPlay } = playAlgo;
+    const { resetPath, setResetPath } = reset;
+
+    const nodeS = new NodeObj(START_X, START_Y, true, false);
+    const nodeF = new NodeObj(FINISH_X, FINISH_Y, false, true);
     
-    const [nodes, setNodes] = useState(generateGrid(ROW, COLUMN, [START_X, START_Y], [FINISH_X, FINISH_Y])); 
+    const nodes = generateGrid(ROW, COLUMN, [START_X, START_Y], [FINISH_X, FINISH_Y]); 
     console.log({nodes});
 
-    console.log({myAlgo});
+    console.log({algo});
     console.log({play});
-    console.log({reset});
+    console.log({resetPath});
 
-    // if (play) {
-    //     switch(myAlgo) {
-    //         case 'BFS': 
-    //             bfsOrDFS('BFS', nodes, nodeS, nodeF);
-    //             break;
-    //         case 'DFS': 
-    //             bfsOrDFS('DFS', nodes, nodeS, nodeF);
-    //             break;
-    //         case 'Dijkstra': 
-    //             dijkstraOrAS('Dijkstra', nodes, nodeS, nodeF);
-    //             break;
-    //         case 'AStar': 
-    //             dijkstraOrAS('AStar', nodes, nodeS, nodeF);
-    //             break;
-    //         default:
-    //             console.log('Algo not found');
-    //     }
-    // }
+    // Check if the play button was clicked and start the chosen algorithm
+    if (play) {
+        switch(algo) {
+            case 'BFS': 
+                bfsOrDFS('BFS', nodes, nodeS, nodeF, setPlay);
+                break;
+            case 'DFS': 
+                bfsOrDFS('DFS', nodes, nodeS, nodeF, setPlay);
+                break;
+            case 'Dijkstra': 
+                dijkstraOrAS('Dijkstra', nodes, nodeS, nodeF, setPlay);
+                break;
+            case 'AStar': 
+                dijkstraOrAS('AStar', nodes, nodeS, nodeF, setPlay);
+                break;
+            default:
+                console.log('Algo not found');
+        }
+    }
+
+    // Check if the clear path button was clicked
+    if (resetPath) {
+        clearPath(setResetPath);
+    } 
 
     return (
         <div className= "container-fluid">
@@ -62,8 +73,6 @@ export default function PathFinderVisualizer({myAlgo, play, reset}) {
                             {
                             row.map((node, nodeIndex) => {
                                 const { isStart, isFinish, col, row } = node;
-                                if (isStart) nodeS = node;
-                                if (isFinish) nodeF = node;
                                 return <Node
                                     coordinates={`${col},${row}`} key={ nodeIndex }
                                     isStart = { isStart } isFinish = { isFinish }
@@ -73,15 +82,9 @@ export default function PathFinderVisualizer({myAlgo, play, reset}) {
                         </div>
                     })
                 }
-                <div className="buttons">
-                    <button onClick={() => bfsOrDFS('BFS', nodes, nodeS, nodeF)}>BFS</button>
-                    <button onClick={() => bfsOrDFS('DFS', nodes, nodeS, nodeF)}>DFS</button>
-                    <button onClick={() => dijkstraOrAS('Dijkstra', nodes, nodeS, nodeF)}>Dijkstra</button>
-                    <button onClick={() => dijkstraOrAS('AStar', nodes, nodeS, nodeF)}>A*</button>
-                    <button onClick={() => resetGrid(setNodes)}>Clear path | Reload page</button>
-                </div>
             </div>
         </div>
+        
     )
 }
 
@@ -112,7 +115,7 @@ function generateGrid(maxRow, maxCol, start, finish) {
 }
 
 // This function handles the user click when choosing BFS or DFS
-function bfsOrDFS(algo, grid, nodeS, nodeF) {
+function bfsOrDFS(algo, grid, nodeS, nodeF, setPlay) {
     // DIMENSION: 0 = ROW | 1 = COLUMN
     const dimension = [grid.length, grid[0].length];
 
@@ -130,11 +133,11 @@ function bfsOrDFS(algo, grid, nodeS, nodeF) {
    
    // The first args refers to the time that the animateAlgorithm finished + 50ms
    // The seconde args return the last node a.k.a nodeF
-   if (nodes[1]) animatePath(SPEED * visited.length + 75, visited[visited.length - 1]); 
+   if (nodes[1]) animatePath(SPEED * visited.length + 75, visited[visited.length - 1], setPlay); 
 }
 
 // This function handles the user click when choosing Dijsktra
-function dijkstraOrAS(algo, grid, nodeS, nodeF) {
+function dijkstraOrAS(algo, grid, nodeS, nodeF, setPlay) {
     const dimension = [grid.length, grid[0].length];
 
     console.time('runtime');
@@ -150,7 +153,7 @@ function dijkstraOrAS(algo, grid, nodeS, nodeF) {
 
     // The first args refers to the time that the animateAlgorithm finished + 50ms
     // The seconde args return the last node a.k.a nodeF
-    if (nodes[1]) animatePath(SPEED * visited.length + 75, visited[visited.length - 1]);
+    if (nodes[1]) animatePath(SPEED * visited.length + 75, visited[visited.length - 1], setPlay);
 }
 
 // This function animates each visited node
@@ -172,7 +175,7 @@ function animateAlgorithm(visitedNodes) {
 
 // This function animates the path from the starting node to the finishing node 
 // The animated path will be the one which as the minimum previous nodes
-function animatePath(lastTime, nodeF) {
+function animatePath(lastTime, nodeF, setPlay) {
 
     // Get the last node a.k.a last visited node
     let dest = nodeF
@@ -193,6 +196,8 @@ function animatePath(lastTime, nodeF) {
             const node = finalPath[i]
             if (node.isFinish) {
                 document.getElementById(`${node.col},${node.row}`).style.background = "yellow";
+                changeAfterPlay(setPlay);
+
             } else {
                 document.getElementById(`${node.col},${node.row}`).style.background = "purple";
             }
@@ -201,8 +206,9 @@ function animatePath(lastTime, nodeF) {
     }
 }
 
-// This function resets the grid
-function resetGrid(setNodes) {
+// This function clears the path
+function clearPath(setResetPath) {
+
     // Reset any stylization
     let nodes = document.querySelectorAll('.node');
     nodes.forEach((node) => {
@@ -210,6 +216,24 @@ function resetGrid(setNodes) {
         if (node.classList.contains('visited') && !node.classList.contains('node-start')) node.classList.remove('visited');
     });
 
-    setNodes(generateGrid(ROW, COLUMN, [START_X, START_Y], [FINISH_X, FINISH_Y]))
-
+    // Set the clear path button
+    setResetPath(false);
+    document.getElementById('clearPath-btn').disabled = true;
+    document.getElementById('play-btn').disabled = false;
 }
+
+// This functions change some elements state
+function changeAfterPlay(setPlay) {
+
+    // Change choose algo dropdown state
+    document.getElementById('collasible-nav-dropdown').disabled = false;
+
+    // Change play button state
+    document.getElementById('play-btn').classList.replace('btn-danger', 'btn-success');
+    document.getElementById('play-btn').innerText = 'Play';
+
+    setPlay(false);
+
+    // Change clear path state
+    document.getElementById('clearPath-btn').disabled = false;
+} 

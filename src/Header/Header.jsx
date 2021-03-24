@@ -12,7 +12,7 @@ export default function Header({ setAlgo, setPlay, setResetPath }) {
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
-                <NavDropdown id="collasible-nav-dropdown" className="btn" title="Choose Algorithm"  variant="dark" disabled>
+                <NavDropdown id="collasible-nav-dropdown" className="btn" title="Choose Algorithm"  variant="dark">
                     <NavDropdown.Item onClick={() => chooseAlgo('BFS', setAlgo)}>BFS</NavDropdown.Item>
                     <NavDropdown.Divider/>
                     <NavDropdown.Item onClick={() => chooseAlgo('DFS', setAlgo)}>DFS</NavDropdown.Item>
@@ -26,7 +26,7 @@ export default function Header({ setAlgo, setPlay, setResetPath }) {
             </Nav>
             <Nav>
                 <Nav.Link><Button variant="warning" disabled>Clear Walls</Button></Nav.Link>
-                <Nav.Link onClick={() => resetPath(setResetPath)}><Button variant="danger" disabled>Clear Path</Button></Nav.Link>
+                <Nav.Link onClick={() => resetPath(setResetPath)}><Button id='clearPath-btn' variant="danger" disabled>Clear Path</Button></Nav.Link>
             </Nav>
             </Navbar.Collapse>
         </Navbar>
@@ -36,19 +36,48 @@ export default function Header({ setAlgo, setPlay, setResetPath }) {
 // This function updates the algorithm state
 function chooseAlgo(algo, setAlgo) {
     setAlgo(algo);
-    document.getElementById('collasible-nav-dropdown').innerText = algo;
-    document.getElementById('collasible-nav-dropdown').style.color = 'lightgreen';
-    document.getElementById('play-btn').disabled = false;
+    
+    changeOnAlgo(algo);
+
 }
 
 // This function updates the play state
 function playAlgo(setPlay) {
     setPlay(true);
-    document.getElementById('play-btn').classList.replace('btn-success', 'btn-danger');
-    document.getElementById('play-btn').innerText = 'Searching for path...';
+
+    changeOnPlay();
 }
 
 // This function updates the resetPath state
 function resetPath(setResetPath) {
     setResetPath(true);
+}
+
+/* These functions change some elements state */
+function changeOnAlgo(algo) {
+    // Manipulate the choose algorithm title
+    document.getElementById('collasible-nav-dropdown').innerText = algo;
+    document.getElementById('collasible-nav-dropdown').style.color = 'lightgreen';
+    
+    // Manipulate the play btn
+
+    // Only activate play btn if clear path is disabled. 
+    // If it is enable it means that the user did not clear the path yet, hence not activating the play button
+    if (document.getElementById('clearPath-btn').disabled) {
+        document.getElementById('play-btn').disabled = false;
+    }
+}
+
+function changeOnPlay() {
+
+    // Change choose algo dropdown state
+    document.getElementById('collasible-nav-dropdown').disabled = true; // NOT WORKING PROPERLY
+
+    // Change play button state
+    document.getElementById('play-btn').classList.replace('btn-success', 'btn-danger');
+    document.getElementById('play-btn').innerText = 'Searching for path...';
+    document.getElementById('play-btn').disabled = true;
+
+    // Change clear path button state
+    document.getElementById('clearPath-btn').disabled = true;
 }
