@@ -1,25 +1,25 @@
 {
   "files": {
     "main.css": "/web-pathfinder-visualizer/static/css/main.e227ba58.chunk.css",
-    "main.js": "/web-pathfinder-visualizer/static/js/main.491a9022.chunk.js",
-    "main.js.map": "/web-pathfinder-visualizer/static/js/main.491a9022.chunk.js.map",
-    "runtime-main.js": "/web-pathfinder-visualizer/static/js/runtime-main.4f763ec0.js",
-    "runtime-main.js.map": "/web-pathfinder-visualizer/static/js/runtime-main.4f763ec0.js.map",
+    "main.js": "/web-pathfinder-visualizer/static/js/main.727f5f33.chunk.js",
+    "main.js.map": "/web-pathfinder-visualizer/static/js/main.727f5f33.chunk.js.map",
+    "runtime-main.js": "/web-pathfinder-visualizer/static/js/runtime-main.96ae84e0.js",
+    "runtime-main.js.map": "/web-pathfinder-visualizer/static/js/runtime-main.96ae84e0.js.map",
     "static/css/2.150d169a.chunk.css": "/web-pathfinder-visualizer/static/css/2.150d169a.chunk.css",
-    "static/js/2.f02d6791.chunk.js": "/web-pathfinder-visualizer/static/js/2.f02d6791.chunk.js",
-    "static/js/2.f02d6791.chunk.js.map": "/web-pathfinder-visualizer/static/js/2.f02d6791.chunk.js.map",
-    "static/js/3.72a24fe9.chunk.js": "/web-pathfinder-visualizer/static/js/3.72a24fe9.chunk.js",
-    "static/js/3.72a24fe9.chunk.js.map": "/web-pathfinder-visualizer/static/js/3.72a24fe9.chunk.js.map",
+    "static/js/2.c19bba26.chunk.js": "/web-pathfinder-visualizer/static/js/2.c19bba26.chunk.js",
+    "static/js/2.c19bba26.chunk.js.map": "/web-pathfinder-visualizer/static/js/2.c19bba26.chunk.js.map",
+    "static/js/3.d260fceb.chunk.js": "/web-pathfinder-visualizer/static/js/3.d260fceb.chunk.js",
+    "static/js/3.d260fceb.chunk.js.map": "/web-pathfinder-visualizer/static/js/3.d260fceb.chunk.js.map",
     "index.html": "/web-pathfinder-visualizer/index.html",
     "static/css/2.150d169a.chunk.css.map": "/web-pathfinder-visualizer/static/css/2.150d169a.chunk.css.map",
     "static/css/main.e227ba58.chunk.css.map": "/web-pathfinder-visualizer/static/css/main.e227ba58.chunk.css.map",
-    "static/js/2.f02d6791.chunk.js.LICENSE.txt": "/web-pathfinder-visualizer/static/js/2.f02d6791.chunk.js.LICENSE.txt"
+    "static/js/2.c19bba26.chunk.js.LICENSE.txt": "/web-pathfinder-visualizer/static/js/2.c19bba26.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.4f763ec0.js",
+    "static/js/runtime-main.96ae84e0.js",
     "static/css/2.150d169a.chunk.css",
-    "static/js/2.f02d6791.chunk.js",
+    "static/js/2.c19bba26.chunk.js",
     "static/css/main.e227ba58.chunk.css",
-    "static/js/main.491a9022.chunk.js"
+    "static/js/main.727f5f33.chunk.js"
   ]
 }
