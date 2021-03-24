@@ -1,41 +1,18 @@
 import './App.css';
 import PathFinderVisualizer from './PathFinderVisualizer/PathFinderVisualizer';
 import Header from './Header/Header';
-import React from 'react';
+import React, { useState } from 'react';
 
+export default function App() {
+  
+  const [algo, setAlgo] = useState('');
+  const [play, setPlay] = useState(false);
+  const [resetPath, setResetPath] = useState(false);
 
-export class App extends React.Component {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      algo: '',
-      play: false
-    }
-
-    // this.getAlgo = this.getAlgo.bind(this);
-  }
-
-  getAlgoFromHeader(algo) {
-    console.log('Got clicked event');
-    console.log(algo);
-    this.setState({ algo: algo });
-    
-  }
-
-  // playAlgo() {
-  //   this.setState({ play: true}); 
-  // }
-
-  render() {
-    return (
-      <div className="App">
-        <Header triggerAlgo = { this.getAlgoFromHeader.bind(this)}></Header>
-        <PathFinderVisualizer choosenAlgo = { this.state.algo }></PathFinderVisualizer>
-      </div>
-    );
-  }
+  return (
+    <div className="App">
+      <Header setAlgo = { setAlgo } setPlay = { setPlay } setResetPath = { setResetPath }></Header>
+      <PathFinderVisualizer myAlgo = { algo } play = { play } reset = { resetPath } ></PathFinderVisualizer>
+    </div>
+  );
 }
-
-export default App;

@@ -23,12 +23,35 @@ const FINISH_Y = 7;
 
 const SPEED = 60; // The less the more speed
 
-export default function PathFinderVisualizer() {
+export default function PathFinderVisualizer({myAlgo, play, reset}) {
     let nodeS;
     let nodeF;
     
     const [nodes, setNodes] = useState(generateGrid(ROW, COLUMN, [START_X, START_Y], [FINISH_X, FINISH_Y])); 
     console.log({nodes});
+
+    console.log({myAlgo});
+    console.log({play});
+    console.log({reset});
+
+    // if (play) {
+    //     switch(myAlgo) {
+    //         case 'BFS': 
+    //             bfsOrDFS('BFS', nodes, nodeS, nodeF);
+    //             break;
+    //         case 'DFS': 
+    //             bfsOrDFS('DFS', nodes, nodeS, nodeF);
+    //             break;
+    //         case 'Dijkstra': 
+    //             dijkstraOrAS('Dijkstra', nodes, nodeS, nodeF);
+    //             break;
+    //         case 'AStar': 
+    //             dijkstraOrAS('AStar', nodes, nodeS, nodeF);
+    //             break;
+    //         default:
+    //             console.log('Algo not found');
+    //     }
+    // }
 
     return (
         <div className= "container-fluid">
@@ -55,7 +78,7 @@ export default function PathFinderVisualizer() {
                     <button onClick={() => bfsOrDFS('DFS', nodes, nodeS, nodeF)}>DFS</button>
                     <button onClick={() => dijkstraOrAS('Dijkstra', nodes, nodeS, nodeF)}>Dijkstra</button>
                     <button onClick={() => dijkstraOrAS('AStar', nodes, nodeS, nodeF)}>A*</button>
-                    <button onClick={() => resetGrid(setNodes) }>Clear path | Reload page</button>
+                    <button onClick={() => resetGrid(setNodes)}>Clear path | Reload page</button>
                 </div>
             </div>
         </div>
@@ -184,7 +207,7 @@ function resetGrid(setNodes) {
     let nodes = document.querySelectorAll('.node');
     nodes.forEach((node) => {
         if (node.style.background !== '') node.style.background = '';
-        if (node.classList.contains('visited') && !node.classList.contains('node-start') ) node.classList.remove('visited');
+        if (node.classList.contains('visited') && !node.classList.contains('node-start')) node.classList.remove('visited');
     });
 
     setNodes(generateGrid(ROW, COLUMN, [START_X, START_Y], [FINISH_X, FINISH_Y]))

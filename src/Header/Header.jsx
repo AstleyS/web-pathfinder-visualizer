@@ -2,44 +2,53 @@ import React from 'react';
 import './Header.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import {Navbar, Nav, NavDropdown, Button } from 'react-bootstrap';
+import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap';
 
-export default class Header extends React.Component {
+export default function Header({ setAlgo, setPlay, setResetPath }) {
 
-    chooseAlgo (algo) {
-        this.props.triggerAlgo(algo);   
-    }
+    return (
+        <Navbar id="navbar" collapseOnSelect expand="sm" variant="dark">
+            <Navbar.Brand>PathFinder</Navbar.Brand>
+            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+            <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav className="mr-auto">
+                <NavDropdown id="collasible-nav-dropdown" className="btn" title="Choose Algorithm"  variant="dark" disabled>
+                    <NavDropdown.Item onClick={() => chooseAlgo('BFS', setAlgo)}>BFS</NavDropdown.Item>
+                    <NavDropdown.Divider/>
+                    <NavDropdown.Item onClick={() => chooseAlgo('DFS', setAlgo)}>DFS</NavDropdown.Item>
+                    <NavDropdown.Divider/>
+                    <NavDropdown.Item onClick={() => chooseAlgo('Dijkstra', setAlgo)}>Dijkstra</NavDropdown.Item>
+                    <NavDropdown.Divider/>
+                    <NavDropdown.Item onClick={() => chooseAlgo('AStar', setAlgo)}>A*</NavDropdown.Item>
+                </NavDropdown>
+                <Nav.Link><Button variant="info" disabled>Add Walls</Button></Nav.Link>
+                <Nav.Link onClick={() => playAlgo(setPlay)}><Button id='play-btn' variant="success" disabled>Play</Button></Nav.Link>
+            </Nav>
+            <Nav>
+                <Nav.Link><Button variant="warning" disabled>Clear Walls</Button></Nav.Link>
+                <Nav.Link onClick={() => resetPath(setResetPath)}><Button variant="danger" disabled>Clear Path</Button></Nav.Link>
+            </Nav>
+            </Navbar.Collapse>
+        </Navbar>
+    )
+}
 
-    playAlgo() {
-        this.props.playAlgo();
-    }
+// This function updates the algorithm state
+function chooseAlgo(algo, setAlgo) {
+    setAlgo(algo);
+    document.getElementById('collasible-nav-dropdown').innerText = algo;
+    document.getElementById('collasible-nav-dropdown').style.color = 'lightgreen';
+    document.getElementById('play-btn').disabled = false;
+}
 
-    render() {
-        return (
-            <Navbar id="navbar" collapseOnSelect expand="sm" variant="dark">
-                <Navbar.Brand href="#home">PathFinder</Navbar.Brand>
-                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                <Navbar.Collapse id="responsive-navbar-nav">
-                <Nav className="mr-auto">
-                    <NavDropdown disabled className="btn" title="Choose Algorithm" id="collasible-nav-dropdown" variant="dark">
-                        <NavDropdown.Item onClick={ this.chooseAlgo.bind(this, 'BFS') }>BFS</NavDropdown.Item>
-                        <NavDropdown.Divider/>
-                        <NavDropdown.Item onClick={ this.chooseAlgo.bind(this, 'DFS') }>DFS</NavDropdown.Item>
-                        <NavDropdown.Divider/>
-                        <NavDropdown.Item onClick={ this.chooseAlgo.bind(this, 'Dijkstra') }>Dijkstra</NavDropdown.Item>
-                        <NavDropdown.Divider/>
-                        <NavDropdown.Item onClick={ this.chooseAlgo.bind(this, 'A*') }>A*</NavDropdown.Item>
-                    </NavDropdown>
-                    <Nav.Link><Button variant="info" disabled>Add Walls</Button></Nav.Link>
-                    <Nav.Link><Button variant="success" disabled>Play</Button></Nav.Link>
-                </Nav>
-                <Nav>
-                    <Nav.Link><Button variant="warning" disabled>Clear Walls</Button></Nav.Link>
-                    <Nav.Link><Button variant="danger" disabled>Clear Path</Button></Nav.Link>
-                </Nav>
-                </Navbar.Collapse>
-            </Navbar>
-        )
-    }
+// This function updates the play state
+function playAlgo(setPlay) {
+    setPlay(true);
+    document.getElementById('play-btn').classList.replace('btn-success', 'btn-danger');
+    document.getElementById('play-btn').innerText = 'Searching for path...';
+}
 
+// This function updates the resetPath state
+function resetPath(setResetPath) {
+    setResetPath(true);
 }
