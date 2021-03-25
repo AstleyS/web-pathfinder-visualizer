@@ -27,7 +27,7 @@ export const dijkstraOrAS = (algo, dimension, nodeS, nodeF) => {
     let i = 0;
     // While there are unvisited nodes and node not found
     // We need also to check if loop didn't reach the maximum iteration possible to prevent browser to crash
-    while (paths.length > 0 && i <= dimension[0] * dimension[1]) {
+    while (paths.length > 0 && i <= dimension[0] * dimension[1] * 4) {
         console.log(`%c Loop ${i}`, 'color: red');
 
         let node = paths.shift();  
@@ -160,13 +160,16 @@ function addVisitedNode(algo, paths, previousNode, coordinate, nodeF) {
     
     // Getting the cost of the node (the neighbour node) if already in paths. IF not returns Infinity
     const currentCost = node.cost;
+
+    // This variable flags if node was updated or is new 
+    const newNode = node.cost === Infinity;
     
     // Update the cost if cost is smaller than the node's atual cost
-    const updatedCost = Math.min(newCost, currentCost);
+    if (newCost <= currentCost) {
+        node.cost = newCost;
+        node.previous = previousNode;
+    }
     
-    node.cost = updatedCost;
-    node.previous = previousNode;
-
     // If the algo is A* then we need to add the heuristic and update the total cost
     if (algo === 'AStar') {
         const h = heuristic(node, nodeF);
@@ -180,7 +183,8 @@ function addVisitedNode(algo, paths, previousNode, coordinate, nodeF) {
 
     console.log({node});
     
-    paths.push(node);
+    // If its a new node, adds to the list
+    if (newNode) paths.push(node);
     console.log({paths});
 }
 

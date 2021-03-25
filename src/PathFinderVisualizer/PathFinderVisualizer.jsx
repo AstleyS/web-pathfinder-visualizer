@@ -17,7 +17,7 @@ const START_X = 5;
 const START_Y = 5;
 
 // Has to be less than columns
-const FINISH_X = 9;
+const FINISH_X = 8;
 // Has to be less than row
 const FINISH_Y = 7;
 
