@@ -221,6 +221,7 @@ function clearPath(setResetPath) {
     setResetPath(false);
     document.getElementById('clearPath-btn').disabled = true;
     document.getElementById('play-btn').disabled = false;
+    document.getElementById('addWalls-btn').disabled = false;
 }
 
 // This functions change some elements state

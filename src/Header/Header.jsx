@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap';
 
-export default function Header({ setAlgo, setPlay, setResetPath }) {
+export default function Header({ setAlgo, setWalls, setPlay, setResetPath }) {
 
     return (
         <Navbar id="navbar" collapseOnSelect expand="sm" variant="dark">
@@ -21,7 +21,7 @@ export default function Header({ setAlgo, setPlay, setResetPath }) {
                     <NavDropdown.Divider/>
                     <NavDropdown.Item onClick={() => chooseAlgo('AStar', setAlgo)}>A*</NavDropdown.Item>
                 </NavDropdown>
-                <Nav.Link><Button variant="info" disabled>Add Walls</Button></Nav.Link>
+                <Nav.Link onClick={() => addWalls(setWalls)}><Button id='addWalls-btn' variant="info" disabled>Add Walls</Button></Nav.Link>
                 <Nav.Link onClick={() => playAlgo(setPlay)}><Button id='play-btn' variant="success" disabled>Play</Button></Nav.Link>
             </Nav>
             <Nav>
@@ -38,6 +38,14 @@ function chooseAlgo(algo, setAlgo) {
     setAlgo(algo);
     
     changeOnAlgo(algo);
+    
+}
+
+// This function updates the add walls state
+function addWalls(setWalls) {
+    setWalls(true);
+
+    changeOnAddWalls();
 
 }
 
@@ -60,24 +68,55 @@ function changeOnAlgo(algo) {
     document.getElementById('collasible-nav-dropdown').style.color = 'lightgreen';
     
     // Manipulate the play btn
-
-    // Only activate play btn if clear path is disabled. 
+    // Only activate play and add walls btn if clear path is disabled. 
     // If it is enable it means that the user did not clear the path yet, hence not activating the play button
     if (document.getElementById('clearPath-btn').disabled) {
         document.getElementById('play-btn').disabled = false;
+        document.getElementById('addWalls-btn').disabled = false;
     }
 }
 
 function changeOnPlay() {
+    
+    const playBtn = document.getElementById('play-btn'); 
 
     // Change choose algo dropdown state
     document.getElementById('collasible-nav-dropdown').classList.add('disabled');
-
+    
+    // Change add walls button state
+    document.getElementById('addWalls-btn').disabled = true;
+    
     // Change play button state
-    document.getElementById('play-btn').classList.replace('btn-success', 'btn-danger');
-    document.getElementById('play-btn').innerText = 'Searching for path...';
-    document.getElementById('play-btn').disabled = true;
-
+    playBtn.classList.replace('btn-success', 'btn-danger');
+    playBtn.innerText = 'Searching for path...';
+    playBtn.disabled = true;
+    
     // Change clear path button state
     document.getElementById('clearPath-btn').disabled = true;
+}
+
+function changeOnAddWalls() {
+    // Change add walls button state
+    const addWallsBtn = document.getElementById('addWalls-btn');
+
+    // Toggle
+    if (addWallsBtn.classList.contains('btn-info')) {
+        
+        addWallsBtn.classList.replace('btn-info', 'btn-warning');
+        addWallsBtn.innerText = 'Enough of Walls';
+        // Change play button state
+        document.getElementById('play-btn').disabled = true;
+
+    } else if (addWallsBtn.classList.contains('btn-warning')) {
+        
+        addWallsBtn.classList.replace('btn-warning', 'btn-info');
+        addWallsBtn.innerText = 'Add Walls';
+        // Change play button state
+        document.getElementById('play-btn').disabled = false;
+    
+    }
+    
+
+    
+
 }
