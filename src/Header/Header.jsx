@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap';
 
-export default function Header({ setAlgo, setWalls, setPlay, setResetPath }) {
+export default function Header({ setAlgo, setWalls, setPlay, setResetWalls, setResetPath }) {
 
     return (
         <Navbar id="navbar" collapseOnSelect expand="sm" variant="dark">
@@ -13,56 +13,31 @@ export default function Header({ setAlgo, setWalls, setPlay, setResetPath }) {
             <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
                 <NavDropdown id="collasible-nav-dropdown" className="btn" title="Choose Algorithm"  variant="dark">
-                    <NavDropdown.Item onClick={() => chooseAlgo('BFS', setAlgo)}>BFS</NavDropdown.Item>
+                    <NavDropdown.Item onClick={() => changeOnAlgo('BFS', setAlgo)}>BFS</NavDropdown.Item>
                     <NavDropdown.Divider/>
-                    <NavDropdown.Item onClick={() => chooseAlgo('DFS', setAlgo)}>DFS</NavDropdown.Item>
+                    <NavDropdown.Item onClick={() => changeOnAlgo('DFS', setAlgo)}>DFS</NavDropdown.Item>
                     <NavDropdown.Divider/>
-                    <NavDropdown.Item onClick={() => chooseAlgo('Dijkstra', setAlgo)}>Dijkstra</NavDropdown.Item>
+                    <NavDropdown.Item onClick={() => changeOnAlgo('Dijkstra', setAlgo)}>Dijkstra</NavDropdown.Item>
                     <NavDropdown.Divider/>
-                    <NavDropdown.Item onClick={() => chooseAlgo('AStar', setAlgo)}>A*</NavDropdown.Item>
+                    <NavDropdown.Item onClick={() => changeOnAlgo('AStar', setAlgo)}>A*</NavDropdown.Item>
                 </NavDropdown>
-                <Nav.Link onClick={() => addWalls(setWalls)}><Button id='addWalls-btn' variant="info" disabled>Add Walls</Button></Nav.Link>
-                <Nav.Link onClick={() => playAlgo(setPlay)}><Button id='play-btn' variant="success" disabled>Play</Button></Nav.Link>
+                <Nav.Link onClick={() => changeOnAddWalls(setWalls)}><Button id='addWalls-btn' variant="info" disabled>Add Walls</Button></Nav.Link>
+                <Nav.Link onClick={() => changeOnPlay(setPlay)}><Button id='play-btn' variant="success" disabled>Play</Button></Nav.Link>
             </Nav>
             <Nav>
-                <Nav.Link><Button variant="secondary" disabled>Clear Walls</Button></Nav.Link>
-                <Nav.Link onClick={() => resetPath(setResetPath)}><Button id='clearPath-btn' variant="danger" disabled>Clear Path</Button></Nav.Link>
+                <Nav.Link onClick = {() => resetWalls(setResetWalls)}><Button id='clearWalls-btn' variant="secondary" disabled>Clear Walls</Button></Nav.Link>
+                <Nav.Link onClick = {() => resetPath(setResetPath)}><Button id='clearPath-btn' variant="danger" disabled>Clear Path</Button></Nav.Link>
             </Nav>
             </Navbar.Collapse>
         </Navbar>
     )
 }
 
-// This function updates the algorithm state
-function chooseAlgo(algo, setAlgo) {
-    setAlgo(algo);
-    
-    changeOnAlgo(algo);
-    
-}
-
-// This function updates the add walls state
-function addWalls(setWalls) {
-    setWalls(true);
-
-    changeOnAddWalls();
-
-}
-
-// This function updates the play state
-function playAlgo(setPlay) {
-    setPlay(true);
-
-    changeOnPlay();
-}
-
-// This function updates the resetPath state
-function resetPath(setResetPath) {
-    setResetPath(true);
-}
-
 /* These functions change some elements state */
-function changeOnAlgo(algo) {
+function changeOnAlgo(algo, setAlgo) {
+
+    setAlgo(algo);
+
     // Manipulate the choose algorithm title
     document.getElementById('collasible-nav-dropdown').innerText = algo;
     document.getElementById('collasible-nav-dropdown').style.color = 'lightgreen';
@@ -76,8 +51,50 @@ function changeOnAlgo(algo) {
     }
 }
 
-function changeOnPlay() {
+function changeOnAddWalls(setWalls) {
+    // Change add walls button state
+    const addWallsBtn = document.getElementById('addWalls-btn');
+
+    // Toggle
+    // ADD WALLS
+    if (addWallsBtn.classList.contains('btn-info')) {
+
+        setWalls(true);
+        
+        addWallsBtn.classList.replace('btn-info', 'btn-warning');
+        addWallsBtn.innerText = 'Enough of Walls';
+        
+        // Change choose algo dropdown state
+        document.getElementById('collasible-nav-dropdown').classList.add('disabled');
+        
+        // Change play button state
+        document.getElementById('play-btn').disabled = true;
+        
+        // Change clear walls button state
+        const walls = document.querySelectorAll('wall');
+        if (walls.length > 1) document.getElementById('clearWalls-btn').disabled = false;
     
+    // STOP ADDING WALLS
+    } else if (addWallsBtn.classList.contains('btn-warning')) {
+        
+        setWalls(false);
+        
+        addWallsBtn.classList.replace('btn-warning', 'btn-info');
+        addWallsBtn.innerText = 'Add Walls';
+
+        // Change choose algo dropdown state
+        document.getElementById('collasible-nav-dropdown').classList.add('disabled');
+        
+        // Change play button state
+        document.getElementById('play-btn').disabled = false;
+    
+    }
+}
+
+function changeOnPlay(setPlay) {
+    
+    setPlay(true);
+
     const playBtn = document.getElementById('play-btn'); 
 
     // Change choose algo dropdown state
@@ -95,29 +112,12 @@ function changeOnPlay() {
     document.getElementById('clearPath-btn').disabled = true;
 }
 
-function changeOnAddWalls() {
-    // Change add walls button state
-    const addWallsBtn = document.getElementById('addWalls-btn');
+// This function updates the resetPath state
+function resetWalls(setResetWalls) {
+    setResetWalls(true);
+}
 
-    // Toggle
-    if (addWallsBtn.classList.contains('btn-info')) {
-        
-        addWallsBtn.classList.replace('btn-info', 'btn-warning');
-        addWallsBtn.innerText = 'Enough of Walls';
-        
-        // Change play button state
-        document.getElementById('play-btn').disabled = true;
-
-    } else if (addWallsBtn.classList.contains('btn-warning')) {
-        
-        addWallsBtn.classList.replace('btn-warning', 'btn-info');
-        addWallsBtn.innerText = 'Add Walls';
-        // Change play button state
-        document.getElementById('play-btn').disabled = false;
-    
-    }
-    
-
-    
-
+// This function updates the resetPath state
+function resetPath(setResetPath) {
+    setResetPath(true);
 }

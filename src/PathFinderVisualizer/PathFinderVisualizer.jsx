@@ -1,7 +1,7 @@
 import React from 'react';
 import './PathFinderVisualizer.css';
 
-import NodeObj from '../Node/Node';
+import Node from '../Node/Node';
 
 // Import the algorithm functions
 import { bfsOrDfs as bfsOrDfsAlgo } from '../algorithms/bfsOrDfs';
@@ -22,15 +22,15 @@ const FINISH_Y = 10;
 
 const SPEED = 110; // The less the more speed
 
-export default function PathFinderVisualizer({algo, addWalls, playAlgo, reset}) {
+export default function PathFinderVisualizer({algo, walls, playAlgo, resetW, resetP}) {
 
     // Decostructing the objects passed by arguments 
     const { play, setPlay } = playAlgo;
-    const { resetPath, setResetPath } = reset;
-    const { walls, setWalls } = addWalls;
+    const { resetWalls, setResetWalls } = resetW;
+    const { resetPath, setResetPath } = resetP;
 
-    const nodeS = new NodeObj(START_X, START_Y, true, false);
-    const nodeF = new NodeObj(FINISH_X, FINISH_Y, false, true);
+    const nodeS = new Node(START_X, START_Y, true, false);
+    const nodeF = new Node(FINISH_X, FINISH_Y, false, true);
     
     const nodes = generateGrid(ROW, COLUMN, [START_X, START_Y], [FINISH_X, FINISH_Y]); 
     console.log({nodes});
@@ -38,6 +38,7 @@ export default function PathFinderVisualizer({algo, addWalls, playAlgo, reset}) 
     console.log({algo});
     console.log({walls});
     console.log({play});
+    console.log({resetWalls});
     console.log({resetPath});
 
     // Check if the play button was clicked and start the chosen algorithm
@@ -60,26 +61,31 @@ export default function PathFinderVisualizer({algo, addWalls, playAlgo, reset}) 
         }
     }
 
+    // Check if the clear walls button was clicked
+    if (resetWalls) {
+        clearWalls(setResetWalls);
+    }
+
     // Check if the clear path button was clicked
     if (resetPath) {
         clearPath(setResetPath);
-    } 
+    }
 
     return (
         <div className = "container-fluid">
             <div className="grid">
                 {
                     nodes.map((row, rIndex) => {
-                        return <div key={ rIndex } className="grid-row" >
+                        return <div key = { rIndex } className = "grid-row" >
                             {
                             row.map((node, nodeIndex) => {
                                 const { isStart, isFinish, col, row } = node;
                                 const extraClassName = isStart ? 'node-start visited': isFinish ? 'node-finish' : '';
-                                
-                                return( 
-                                    <div onClick={() => console.log('acd')} 
+                                const coordinate = [col, row];
+                                return ( 
+                                    <div onClick = {() => addNodeWalls(coordinate, walls) } 
                                         id = {`${col},${row}`} 
-                                        className = {`node ${ extraClassName }`}>
+                                        className = {`node ${ extraClassName }`} key = {nodeIndex}>
                                     </div>
                                 )
                             })
@@ -92,6 +98,17 @@ export default function PathFinderVisualizer({algo, addWalls, playAlgo, reset}) 
     )
 }
 
+function addNodeWalls(coordinate, walls) {
+
+    const x = coordinate[0];
+    const y = coordinate[1];
+
+    if (walls) {
+        document.getElementById(`${x},${y}`).style.background = "black";
+        document.getElementById(`${x},${y}`).classList.add("wall");
+    }
+}
+
 // This function generates the grid
 function generateGrid(maxRow, maxCol, start, finish) {
     const nodes = [];
@@ -101,7 +118,7 @@ function generateGrid(maxRow, maxCol, start, finish) {
             for (let col = 0; col < maxCol; col++) {
                 // Defining the node object
                 // Col, Row, isStart, isFinish 
-                const currentNode = new NodeObj(
+                const currentNode = new Node (
                     col,
                     row,
                     row === start[1] && col === start[0],
@@ -212,18 +229,36 @@ function animatePath(lastTime, nodeF, setPlay) {
     }
 }
 
+// This function clears the walls
+function clearWalls(setResetWalls) {
+
+    // Set the clear path button
+    setResetWalls(false);
+
+    // Reset any stylization
+    const walls = document.querySelectorAll('wall');
+    walls.forEach((node) => {
+        node.classList.remove('wall');
+    });
+
+    document.getElementById('clearWalls-btn').disabled = true;
+}
+
 // This function clears the path
 function clearPath(setResetPath) {
 
-    // Reset any stylization
-    let nodes = document.querySelectorAll('.node');
-    nodes.forEach((node) => {
-        if (node.style.background !== '') node.style.background = '';
-        if (node.classList.contains('visited') && !node.classList.contains('node-start')) node.classList.remove('visited');
-    });
-
     // Set the clear path button
     setResetPath(false);
+
+    // Reset any stylization
+    let visitedNodes = document.querySelectorAll('visited');
+    visitedNodes.forEach((node) => {
+        if (!node.classList.contains('node-start')) node.classList.remove('visited');
+        node.style.background = '';
+    });
+    
+    // Change buttons state
+    document.getElementById('collasible-nav-dropdown').classList.remove('disabled');
     document.getElementById('clearPath-btn').disabled = true;
     document.getElementById('play-btn').disabled = false;
     document.getElementById('addWalls-btn').disabled = false;
@@ -232,14 +267,11 @@ function clearPath(setResetPath) {
 // This functions change some elements state
 function changeAfterPlay(setPlay) {
 
-    // Change choose algo dropdown state
-    document.getElementById('collasible-nav-dropdown').classList.remove('disabled');;
+    setPlay(false);
 
     // Change play button state
     document.getElementById('play-btn').classList.replace('btn-danger', 'btn-success');
     document.getElementById('play-btn').innerText = 'Play';
-
-    setPlay(false);
 
     // Change clear path state
     document.getElementById('clearPath-btn').disabled = false;

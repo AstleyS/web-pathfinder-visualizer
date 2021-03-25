@@ -134,7 +134,7 @@ function wasVisited(coordinate) {
     const node = document.getElementById(`${coordinate[0]},${coordinate[1]}`);
     
     // Check if the node as a visited "flag"
-    if (node.classList.contains("visited")) return true;
+    if (node.classList.contains("visited") || node.classList.contains("wall") ) return true;
 
     return false;
 }
