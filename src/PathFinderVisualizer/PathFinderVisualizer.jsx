@@ -1,8 +1,7 @@
 import React from 'react';
 import './PathFinderVisualizer.css';
 
-import Node from '../Node/Node';
-import NodeObj from '../Node/NodeObj';
+import NodeObj from '../Node/Node';
 
 // Import the algorithm functions
 import { bfsOrDfs as bfsOrDfsAlgo } from '../algorithms/bfsOrDfs';
@@ -23,11 +22,12 @@ const FINISH_Y = 10;
 
 const SPEED = 110; // The less the more speed
 
-export default function PathFinderVisualizer({algo, playAlgo, reset}) {
+export default function PathFinderVisualizer({algo, addWalls, playAlgo, reset}) {
 
     // Decostructing the objects passed by arguments 
     const { play, setPlay } = playAlgo;
     const { resetPath, setResetPath } = reset;
+    const { walls, setWalls } = addWalls;
 
     const nodeS = new NodeObj(START_X, START_Y, true, false);
     const nodeF = new NodeObj(FINISH_X, FINISH_Y, false, true);
@@ -36,6 +36,7 @@ export default function PathFinderVisualizer({algo, playAlgo, reset}) {
     console.log({nodes});
 
     console.log({algo});
+    console.log({walls});
     console.log({play});
     console.log({resetPath});
 
@@ -73,10 +74,14 @@ export default function PathFinderVisualizer({algo, playAlgo, reset}) {
                             {
                             row.map((node, nodeIndex) => {
                                 const { isStart, isFinish, col, row } = node;
-                                return <Node
-                                    coordinates={`${col},${row}`} key={ nodeIndex }
-                                    isStart = { isStart } isFinish = { isFinish }
-                                ></Node>
+                                const extraClassName = isStart ? 'node-start visited': isFinish ? 'node-finish' : '';
+                                
+                                return( 
+                                    <div onClick={() => console.log('acd')} 
+                                        id = {`${col},${row}`} 
+                                        className = {`node ${ extraClassName }`}>
+                                    </div>
+                                )
                             })
                             }
                         </div>

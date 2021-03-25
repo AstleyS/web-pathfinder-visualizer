@@ -10,3 +10,20 @@
 .buttons .resetGrid {
     margin-left: 5px;
 }
+
+.node {
+    width: 25px;
+    height: 25px;
+
+    display: inline-block;
+
+    border: 2px solid;
+}
+
+.node-start {
+    background: green;
+}
+
+.node-finish {
+    background: red;
+}

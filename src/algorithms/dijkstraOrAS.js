@@ -1,4 +1,4 @@
-import Node from '../Node/NodeObj';
+import Node from '../Node/Node';
 
 // Priority Queue
     /* UNSHIFT: ADD AT BEGINNING | SHIFT: REMOVE AT BEGINNING */

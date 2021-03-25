@@ -25,7 +25,7 @@ export default function Header({ setAlgo, setWalls, setPlay, setResetPath }) {
                 <Nav.Link onClick={() => playAlgo(setPlay)}><Button id='play-btn' variant="success" disabled>Play</Button></Nav.Link>
             </Nav>
             <Nav>
-                <Nav.Link><Button variant="warning" disabled>Clear Walls</Button></Nav.Link>
+                <Nav.Link><Button variant="secondary" disabled>Clear Walls</Button></Nav.Link>
                 <Nav.Link onClick={() => resetPath(setResetPath)}><Button id='clearPath-btn' variant="danger" disabled>Clear Path</Button></Nav.Link>
             </Nav>
             </Navbar.Collapse>
@@ -104,6 +104,7 @@ function changeOnAddWalls() {
         
         addWallsBtn.classList.replace('btn-info', 'btn-warning');
         addWallsBtn.innerText = 'Enough of Walls';
+        
         // Change play button state
         document.getElementById('play-btn').disabled = true;
 
