@@ -15,7 +15,7 @@ export default function Header({ setAlgo, setWalls, setPlay, setResetWalls, setR
                 <NavDropdown id="collasible-nav-dropdown" className="btn" title="Choose Algorithm"  variant="dark">
                     <NavDropdown.Item onClick={() => changeOnAlgo('BFS', setAlgo)}>BFS</NavDropdown.Item>
                     <NavDropdown.Divider/>
-                    <NavDropdown.Item onClick={() => changeOnAlgo('DFS', setAlgo)}>DFS</NavDropdown.Item>
+                    <NavDropdown.Item onClick={() => changeOnAlgo('DFS', setAlgo)}>DFS (not available yet)</NavDropdown.Item>
                     <NavDropdown.Divider/>
                     <NavDropdown.Item onClick={() => changeOnAlgo('Dijkstra', setAlgo)}>Dijkstra</NavDropdown.Item>
                     <NavDropdown.Divider/>
@@ -69,22 +69,18 @@ function changeOnAddWalls(setWalls) {
         
         // Change play button state
         document.getElementById('play-btn').disabled = true;
-        
-        // Change clear walls button state
-        const walls = document.querySelectorAll('wall');
-        if (walls.length > 1) document.getElementById('clearWalls-btn').disabled = false;
-    
+
     // STOP ADDING WALLS
     } else if (addWallsBtn.classList.contains('btn-warning')) {
         
         setWalls(false);
-        
+
         addWallsBtn.classList.replace('btn-warning', 'btn-info');
         addWallsBtn.innerText = 'Add Walls';
 
         // Change choose algo dropdown state
         document.getElementById('collasible-nav-dropdown').classList.add('disabled');
-        
+
         // Change play button state
         document.getElementById('play-btn').disabled = false;
     

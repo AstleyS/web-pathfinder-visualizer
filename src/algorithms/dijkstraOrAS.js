@@ -37,6 +37,7 @@ export const dijkstraOrAS = (algo, dimension, nodeS, nodeF) => {
         // If we found the node then we should get rid of the other nodes 
         if (findNodeF(node, nodeF)) {
             console.log(`%c Found`, 'color: brown');
+            document.getElementById(`${node.col},${node.row}`).classList.add('visited');
             visited.push(node);
             
             return [visited, true];

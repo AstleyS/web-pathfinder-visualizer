@@ -48,7 +48,7 @@ export default function PathFinderVisualizer({algo, walls, playAlgo, resetW, res
                 bfsOrDFS('BFS', nodes, nodeS, nodeF, setPlay);
                 break;
             case 'DFS': 
-                bfsOrDFS('DFS', nodes, nodeS, nodeF, setPlay);
+                //bfsOrDFS('DFS', nodes, nodeS, nodeF, setPlay);
                 break;
             case 'Dijkstra': 
                 dijkstraOrAS('Dijkstra', nodes, nodeS, nodeF, setPlay);
@@ -104,6 +104,10 @@ function addNodeWalls(coordinate, walls) {
     const y = coordinate[1];
 
     if (walls) {
+
+        const walls = document.querySelectorAll('.wall');
+        if (walls.length > 1) document.getElementById('clearWalls-btn').disabled = false;
+
         document.getElementById(`${x},${y}`).style.background = "black";
         document.getElementById(`${x},${y}`).classList.add("wall");
     }
@@ -231,14 +235,14 @@ function animatePath(lastTime, nodeF, setPlay) {
 
 // This function clears the walls
 function clearWalls(setResetWalls) {
-
-    // Set the clear path button
+    
     setResetWalls(false);
 
     // Reset any stylization
-    const walls = document.querySelectorAll('wall');
-    walls.forEach((node) => {
-        node.classList.remove('wall');
+    const walls = document.querySelectorAll('.wall');
+    walls.forEach((wall) => {
+        wall.classList.remove('wall');
+        wall.style.background = '';
     });
 
     document.getElementById('clearWalls-btn').disabled = true;
@@ -246,19 +250,17 @@ function clearWalls(setResetWalls) {
 
 // This function clears the path
 function clearPath(setResetPath) {
-
-    // Set the clear path button
+    
     setResetPath(false);
 
     // Reset any stylization
-    let visitedNodes = document.querySelectorAll('visited');
-    visitedNodes.forEach((node) => {
+    const nodes = document.querySelectorAll('.visited');
+    nodes.forEach((node) => {
         if (!node.classList.contains('node-start')) node.classList.remove('visited');
         node.style.background = '';
     });
-    
-    // Change buttons state
-    document.getElementById('collasible-nav-dropdown').classList.remove('disabled');
+
+    // Set the clear path button
     document.getElementById('clearPath-btn').disabled = true;
     document.getElementById('play-btn').disabled = false;
     document.getElementById('addWalls-btn').disabled = false;
@@ -266,8 +268,11 @@ function clearPath(setResetPath) {
 
 // This functions change some elements state
 function changeAfterPlay(setPlay) {
-
+    
     setPlay(false);
+
+    // Change choose algo dropdown state
+    document.getElementById('collasible-nav-dropdown').classList.remove('disabled');;
 
     // Change play button state
     document.getElementById('play-btn').classList.replace('btn-danger', 'btn-success');
@@ -275,4 +280,8 @@ function changeAfterPlay(setPlay) {
 
     // Change clear path state
     document.getElementById('clearPath-btn').disabled = false;
+
+    const walls = document.querySelectorAll('.wall');
+    if (walls.length > 1) document.getElementById('clearWalls-btn').disabled = false;
+    
 } 

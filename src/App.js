@@ -15,8 +15,7 @@ export default function App() {
     <div className="App">
       <Header 
         setAlgo = { setAlgo } setWalls = { setWalls } 
-        setPlay = { setPlay } setResetWalls = { setResetWalls } setResetPath = { setResetPath }>
-      </Header>
+        setPlay = { setPlay } setResetWalls = { setResetWalls } setResetPath = { setResetPath }></Header>
       <PathFinderVisualizer 
         algo = { algo } walls = { walls }
         playAlgo = { {play, setPlay} } resetW = { {resetWalls, setResetWalls} } resetP = { {resetPath, setResetPath} }>
