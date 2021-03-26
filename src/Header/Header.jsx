@@ -104,6 +104,8 @@ function changeOnPlay(setPlay) {
     playBtn.innerText = 'Searching for path...';
     playBtn.disabled = true;
     
+    // Change clear walls button state
+    document.getElementById('clearWalls-btn').disabled = true;
     // Change clear path button state
     document.getElementById('clearPath-btn').disabled = true;
 }

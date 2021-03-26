@@ -160,7 +160,11 @@ function bfsOrDFS(algo, grid, nodeS, nodeF, setPlay) {
    
    // The first args refers to the time that the animateAlgorithm finished + 50ms
    // The seconde args return the last node a.k.a nodeF
-   if (nodes[1]) animatePath(SPEED * visited.length + 75, visited[visited.length - 1], setPlay); 
+   if (nodes[1]) {
+       animatePath(SPEED * visited.length + 75, visited[visited.length - 1], setPlay); 
+   } else {
+       changeAfterPlay(setPlay);
+   }
 }
 
 // This function handles the user click when choosing Dijsktra
@@ -180,7 +184,11 @@ function dijkstraOrAS(algo, grid, nodeS, nodeF, setPlay) {
 
     // The first args refers to the time that the animateAlgorithm finished + 50ms
     // The seconde args return the last node a.k.a nodeF
-    if (nodes[1]) animatePath(SPEED * visited.length + 75, visited[visited.length - 1], setPlay);
+    if (nodes[1]) {
+        animatePath(SPEED * visited.length + 75, visited[visited.length - 1], setPlay);
+    } else {
+        changeAfterPlay(setPlay);
+    }
 }
 
 // This function animates each visited node
