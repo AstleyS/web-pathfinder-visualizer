@@ -110,8 +110,6 @@ function wasVisited(coordinate) {
     // Check if the node as a visited "flag"
     if (node.classList.contains("visited") || node.classList.contains("wall")) return true;
 
-    // If not, adds it
-    node.classList.add("visited");
     return false;
 }
 
@@ -125,7 +123,10 @@ function addVisitedNode(paths, visited, previousNode, coordinate, nodeF) {
     let node = new Node(x, y, false, false);
     node.previous = previousNode;
 
+<<<<<<< HEAD
   
+=======
+>>>>>>> 57ea16195db53f65820d923e3f9ce86c09409e05
     // Check if its end node
     if (nodeF.row === y && nodeF.col === x) {
         node.isFinish = true;
