@@ -13,7 +13,7 @@ import Node from '../Node/Node';
     // My analogy: The parent node just likes one of his children
     // and once the child becomes a parent, the pattern repeats
     
-    /* POP: REMOVE AT LAS | UNSHIFT: ADD AT BEGINNING */
+    /* POP: REMOVE AT LAST | PUSH: ADD AT LAST*/
 
 export const bfsOrDfs = (algo, dimension, nodeS, nodeF) => {
 
@@ -25,20 +25,22 @@ export const bfsOrDfs = (algo, dimension, nodeS, nodeF) => {
     // This variable holds the open nodes
     const paths = [nodeS];
     // This variable holds the visited nodes
-    let visited = []
+    const visited = []
 
     let i = 0;
     // While the are nodes to visit
+    console.log({nodeS, nodeF, paths});
     while (paths.length > 0 && i <= dimension[0] * dimension[1]) {
         console.log(`%c Loop ${i}`, 'color: red');
 
         // If BFS, removes node from the start of the queue || start of the array
         // If DFS, removes node from the top of the stack || end of the array
-        let node = algo === 'BFS' ? paths.shift(): paths.pop();
+        const node = algo === 'BFS' ? paths.shift(): paths.pop();
+
         console.log({node});
-        
+
         // Check the valid neighbours
-        let foundNodeF = validNeighbours(algo, paths, visited, node, dimension, nodeF);
+        const foundNodeF = validNeighbours(paths, visited, node, dimension, nodeF);
 
         // If node equal to undefined means that we found nodeF
         if (foundNodeF) {
@@ -52,7 +54,7 @@ export const bfsOrDfs = (algo, dimension, nodeS, nodeF) => {
 }
 
 // This functions checks the neighbours and returns a list of the visited (valid) ones 
-function validNeighbours(algo, paths, visited, node, dimension, nodeF) {
+function validNeighbours(paths, visited, node, dimension, nodeF) {
 
     /* GRID DIMENSION: 0 = ROW | 1 = COLUMN */
     const maxRows = dimension[0]; 
@@ -69,7 +71,7 @@ function validNeighbours(algo, paths, visited, node, dimension, nodeF) {
         // Check if it was visited already
         // if DFS, break
         if (!wasVisited([x, y - 1])) {
-            isNodeF = addVisitedNode(algo, paths, visited, node, [x, y - 1], nodeF);
+            isNodeF = addVisitedNode(paths, visited, node, [x, y - 1], nodeF);
             if (isNodeF) return true;
         }
     }
@@ -77,7 +79,7 @@ function validNeighbours(algo, paths, visited, node, dimension, nodeF) {
     // Checks RIGHT
     if (x + 1 <= maxColums - 1) {
         if (!wasVisited([x + 1, y])) {
-            isNodeF = addVisitedNode(algo, paths, visited, node, [x + 1, y], nodeF);
+            isNodeF = addVisitedNode(paths, visited, node, [x + 1, y], nodeF);
             if (isNodeF) return true;
         }
     }
@@ -85,7 +87,7 @@ function validNeighbours(algo, paths, visited, node, dimension, nodeF) {
     // Checks DOWN
     if (y + 1 <= maxRows - 1) {
         if (!wasVisited([x, y + 1])) {
-            isNodeF = addVisitedNode(algo, paths, visited, node, [x, y + 1], nodeF);
+            isNodeF = addVisitedNode(paths, visited, node, [x, y + 1], nodeF);
             if (isNodeF) return true;
         }
     }
@@ -93,7 +95,7 @@ function validNeighbours(algo, paths, visited, node, dimension, nodeF) {
     // Checks LEFT
     if (x - 1 >= 0) {
         if (!wasVisited([x - 1, y])) {
-            isNodeF = addVisitedNode(algo, paths, visited, node, [x - 1, y], nodeF);
+            isNodeF = addVisitedNode(paths, visited, node, [x - 1, y], nodeF);
             if (isNodeF) return true;
         }
     }
@@ -115,7 +117,7 @@ function wasVisited(coordinate) {
 
 // This function adds the visited node accordingly to the algorithm
 // Return true or false whether the nodeF was found
-function addVisitedNode(algo, paths, visited, previousNode, coordinate, nodeF) {
+function addVisitedNode(paths, visited, previousNode, coordinate, nodeF) {
 
     const x = coordinate[0];
     const y = coordinate[1];
@@ -123,17 +125,16 @@ function addVisitedNode(algo, paths, visited, previousNode, coordinate, nodeF) {
     let node = new Node(x, y, false, false);
     node.previous = previousNode;
 
-    // If BFS, adds the node to the end of the queue || end of the array
-    paths.push(node);
-    visited.push(node);
-    
-
+  
     // Check if its end node
     if (nodeF.row === y && nodeF.col === x) {
         node.isFinish = true;
         console.log(`%c Found`, 'color: brown');
+        visited.push(node);
         return true;
     }
-    
+
+    paths.push(node);
+    visited.push(node);
     return false;
 }
