@@ -110,8 +110,6 @@ function wasVisited(coordinate) {
     // Check if the node as a visited "flag"
     if (node.classList.contains("visited") || node.classList.contains("wall")) return true;
 
-    // If not, adds it
-    node.classList.add("visited");
     return false;
 }
 
@@ -130,11 +128,16 @@ function addVisitedNode(paths, visited, previousNode, coordinate, nodeF) {
     if (nodeF.row === y && nodeF.col === x) {
         node.isFinish = true;
         console.log(`%c Found`, 'color: brown');
+        
+        document.getElementById(`${x},${y}`).classList.add("visited");
         visited.push(node);
         return true;
     }
 
     paths.push(node);
+
+    // Tag visited
+    document.getElementById(`${x},${y}`).classList.add("visited");
     visited.push(node);
     return false;
 }
