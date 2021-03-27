@@ -71,7 +71,6 @@ function validNeighbours(algo, paths, visited, node, dimension, nodeF) {
         if (!wasVisited([x, y - 1])) {
             isNodeF = addVisitedNode(algo, paths, visited, node, [x, y - 1], nodeF);
             if (isNodeF) return true;
-            if (algo === 'DFS') return ;
         }
     }
     
@@ -80,7 +79,6 @@ function validNeighbours(algo, paths, visited, node, dimension, nodeF) {
         if (!wasVisited([x + 1, y])) {
             isNodeF = addVisitedNode(algo, paths, visited, node, [x + 1, y], nodeF);
             if (isNodeF) return true;
-            if (algo === 'DFS') return ;
         }
     }
     
@@ -89,7 +87,6 @@ function validNeighbours(algo, paths, visited, node, dimension, nodeF) {
         if (!wasVisited([x, y + 1])) {
             isNodeF = addVisitedNode(algo, paths, visited, node, [x, y + 1], nodeF);
             if (isNodeF) return true;
-            if (algo === 'DFS') return ;
         }
     }
     
@@ -98,7 +95,6 @@ function validNeighbours(algo, paths, visited, node, dimension, nodeF) {
         if (!wasVisited([x - 1, y])) {
             isNodeF = addVisitedNode(algo, paths, visited, node, [x - 1, y], nodeF);
             if (isNodeF) return true;
-            if (algo === 'DFS') return ;
         }
     }
 
@@ -128,14 +124,9 @@ function addVisitedNode(algo, paths, visited, previousNode, coordinate, nodeF) {
     node.previous = previousNode;
 
     // If BFS, adds the node to the end of the queue || end of the array
-    if (algo === 'BFS') {
-        paths.push(node);
-        visited.push(node);
-    // If DFS, adds the node to the top of the stack || start of the array
-    } else if (algo === 'DFS') {
-        paths.unshift(node);
-        visited.push(node);
-    }
+    paths.push(node);
+    visited.push(node);
+    
 
     // Check if its end node
     if (nodeF.row === y && nodeF.col === x) {
