@@ -9,17 +9,6 @@ import { dijkstraOrAS as dijkstraOrASAlgo } from '../algorithms/dijkstraOrAS';
 
 const ROW = 20;
 const COLUMN = 30;
-
-// // Has to be less than columns
-// const START_X = 8;
-// // Has to be less than row
-// const START_Y = 7;
-
-// // Has to be less than columns
-// const FINISH_X = 15;
-// // Has to be less than row
-// const FINISH_Y = 8;
-
 const SPEED = 140; // The less the more speed
 
 export default function PathFinderVisualizer({algo, walls, playAlgo, resetW, resetP}) {
@@ -85,6 +74,14 @@ export default function PathFinderVisualizer({algo, walls, playAlgo, resetW, res
     return (
         <div id = 'main'>
             <div className = "glass">
+                <div className = "guide text-dark">
+                    <span className = "nodeS"></span> Start 
+                    <span className = "nodeF"></span>  
+                    <span className = "nodeFound"></span> Finish | Found Node  
+                    <span className = "nodeWall"></span> Wall  
+                    <span className = "algo"></span> Algorithm 
+                    <span className = "path"></span> Path 
+                </div>
                 <div className="grid">
                     {
                         nodes.map((row, rIndex) => {
@@ -124,50 +121,54 @@ function addNode(coordinate, placedNodeS, placedNodeF, walls, setValidNodes) {
 
     const element = document.getElementById(`${x},${y}`);
 
-    // // TOGGLE nodeS
-    if (element.classList.contains('node-start')) {
-        
-        element.classList.remove('node-start', 'visited');
-        setNodeS(new Node(-1, -1, false, false));
-        return ;
-    } 
-
-    // TOGGLE nodeF
-    if (element.classList.contains('node-finish')) {
-    
-        element.classList.remove('node-finish');
-        setNodeF(new Node(-1, -1, false, false));
-        setValidNodes(false);
-        return ;
-    } 
-
-    //Check if we have nodeS and nodeF placed. If yes, then we add walls
-    if (!nodeS.isStart) {
-
-        element.classList.add('node-start', 'visited');
-        setNodeS(new Node(x, y, true, false));
-        return ;
-    }
-    
-    if (!nodeF.isFinish) {
-        
-        element.classList.add('node-finish');
-        setNodeF(new Node(x, y, false, true));
-        setValidNodes(true);
-        return ;
-     }
-    
-    if (walls) {
-
-        const walls = document.querySelectorAll('.wall');
-        if (walls.length >= 0 ) document.getElementById('clearWalls-btn').disabled = false; // =0 because of cycle
-
-        // Toggle wall
-        if (element.classList.contains('wall')) {
-            element.classList.remove('wall');
+    // The user must first clean the path and only then remove/add nodes 
+    if (document.getElementById('clearPath-btn').disabled) {
+        // TOGGLE nodeS
+        if (element.classList.contains('node-start')) {
+            
+            element.classList.remove('node-start', 'visited');
+            setNodeS(new Node(-1, -1, false, false));
             return ;
         } 
-        element.classList.add('wall');
+    
+        // TOGGLE nodeF
+        if (element.classList.contains('node-finish')) {
+        
+            element.classList.remove('node-finish');
+            setNodeF(new Node(-1, -1, false, false));
+            setValidNodes(false);
+            return ;
+        } 
+    
+        //Check if we have nodeS and nodeF placed. If yes, then we add walls
+        if (!nodeS.isStart) {
+    
+            element.classList.add('node-start', 'visited');
+            setNodeS(new Node(x, y, true, false));
+            return ;
+        }
+        
+        if (!nodeF.isFinish) {
+            
+            element.classList.add('node-finish');
+            setNodeF(new Node(x, y, false, true));
+            setValidNodes(true);
+            return ;
+         }
+        
+        if (walls) {
+    
+            const walls = document.querySelectorAll('.wall');
+            if (walls.length >= 0 ) document.getElementById('clearWalls-btn').disabled = false; // =0 because of cycle
+    
+            // Toggle wall
+            if (element.classList.contains('wall')) {
+                element.classList.remove('wall');
+                return ;
+            } 
+            element.classList.add('wall');
+        }
+        
     }
 
     // document.getElementById('collasible-nav-dropdown').innerText = 'Choose Algorithm';
