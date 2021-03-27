@@ -20,7 +20,7 @@ const COLUMN = 30;
 // // Has to be less than row
 // const FINISH_Y = 8;
 
-const SPEED = 110; // The less the more speed
+const SPEED = 140; // The less the more speed
 
 export default function PathFinderVisualizer({algo, walls, playAlgo, resetW, resetP}) {
 
