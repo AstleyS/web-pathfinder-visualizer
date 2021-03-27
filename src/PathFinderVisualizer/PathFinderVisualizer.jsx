@@ -86,7 +86,6 @@ export default function PathFinderVisualizer({algo, walls, playAlgo, resetW, res
         <div id = 'main'>
             <div className = "glass">
                 <div className="grid">
-                    <p className = "note">Note: If you choose A*, for now place the finish node with min distance (col and row) of 2</p>
                     {
                         nodes.map((row, rIndex) => {
                             return <div key = { rIndex } className = "grid-row" >

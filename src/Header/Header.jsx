@@ -15,7 +15,7 @@ export default function Header({ setAlgo, setWalls, setPlay, setResetWalls, setR
                 <NavDropdown id="collasible-nav-dropdown" className="btn" title="Choose Algorithm"  variant="dark">
                     <NavDropdown.Item onClick={() => changeOnAlgo('BFS', setAlgo)}>BFS</NavDropdown.Item>
                     <NavDropdown.Divider/>
-                    <NavDropdown.Item onClick={() => changeOnAlgo('DFS', setAlgo)} disabled>DFS (not available yet)</NavDropdown.Item>
+                    <NavDropdown.Item onClick={() => changeOnAlgo('DFS', setAlgo)}>DFS</NavDropdown.Item>
                     <NavDropdown.Divider/>
                     <NavDropdown.Item onClick={() => changeOnAlgo('Dijkstra', setAlgo)}>Dijkstra</NavDropdown.Item>
                     <NavDropdown.Divider/>
