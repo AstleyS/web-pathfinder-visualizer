@@ -88,26 +88,7 @@ function changeOnAddWalls(setWalls) {
 }
 
 function changeOnPlay(setPlay) {
-    
     setPlay(true);
-
-    const playBtn = document.getElementById('play-btn'); 
-
-    // Change choose algo dropdown state
-    document.getElementById('collasible-nav-dropdown').classList.add('disabled');
-    
-    // Change add walls button state
-    document.getElementById('addWalls-btn').disabled = true;
-    
-    // Change play button state
-    playBtn.classList.replace('btn-success', 'btn-danger');
-    playBtn.innerText = 'Searching for path...';
-    playBtn.disabled = true;
-    
-    // Change clear walls button state
-    document.getElementById('clearWalls-btn').disabled = true;
-    // Change clear path button state
-    document.getElementById('clearPath-btn').disabled = true;
 }
 
 // This function updates the resetPath state

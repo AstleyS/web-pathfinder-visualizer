@@ -29,6 +29,8 @@ export default function PathFinderVisualizer({algo, walls, playAlgo, resetW, res
     const { resetWalls, setResetWalls } = resetW;
     const { resetPath, setResetPath } = resetP;
 
+    const [validNodes, setValidNodes] = useState(false);
+
     const [nodeS, setNodeS] = useState(new Node(-1, -1, false, false));
     const [nodeF, setNodeF] = useState(new Node(-1, -1, false, false));
     
@@ -38,26 +40,35 @@ export default function PathFinderVisualizer({algo, walls, playAlgo, resetW, res
     console.log({algo});
     console.log({walls});
     console.log({play});
+    console.log({validNodes});
     console.log({resetWalls});
     console.log({resetPath});
 
     // Check if the play button was clicked and start the chosen algorithm
     if (play) {
-        switch(algo) {
-            case 'BFS':
-                bfsOrDFS('BFS', nodes, nodeS, nodeF, setPlay);
-                break;
-            case 'DFS':
-                bfsOrDFS('DFS', nodes, nodeS, nodeF, setPlay);
-                break;
-            case 'Dijkstra':
-                dijkstraOrAS('Dijkstra', nodes, nodeS, nodeF, setPlay);
-                break;
-            case 'AStar':
-                dijkstraOrAS('AStar', nodes, nodeS, nodeF, setPlay);
-                break;
-            default:
-                console.log('Algo not found');
+        if (validNodes) {
+
+            changeOnPlay();
+
+            switch(algo) {
+                case 'BFS':
+                    bfsOrDFS('BFS', nodes, nodeS, nodeF, setPlay);
+                    break;
+                case 'DFS':
+                    bfsOrDFS('DFS', nodes, nodeS, nodeF, setPlay);
+                    break;
+                case 'Dijkstra':
+                    dijkstraOrAS('Dijkstra', nodes, nodeS, nodeF, setPlay);
+                    break;
+                case 'AStar':
+                    dijkstraOrAS('AStar', nodes, nodeS, nodeF, setPlay);
+                    break;
+                default:
+                    console.log('Algo not found');
+            }
+        } else {
+            document.getElementById('play-btn').innerText = 'Place Nodes in the Grid';
+            console.log('Invalid');
         }
     }
 
@@ -73,33 +84,35 @@ export default function PathFinderVisualizer({algo, walls, playAlgo, resetW, res
 
     return (
         <div id = 'main'>
-            <div className="grid">
-                <p className = "note">Note: If you choose A*, for now place the finish node with min distance (col and row) of 2</p>
-                {
-                    nodes.map((row, rIndex) => {
-                        return <div key = { rIndex } className = "grid-row" >
-                            {
-                            row.map((node, cIndex) => {
-                                // const isStart = (cIndex === START_X && rIndex === START_Y);
-                                // const isFinish = (cIndex === FINISH_X && rIndex === FINISH_Y);
-                                //const extraClassName = isStart ? ' node-start visited': isFinish ? ' node-finish' : '';
-                                return ( 
-                                    <div onClick = {() => addNode([cIndex, rIndex], [nodeS, setNodeS], [nodeF, setNodeF], walls) } 
-                                        id = {`${cIndex},${rIndex}`} 
-                                        className = {`node`} key = {cIndex}>
-                                    </div>
-                                )
-                            })
-                            }
-                        </div>
-                    })
-                }
+            <div className = "glass">
+                <div className="grid">
+                    <p className = "note">Note: If you choose A*, for now place the finish node with min distance (col and row) of 2</p>
+                    {
+                        nodes.map((row, rIndex) => {
+                            return <div key = { rIndex } className = "grid-row" >
+                                {
+                                row.map((node, cIndex) => {
+                                    // const isStart = (cIndex === START_X && rIndex === START_Y);
+                                    // const isFinish = (cIndex === FINISH_X && rIndex === FINISH_Y);
+                                    //const extraClassName = isStart ? ' node-start visited': isFinish ? ' node-finish' : '';
+                                    return ( 
+                                        <div onClick = {() => addNode([cIndex, rIndex], [nodeS, setNodeS], [nodeF, setNodeF], walls, setValidNodes) } 
+                                            id = {`${cIndex},${rIndex}`} 
+                                            className = {`node`} key = {cIndex}>
+                                        </div>
+                                    )
+                                })
+                                }
+                            </div>
+                        })
+                    }
+                </div>
             </div>
         </div>
     )
 }
 
-function addNode(coordinate, placedNodeS, placedNodeF, walls) {
+function addNode(coordinate, placedNodeS, placedNodeF, walls, setValidNodes) {
 
     const x = coordinate[0];
     const y = coordinate[1];
@@ -125,6 +138,7 @@ function addNode(coordinate, placedNodeS, placedNodeF, walls) {
     
         element.classList.remove('node-finish');
         setNodeF(new Node(-1, -1, false, false));
+        setValidNodes(false);
         return ;
     } 
 
@@ -140,6 +154,7 @@ function addNode(coordinate, placedNodeS, placedNodeF, walls) {
         
         element.classList.add('node-finish');
         setNodeF(new Node(x, y, false, true));
+        setValidNodes(true);
         return ;
      }
     
@@ -329,6 +344,27 @@ function clearPath(setResetPath) {
     document.getElementById('clearPath-btn').disabled = true;
     document.getElementById('play-btn').disabled = false;
     document.getElementById('addWalls-btn').disabled = false;
+}
+
+function changeOnPlay() {
+    
+    const playBtn = document.getElementById('play-btn'); 
+
+    // Change choose algo dropdown state
+    document.getElementById('collasible-nav-dropdown').classList.add('disabled');
+    
+    // Change add walls button state
+    document.getElementById('addWalls-btn').disabled = true;
+    
+    // Change play button state
+    playBtn.classList.replace('btn-success', 'btn-danger');
+    playBtn.innerText = 'Searching for path...';
+    playBtn.disabled = true;
+    
+    // Change clear walls button state
+    document.getElementById('clearWalls-btn').disabled = true;
+    // Change clear path button state
+    document.getElementById('clearPath-btn').disabled = true;
 }
 
 // This functions change some elements state
