@@ -29,6 +29,7 @@ export const bfsOrDfs = (algo, dimension, nodeS, nodeF) => {
 
     let i = 0;
     // While the are nodes to visit
+    console.log({nodeS, nodeF, paths});
     while (paths.length > 0 && i <= dimension[0] * dimension[1]) {
         console.log(`%c Loop ${i}`, 'color: red');
 
@@ -109,8 +110,6 @@ function wasVisited(coordinate) {
     // Check if the node as a visited "flag"
     if (node.classList.contains("visited") || node.classList.contains("wall")) return true;
 
-    // If not, adds it
-    node.classList.add("visited");
     return false;
 }
 

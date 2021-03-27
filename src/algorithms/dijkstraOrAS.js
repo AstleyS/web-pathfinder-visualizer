@@ -1,7 +1,7 @@
 import Node from '../Node/Node';
 
 // Priority Queue
-    /* UNSHIFT: ADD AT BEGINNING | SHIFT: REMOVE AT BEGINNING */
+    /* SHIFT: REMOVE AT BEGINNING | PUSH: ADD AT LAST */
 
 export const dijkstraOrAS = (algo, dimension, nodeS, nodeF) => {
 
@@ -22,7 +22,7 @@ export const dijkstraOrAS = (algo, dimension, nodeS, nodeF) => {
     // This variable holds the open nodes
     const paths = [nodeS];
     // This variable holds the visited nodes
-    let visited = []
+    const visited = []
     
     let i = 0;
     // While there are unvisited nodes and node not found
