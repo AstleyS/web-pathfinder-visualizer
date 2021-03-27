@@ -159,8 +159,11 @@ function addNode(coordinate, placedNodeS, placedNodeF, walls, setValidNodes) {
         if (walls) {
     
             const walls = document.querySelectorAll('.wall');
-            if (walls.length >= 0 ) document.getElementById('clearWalls-btn').disabled = false; // =0 because of cycle
-    
+            if (walls.length >= 0 ) {
+                document.getElementById('clearWalls-btn').disabled = false; // =0 because of cycle
+            } else {
+                document.getElementById('clearWalls-btn').disabled = true;
+            }
             // Toggle wall
             if (element.classList.contains('wall')) {
                 element.classList.remove('wall');
@@ -212,7 +215,9 @@ function bfsOrDFS(algo, grid, nodeS, nodeF, setPlay) {
     console.timeEnd("runtime");
     console.log({visited});
         
+    // With slice(0) we are including nodeS
     animateAlgorithm(visited);
+    
     if (nodes[1]) {
         
         // The first args refers to the time that the animateAlgorithm finished + 50ms
