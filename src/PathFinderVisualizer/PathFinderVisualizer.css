@@ -1,29 +1,49 @@
+#main {
+    height: 90vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .grid {
-    width: 100%;
-    margin: 2rem 20% 0;
+    padding: 4px 10px;
+    margin-top: 1rem;
+
+    background: linear-gradient(
+        to right bottom,
+        rgba(255, 255, 255, 0.5),
+        rgba(255, 255, 255, 0.3)
+    );
+
+    border-radius: 0.3rem;
 }
 
-.buttons button {
-    margin: 1rem 5px 0;
-}
-
-.buttons .resetGrid {
-    margin-left: 5px;
+.note {
+    color: rgb(214, 70, 70);
+    text-align: center;
 }
 
 .node {
     width: 25px;
     height: 25px;
+    margin-right: 2px;
 
     display: inline-block;
 
-    border: 2px solid;
+    border: 0.1px solid rgba(255, 255, 255, 0.7);
 }
 
 .node-start {
     background: green;
+    border-radius: 50%;
 }
 
 .node-finish {
     background: red;
+    border-radius: 50%;
+}
+
+.wall {
+    background: rgba(0, 0, 0, 0.5);
 }

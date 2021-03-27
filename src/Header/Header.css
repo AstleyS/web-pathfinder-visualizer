@@ -1,8 +1,4 @@
-:root {
-    --grad1: rgb(110, 94, 254) 0%;
-    --grad2: rgba(73, 63, 252, 100%);
-}
-
 #navbar {
-    background: linear-gradient(90deg, var(--grad1), var(--grad2));
+    height: 8vh;
+    width: 100%;
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './PathFinderVisualizer.css';
 
 import Node from '../Node/Node';
@@ -10,15 +10,15 @@ import { dijkstraOrAS as dijkstraOrASAlgo } from '../algorithms/dijkstraOrAS';
 const ROW = 20;
 const COLUMN = 30;
 
-// Has to be less than columns
-const START_X = 8;
-// Has to be less than row
-const START_Y = 7;
+// // Has to be less than columns
+// const START_X = 8;
+// // Has to be less than row
+// const START_Y = 7;
 
-// Has to be less than columns
-const FINISH_X = 12;
-// Has to be less than row
-const FINISH_Y = 10;
+// // Has to be less than columns
+// const FINISH_X = 15;
+// // Has to be less than row
+// const FINISH_Y = 8;
 
 const SPEED = 110; // The less the more speed
 
@@ -29,8 +29,8 @@ export default function PathFinderVisualizer({algo, walls, playAlgo, resetW, res
     const { resetWalls, setResetWalls } = resetW;
     const { resetPath, setResetPath } = resetP;
 
-    const nodeS = new Node(START_X, START_Y, true, false);
-    const nodeF = new Node(FINISH_X, FINISH_Y, false, true);
+    const [nodeS, setNodeS] = useState(new Node(-1, -1, false, false));
+    const [nodeF, setNodeF] = useState(new Node(-1, -1, false, false));
     
     const nodes = generateGrid(ROW, COLUMN); 
     console.log({nodes});
@@ -72,20 +72,21 @@ export default function PathFinderVisualizer({algo, walls, playAlgo, resetW, res
     }
 
     return (
-        <div className = "container-fluid">
+        <div id = 'main'>
             <div className="grid">
+                <p className = "note">Note: If you choose A*, for now place the finish node with min distance (col and row) of 2</p>
                 {
                     nodes.map((row, rIndex) => {
                         return <div key = { rIndex } className = "grid-row" >
                             {
                             row.map((node, cIndex) => {
-                                const isStart = (cIndex === START_X && rIndex === START_Y);
-                                const isFinish = (cIndex === FINISH_X && rIndex === FINISH_Y);
-                                const extraClassName = isStart ? ' node-start visited': isFinish ? ' node-finish' : '';
+                                // const isStart = (cIndex === START_X && rIndex === START_Y);
+                                // const isFinish = (cIndex === FINISH_X && rIndex === FINISH_Y);
+                                //const extraClassName = isStart ? ' node-start visited': isFinish ? ' node-finish' : '';
                                 return ( 
-                                    <div onClick = {() => addNode([cIndex, rIndex], walls) } 
+                                    <div onClick = {() => addNode([cIndex, rIndex], [nodeS, setNodeS], [nodeF, setNodeF], walls) } 
                                         id = {`${cIndex},${rIndex}`} 
-                                        className = {`node${extraClassName}`} key = {cIndex}>
+                                        className = {`node`} key = {cIndex}>
                                     </div>
                                 )
                             })
@@ -98,42 +99,49 @@ export default function PathFinderVisualizer({algo, walls, playAlgo, resetW, res
     )
 }
 
-function addNode(coordinate, walls) {
+function addNode(coordinate, placedNodeS, placedNodeF, walls) {
 
     const x = coordinate[0];
     const y = coordinate[1];
+
+    const nodeS = placedNodeS[0];
+    const nodeF = placedNodeF[0];
+
+    const setNodeS = placedNodeS[1];
+    const setNodeF = placedNodeF[1];
+
     const element = document.getElementById(`${x},${y}`);
 
     // // TOGGLE nodeS
-    // if (element.classList.contains('node-start')) {
+    if (element.classList.contains('node-start')) {
         
-    //     element.classList.remove('node-start', 'visited');
-    //     //setNodeS(new Node(-1, -1, false, false));
-    //     return ;
+        element.classList.remove('node-start', 'visited');
+        setNodeS(new Node(-1, -1, false, false));
+        return ;
+    } 
 
-    // // TOGGLE nodeF
-    // } else if (element.classList.contains('node-finish')) {
+    // TOGGLE nodeF
+    if (element.classList.contains('node-finish')) {
     
-    //     element.classList.remove('node-finish');
-    //     //setNodeF(new Node(-1, -1, false, false));
-    //     return ;
+        element.classList.remove('node-finish');
+        setNodeF(new Node(-1, -1, false, false));
+        return ;
+    } 
+
+    //Check if we have nodeS and nodeF placed. If yes, then we add walls
+    if (!nodeS.isStart) {
+
+        element.classList.add('node-start', 'visited');
+        setNodeS(new Node(x, y, true, false));
+        return ;
+    }
     
-    // } 
-
-    // Check if we have nodeS and nodeF placed. If yes, then we add walls
-    // if (!nodeS.isStart) {
-
-    //     element.classList.add('node-start', 'visited');
-    //     //setNodeS(new Node(x, y, true, false));
-    //     return ;
-
-    // } else if (!nodeF.isFinish) {
+    if (!nodeF.isFinish) {
         
-    //     element.classList.add('node-finish');
-    //     //setNodeF(new Node(x, y, false, true));
-    //     return ;
-
-    // } else 
+        element.classList.add('node-finish');
+        setNodeF(new Node(x, y, false, true));
+        return ;
+     }
     
     if (walls) {
 
@@ -142,13 +150,9 @@ function addNode(coordinate, walls) {
 
         // Toggle wall
         if (element.classList.contains('wall')) {
-
-            element.style.background = '';
             element.classList.remove('wall');
             return ;
         } 
-        
-        element.style.background = 'black';
         element.classList.add('wall');
     }
 
@@ -200,6 +204,8 @@ function bfsOrDFS(algo, grid, nodeS, nodeF, setPlay) {
         // The second args referes to the last node a.k.a nodeF
         // The third args referes to the setter of the play useState
         animatePath(SPEED * visited.length + 75, visited[visited.length - 1], setPlay); 
+   } else {
+       changeAfterPlay(setPlay);
    }
 }
 
@@ -231,13 +237,17 @@ function dijkstraOrAS(algo, grid, nodeS, nodeF, setPlay) {
 // This function animates each visited node
 function animateAlgorithm(visitedNodes) {
 
+    const incrementOpacity = (0.7 / visitedNodes.length);  
+    let opacity = 0.3
+
     for (let i = 0; i < visitedNodes.length; i++) {
         let node = visitedNodes[i];
 
         // With setTimeout, we change the color of each visited node with SPEED time between them
         setTimeout(() => {
             if (!node.isFinish) {
-                document.getElementById(`${node.col},${node.row}`).style.background = "lightblue";
+                document.getElementById(`${node.col},${node.row}`).style.background = `rgba(109, 93, 254, ${opacity})`;
+                opacity += incrementOpacity
             
             } else {
                 document.getElementById(`${node.col},${node.row}`).style.background = "red";
@@ -264,17 +274,24 @@ function animatePath(lastTime, nodeF, setPlay) {
     finalPath.reverse();
     console.log({finalPath});
         
+    const incrementR = Math.floor(228 / finalPath.length); 
+    const incrementG = Math.floor((255 - 128) / finalPath.length); 
+    let r = 0;
+    let g = 128;
     // The last node is the nodeS, so we wont count it
-    for (let i = 0; i <= finalPath.length; i++) {
+    for (let i = 1; i <= finalPath.length; i++) {
 
         setTimeout(() => {
             const node = finalPath[i];
+
             if (i === finalPath.length) {
                 changeAfterPlay(setPlay);
             } else if (i === finalPath.length - 1) {
                 document.getElementById(`${node.col},${node.row}`).style.background = "yellow";
             } else {
-                document.getElementById(`${node.col},${node.row}`).style.background = "purple";
+                r += incrementR;
+                g += incrementG;
+                document.getElementById(`${node.col},${node.row}`).style.background = `rgb(${r}, ${g}, 0)`;
             }
 
         // time of the last animation + time for the next animations
@@ -291,7 +308,6 @@ function clearWalls(setResetWalls) {
     const walls = document.querySelectorAll('.wall');
     walls.forEach((wall) => {
         wall.classList.remove('wall');
-        wall.style.background = '';
     });
 
     document.getElementById('clearWalls-btn').disabled = true;
