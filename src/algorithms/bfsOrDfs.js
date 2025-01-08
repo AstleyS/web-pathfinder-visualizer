@@ -1,5 +1,5 @@
 // This function implements the BFS algorithm and returns the visited nodes
-import Node from '../Node/Node';
+import Node from '../components/Node/Node';
 
 // If BFS = QUEUE (FIFO)
     // BFS find the shortest path by repeatedly visiting the adjacent node

@@ -1,6 +1,6 @@
 import './App.css';
-import PathFinderVisualizer from './PathFinderVisualizer/PathFinderVisualizer';
-import Header from './Header/Header';
+import PathFinderVisualizer from '../src/components/PathFinderVisualizer/PathFinderVisualizer';
+import Header from '../src/components/Header/Header';
 import React, { useState } from 'react';
 
 export default function App() {
@@ -15,11 +15,16 @@ export default function App() {
     <div className="App">
       <Header 
         setAlgo = { setAlgo } setWalls = { setWalls } 
-        setPlay = { setPlay } setResetWalls = { setResetWalls } setResetPath = { setResetPath }></Header>
+        setPlay = { setPlay } setResetWalls = { setResetWalls }
+        setResetPath = { setResetPath }>
+      </Header>
+
       <PathFinderVisualizer 
         algo = { algo } walls = { walls }
-        playAlgo = { {play, setPlay} } resetW = { {resetWalls, setResetWalls} } resetP = { {resetPath, setResetPath} }>
+        playAlgo = { {play, setPlay} } resetW = { {resetWalls, setResetWalls} }
+        resetP = { {resetPath, setResetPath} }>
        </PathFinderVisualizer>
+
     </div>
   );
 }

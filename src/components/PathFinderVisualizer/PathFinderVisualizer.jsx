@@ -4,13 +4,22 @@ import './PathFinderVisualizer.css';
 import Node from '../Node/Node';
 
 // Import the algorithm functions
-import { bfsOrDfs as bfsOrDfsAlgo } from '../algorithms/bfsOrDfs';
-import { dijkstraOrAS as dijkstraOrASAlgo } from '../algorithms/dijkstraOrAS';
+import { bfsOrDfs as bfsOrDfsAlgo } from '../../algorithms/bfsOrDfs';
+import { dijkstraOrAS as dijkstraOrASAlgo } from '../../algorithms/dijkstraOrAS';
 
 const ROW = 20;
 const COLUMN = 30;
 const SPEED = 140; // The less the more speed
 
+/**
+ * PathFinderVisualizer Component
+ * @param {Object} props - Passed from parent
+ * @param {string} algo - Selected algorithm (e.g., BFS, DFS, etc.)
+ * @param {boolean} walls - Indicates if walls are toggled
+ * @param {Object} playAlgo - Play control state {play, setPlay}
+ * @param {Object} resetW - Reset walls control state {resetWalls, setResetWalls}
+ * @param {Object} resetP - Reset path control state {resetPath, setResetPath}
+ */
 export default function PathFinderVisualizer({algo, walls, playAlgo, resetW, resetP}) {
 
     // Decostructing the objects passed by arguments 
@@ -24,8 +33,9 @@ export default function PathFinderVisualizer({algo, walls, playAlgo, resetW, res
     const [nodeF, setNodeF] = useState(new Node(-1, -1, false, false));
     
     const nodes = generateGrid(ROW, COLUMN); 
-    console.log({nodes});
 
+    /* Inspection debugs */
+    console.log({nodes});
     console.log({algo});
     console.log({walls});
     console.log({play});
@@ -179,25 +189,35 @@ function addNode(coordinate, placedNodeS, placedNodeF, walls, setValidNodes) {
     
 }
 
-// This function generates the grid
+/**
+ * Generates a 2D grid
+ * @param {number} maxRow - Number of rows
+ * @param {number} maxCol - Number of columns
+ * @returns {Array} - 2D array of node IDs
+ */
 function generateGrid(maxRow, maxCol) {
+    return Array.from( { length: maxRow }, ( _, row) => 
+        Array.from( { length: maxCol }, ( _, col) => `${col}, ${row}`)
+    );
+    /*
     const nodes = [];
-        for (let row = 0; row < maxRow; row++) {
-            const currentRow = [];
+    for (let row = 0; row < maxRow; row++) {
+        const currentRow = [];
 
-            for (let col = 0; col < maxCol; col++) {
-                // Defining the node object
-                // Col, Row, isStart, isFinish 
-                const currentNode = `${col},${row}`;
+        for (let col = 0; col < maxCol; col++) {
+            // Defining the node object
+            // Col, Row, isStart, isFinish 
+            const currentNode = `${col},${row}`;
 
-                // Saving the column nodes in each row
-                currentRow.push(currentNode);
-            }
-
-            // Saving the rows
-            nodes.push(currentRow);
+            // Saving the column nodes in each row
+            currentRow.push(currentNode);
         }
+
+        // Saving the rows
+        nodes.push(currentRow);
+    }
     return nodes;
+    */
 }
 
 // This function handles the user click when choosing BFS or DFS
@@ -364,7 +384,7 @@ function changeOnPlay() {
     // Change play button state
     playBtn.classList.replace('btn-success', 'btn-danger');
     playBtn.innerText = 'Searching for path...';
-    playBtn.disabled = true;
+    //playBtn.disabled = true;
     
     // Change clear walls button state
     document.getElementById('clearWalls-btn').disabled = true;

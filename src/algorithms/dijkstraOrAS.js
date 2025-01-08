@@ -1,4 +1,4 @@
-import Node from '../Node/Node';
+import Node from '../components/Node/Node';
 
 // Priority Queue
     /* SHIFT: REMOVE AT BEGINNING | PUSH: ADD AT LAST */
