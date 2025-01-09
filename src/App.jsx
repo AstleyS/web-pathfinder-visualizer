@@ -6,18 +6,19 @@ import React, { useState } from 'react';
 
 function App() {
   
-  const [algo, setAlgo] = useState('');
-  const [walls, setWalls] = useState(false);
-  const [play, setPlay] = useState(false);
+  const [algo, setAlgo] = useState('Select Algorithm');
+  const [isAddingWalls, setAddingWalls] = useState(false);
+  const [isPlaying, setPlaying] = useState(false);
   const [resetWalls, setResetWalls] = useState(false);
   const [resetPath, setResetPath] = useState(false);
 
   return (
     <div className="App">
       <Header 
-        setAlgo = { setAlgo } setWalls = { setWalls } 
-        setPlay = { setPlay } setResetWalls = { setResetWalls }
-        setResetPath = { setResetPath }>
+        algo = {algo} setAlgo = { setAlgo } 
+        isAddingWalls = {isAddingWalls} setAddingWalls = { setAddingWalls } 
+        isPlaying = {isPlaying} setPlaying = { setPlaying }
+        setResetWalls = { setResetWalls } setResetPath = { setResetPath }>
       </Header>
 
       {/* <PathFinderVisualizer 

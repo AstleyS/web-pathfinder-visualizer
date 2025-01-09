@@ -20,7 +20,7 @@ const SPEED = 140; // The less the more speed
  * @param {Object} resetW - Reset walls control state {resetWalls, setResetWalls}
  * @param {Object} resetP - Reset path control state {resetPath, setResetPath}
  */
-export default function PathFinderVisualizer({algo, walls, playAlgo, resetW, resetP}) {
+function PathFinderVisualizer({algo, walls, playAlgo, resetW, resetP}) {
 
     // Decostructing the objects passed by arguments 
     const { play, setPlay } = playAlgo;
@@ -28,9 +28,8 @@ export default function PathFinderVisualizer({algo, walls, playAlgo, resetW, res
     const { resetPath, setResetPath } = resetP;
 
     const [validNodes, setValidNodes] = useState(false);
-
-    const [nodeS, setNodeS] = useState(new Node(-1, -1, false, false));
-    const [nodeF, setNodeF] = useState(new Node(-1, -1, false, false));
+    const [nodeStart, setNodeStart] = useState(new Node(-1, -1, false, false));
+    const [nodeFinish, setNodeFinish] = useState(new Node(-1, -1, false, false));
     
     const nodes = generateGrid(ROW, COLUMN); 
 
@@ -51,16 +50,16 @@ export default function PathFinderVisualizer({algo, walls, playAlgo, resetW, res
 
             switch(algo) {
                 case 'BFS':
-                    bfsOrDFS('BFS', nodes, nodeS, nodeF, setPlay);
+                    bfsOrDFS('BFS', nodes, nodeStart, nodeFinish, setPlay);
                     break;
                 case 'DFS':
-                    bfsOrDFS('DFS', nodes, nodeS, nodeF, setPlay);
+                    bfsOrDFS('DFS', nodes, nodeStart, nodeFinish, setPlay);
                     break;
                 case 'Dijkstra':
-                    dijkstraOrAS('Dijkstra', nodes, nodeS, nodeF, setPlay);
+                    dijkstraOrAS('Dijkstra', nodes, nodeStart, nodeFinish, setPlay);
                     break;
                 case 'AStar':
-                    dijkstraOrAS('AStar', nodes, nodeS, nodeF, setPlay);
+                    dijkstraOrAS('AStar', nodes, nodeStart, nodeFinish, setPlay);
                     break;
                 default:
                     console.log('Algo not found');
@@ -102,7 +101,7 @@ export default function PathFinderVisualizer({algo, walls, playAlgo, resetW, res
                                     // const isFinish = (cIndex === FINISH_X && rIndex === FINISH_Y);
                                     //const extraClassName = isStart ? ' node-start visited': isFinish ? ' node-finish' : '';
                                     return ( 
-                                        <div onClick = {() => addNode([cIndex, rIndex], [nodeS, setNodeS], [nodeF, setNodeF], walls, setValidNodes) } 
+                                        <div onClick = {() => addNode([cIndex, rIndex], [nodeStart, setNodeStart], [nodeFinish, setNodeFinish], walls, setValidNodes) } 
                                             id = {`${cIndex},${rIndex}`} 
                                             className = {`node`} key = {cIndex}>
                                         </div>
@@ -411,3 +410,5 @@ function changeAfterPlay(setPlay) {
     if (walls.length > 0 ) document.getElementById('clearWalls-btn').disabled = false;
     
 } 
+
+export default PathFinderVisualizer;

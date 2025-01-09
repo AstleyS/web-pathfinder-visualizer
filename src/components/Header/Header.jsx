@@ -1,44 +1,49 @@
 import React, { useState } from "react";
 import { Navbar, Nav, NavDropdown, Button } from "react-bootstrap";
-// import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 
 
-function Header({ setAlgo, setWalls, setPlay, setResetWalls, setResetPath }) {
-  const [selectedAlgo, setSelectedAlgo] = useState("Choose Algorithm");
-  const [addWallsActive, setAddWallsActive] = useState(false);
-  const [playEnabled, setPlayEnabled] = useState(false);
+const Header = ({ 
+    algo, setAlgo, 
+    isAddingWalls, setAddingWalls, 
+    isPlaying, setPlaying, 
+    setResetWalls, 
+    setResetPath 
+}) => {
+    
+    const [playButtonText, setPlayButtonText] = useState('Play')
+    const [addWallsButtonText, setAddWallsButtonText] = useState('Add Walls')
+    
+    const handleAlgoChange = (algo) => {
+        setAlgo(algo);
+    };
 
-  const handleAlgoChange = (algo) => {
-    setAlgo(algo);
-    setSelectedAlgo(algo);
-    setPlayEnabled(true);
-  };
 
-  const toggleAddWalls = () => {
-    const newState = !addWallsActive;
-    setWalls(newState);
-    setAddWallsActive(newState);
+    const toggleAddWalls = () => {
+        const newState = !isAddingWalls;
+        setAddingWalls(newState);
 
-    if (newState) {
-      setPlayEnabled(false);
-    } else {
-      setPlayEnabled(true);
+        newState ? setAddWallsButtonText('Enough Walls') :
+                    setAddWallsButtonText('Add Walls')
+    };
+
+    const togglePlay = () => {
+        const newState = !isPlaying;
+        setPlaying(newState);
+        
+        newState ? setPlayButtonText('Searching for path...') :
+                    setPlayButtonText('Play')
     }
-  };
 
-  const handlePlay = () => {
-    setPlay(true);
-  };
 
-  const handleClearWalls = () => {
-    setResetWalls(true);
-  };
+    const handleClearWalls = () => {
+        setResetWalls(true);
+    };
 
-  const handleClearPath = () => {
-    setResetPath(true);
-    setPlayEnabled(false);
-  };
+    const handleClearPath = () => {
+        setResetPath(true);
+    };
 
   return (
     <Navbar id="navbar" collapseOnSelect expand="sm" variant="dark" bg="dark">
@@ -48,8 +53,8 @@ function Header({ setAlgo, setWalls, setPlay, setResetWalls, setResetPath }) {
         <Nav className="mr-auto">
           <NavDropdown
             id="collasible-nav-dropdown"
-            title={selectedAlgo}
-            disabled={addWallsActive}
+            title={algo}
+            disabled={ isAddingWalls || isPlaying }
           >
             <NavDropdown.Item onClick={() => handleAlgoChange("BFS")}>
               BFS
@@ -69,18 +74,19 @@ function Header({ setAlgo, setWalls, setPlay, setResetWalls, setResetPath }) {
           </NavDropdown>
           <Button
             id="addWalls-btn"
-            variant={addWallsActive ? "warning" : "info"}
+            variant={isAddingWalls ? "warning" : "info"}
             onClick={toggleAddWalls}
+            disabled={isPlaying}
           >
-            {addWallsActive ? "Enough of Walls" : "Add Walls"}
+            {addWallsButtonText}
           </Button>
           <Button
             id="play-btn"
             variant="success"
-            disabled={!playEnabled}
-            onClick={handlePlay}
+            onClick={togglePlay}
+            disabled={isAddingWalls}
           >
-            Play
+            {playButtonText}
           </Button>
         </Nav>
         <Nav>
@@ -88,6 +94,7 @@ function Header({ setAlgo, setWalls, setPlay, setResetWalls, setResetPath }) {
             id="clearWalls-btn"
             variant="secondary"
             onClick={handleClearWalls}
+            disabled={isPlaying}
           >
             Clear Walls
           </Button>
@@ -95,7 +102,7 @@ function Header({ setAlgo, setWalls, setPlay, setResetWalls, setResetPath }) {
             id="clearPath-btn"
             variant="danger"
             onClick={handleClearPath}
-            disabled={!playEnabled}
+            disabled={isPlaying || isAddingWalls}
           >
             Clear Path
           </Button>
