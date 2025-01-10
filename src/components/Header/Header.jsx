@@ -3,13 +3,12 @@ import { Navbar, Nav, NavDropdown, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 
-
 const Header = ({ 
     algo, setAlgo, 
     isAddingWalls, setAddingWalls, 
     isPlaying, setPlaying, 
-    setResetWalls, 
-    setResetPath 
+    setClearWalls, 
+    setReset 
 }) => {
     
     const [playButtonText, setPlayButtonText] = useState('Play')
@@ -38,11 +37,12 @@ const Header = ({
 
 
     const handleClearWalls = () => {
-        setResetWalls(true);
+        setClearWalls(true);
     };
 
-    const handleClearPath = () => {
-        setResetPath(true);
+    const handleReset = () => {
+        setReset(true);
+        setAlgo('Select Algorithm')
     };
 
   return (
@@ -99,12 +99,12 @@ const Header = ({
             Clear Walls
           </Button>
           <Button
-            id="clearPath-btn"
+            id="reset-btn"
             variant="danger"
-            onClick={handleClearPath}
+            onClick={handleReset}
             disabled={isPlaying || isAddingWalls}
           >
-            Clear Path
+            Reset
           </Button>
         </Nav>
       </Navbar.Collapse>
