@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Navbar, Nav, NavDropdown, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -13,11 +13,10 @@ const Header = ({
     
     const [playButtonText, setPlayButtonText] = useState('Play')
     const [addWallsButtonText, setAddWallsButtonText] = useState('Add Walls')
-    
+
     const handleAlgoChange = (algo) => {
         setAlgo(algo);
     };
-
 
     const toggleAddWalls = () => {
         const newState = !isAddingWalls;

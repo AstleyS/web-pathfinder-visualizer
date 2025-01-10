@@ -6,7 +6,6 @@ const ROW = 50
 const COL = 50
 const algorithms = ['BFS', 'DFS', 'Dijkstra', 'A*']
 
-
 function generateGrid(rows, cols) {
     const grid = [];
     for (let row = 0; row < rows; row++) {
@@ -21,13 +20,27 @@ function generateGrid(rows, cols) {
     return grid;
 }
 
-const PathFinderVisualizer = ({algo, isAddingWalls, clearWalls, reset}) => {
+const PathFinderVisualizer = ({algo, isAddingWalls, clearWalls, setClearWalls, reset}) => {
   const [grid, setGrid] = useState(generateGrid(ROW, COL)); 
   const [isMousePressed, setMousePressed] = useState(false);
 
   useEffect(() => {
     setGrid(generateGrid(ROW, COL))
   }, [reset])
+
+  useEffect(() => {
+    if (clearWalls) {
+      const newGrid = grid.map(row =>
+            row.map(node => {
+                node.isWall = false;
+                return node; // Return the modified node
+            })
+      );
+  
+      setGrid(newGrid);
+      setClearWalls(false);
+    }
+  }, [clearWalls, grid, setClearWalls]);
 
   const handleMouseDown = (node) => {
 
@@ -38,7 +51,6 @@ const PathFinderVisualizer = ({algo, isAddingWalls, clearWalls, reset}) => {
             setMousePressed(true);
         }
     }
-
   };
 
   const handleMouseEnter = (node) => {

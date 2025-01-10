@@ -25,7 +25,7 @@ function App() {
       <PathFinderVisualizer 
         algo = {algo}
         isAddingWalls = {isAddingWalls}
-        clearWalls = {clearWalls}
+        clearWalls = {clearWalls} setClearWalls = {setClearWalls}
         reset = {reset}
       
       
