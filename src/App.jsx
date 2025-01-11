@@ -13,6 +13,9 @@ function App() {
   const [clearWalls, setClearWalls] = useState(false);
   const [reset, setReset] = useState(false);
 
+  const [nodeStart, setNodeStart] = useState(null)
+  const [nodeFinish, setNodeFinish] = useState(null)
+
   return (
     <div className="App">
       <Header 
@@ -20,15 +23,16 @@ function App() {
         isAddingWalls = {isAddingWalls} setAddingWalls = { setAddingWalls } 
         isPlaying = {isPlaying} setPlaying = { setPlaying }
         setClearWalls = { setClearWalls } setReset = { setReset }
+        nodeStart = {nodeStart} nodeFinish = {nodeFinish}
       />
  
       <PathFinderVisualizer 
         algo = {algo}
         isAddingWalls = {isAddingWalls}
         clearWalls = {clearWalls} setClearWalls = {setClearWalls}
-        reset = {reset}
-      
-      
+        reset = {reset} setReset={setReset}
+        nodeStart = {nodeStart} setNodeStart = {setNodeStart}
+        nodeFinish = {nodeFinish} setNodeFinish = {setNodeFinish}
       />
 
       {/* <PathFinderVisualizer 

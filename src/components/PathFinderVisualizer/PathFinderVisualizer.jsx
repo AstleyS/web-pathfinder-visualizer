@@ -20,13 +20,25 @@ function generateGrid(rows, cols) {
     return grid;
 }
 
-const PathFinderVisualizer = ({algo, isAddingWalls, clearWalls, setClearWalls, reset}) => {
+const PathFinderVisualizer = ({
+      algo, 
+      isAddingWalls,
+      clearWalls, setClearWalls,
+      reset, setReset,
+      nodeStart, setNodeStart,
+      nodeFinish, setNodeFinish
+}) => {
   const [grid, setGrid] = useState(generateGrid(ROW, COL)); 
   const [isMousePressed, setMousePressed] = useState(false);
 
+
+
   useEffect(() => {
-    setGrid(generateGrid(ROW, COL))
-  }, [reset])
+    setGrid(generateGrid(ROW, COL));
+    setReset(false);
+    setNodeStart(null)
+    setNodeFinish(null)
+  }, [reset]);
 
   useEffect(() => {
     if (clearWalls) {
@@ -44,24 +56,34 @@ const PathFinderVisualizer = ({algo, isAddingWalls, clearWalls, setClearWalls, r
 
   const handleMouseDown = (node) => {
 
-    if (isAlgoSelected) {
-        if (isAddingWalls) {
-            node.isWall = !node.isWall;
-            setGrid([...grid]);
-            setMousePressed(true);
-        }
+    if (!nodeStart) {
+      setNodeStart(node);  
+      node.isStart = true;
+      setGrid([...grid]);  
+      return;
     }
-  };
+
+    if (!nodeFinish) {
+        setNodeFinish(node);  
+        node.isFinish = true;
+        setGrid([...grid]);   
+        return;
+    }
+
+    if (nodeStart && nodeFinish && isAlgoSelected && isAddingWalls) {
+        node.isWall = !node.isWall; 
+        setGrid([...grid]);
+        setMousePressed(true);
+    }
+  }
 
   const handleMouseEnter = (node) => {
-    if (isAlgoSelected) {
-        if (isAddingWalls) {
-            if (!isMousePressed) return;
-            node.isWall = !node.isWall;
-            setGrid([...grid]);
-        }
-    }
-  };
+
+    if (!isMousePressed || !isAddingWalls || !nodeStart || !nodeFinish) return;
+    node.isWall = !node.isWall;
+    setGrid([...grid]);
+  }
+  
 
   const handleMouseUp = () => {
     setMousePressed(false);

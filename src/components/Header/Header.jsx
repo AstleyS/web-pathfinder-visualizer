@@ -8,14 +8,22 @@ const Header = ({
     isAddingWalls, setAddingWalls, 
     isPlaying, setPlaying, 
     setClearWalls, 
-    setReset 
+    setReset, 
+    nodeStart, nodeFinish 
 }) => {
     
     const [playButtonText, setPlayButtonText] = useState('Play')
     const [addWallsButtonText, setAddWallsButtonText] = useState('Add Walls')
+    const [isNodeSelected, setNodesSelected] = useState(false)
     const algorithms = ['BFS', 'DFS', 'Dijkstra', 'A*']
 
     const isAlgoSelected = !algorithms.includes(algo)
+
+
+
+    useEffect(() => {
+      setNodesSelected(nodeStart && nodeFinish)  
+    }, [nodeStart, nodeFinish]);
 
 
     const handleAlgoChange = (algo) => {
@@ -63,7 +71,8 @@ const Header = ({
               <>
               <NavDropdown.Item onClick={() => handleAlgoChange(algorithm)}>
                 {algorithm}
-              </NavDropdown.Item><NavDropdown.Divider />
+              </NavDropdown.Item>
+              <NavDropdown.Divider />
               </>
             ))}
           </NavDropdown>
@@ -79,7 +88,7 @@ const Header = ({
             id="play-btn"
             variant="success"
             onClick={togglePlay}
-            disabled={isAddingWalls}
+            disabled={!isNodeSelected || isAddingWalls || isAlgoSelected}
           >
             {playButtonText}
           </Button>
