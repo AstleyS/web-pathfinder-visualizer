@@ -13,6 +13,10 @@ const Header = ({
     
     const [playButtonText, setPlayButtonText] = useState('Play')
     const [addWallsButtonText, setAddWallsButtonText] = useState('Add Walls')
+    const algorithms = ['BFS', 'DFS', 'Dijkstra', 'A*']
+
+    const isAlgoSelected = !algorithms.includes(algo)
+
 
     const handleAlgoChange = (algo) => {
         setAlgo(algo);
@@ -55,27 +59,19 @@ const Header = ({
             title={algo}
             disabled={ isAddingWalls || isPlaying }
           >
-            <NavDropdown.Item onClick={() => handleAlgoChange("BFS")}>
-              BFS
-            </NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item onClick={() => handleAlgoChange("DFS")} disabled>
-              DFS
-            </NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item onClick={() => handleAlgoChange("Dijkstra")}>
-              Dijkstra
-            </NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item onClick={() => handleAlgoChange("A*")}>
-              A*
-            </NavDropdown.Item>
+            {algorithms.map((algorithm) => (
+              <>
+              <NavDropdown.Item onClick={() => handleAlgoChange(algorithm)}>
+                {algorithm}
+              </NavDropdown.Item><NavDropdown.Divider />
+              </>
+            ))}
           </NavDropdown>
           <Button
             id="addWalls-btn"
             variant={isAddingWalls ? "warning" : "info"}
             onClick={toggleAddWalls}
-            disabled={isPlaying}
+            disabled={isPlaying || isAlgoSelected }
           >
             {addWallsButtonText}
           </Button>
