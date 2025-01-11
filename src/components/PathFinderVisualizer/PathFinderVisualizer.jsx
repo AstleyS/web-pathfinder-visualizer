@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import NodeComponent from '../../components/Node/NodeComponent';
 import Node from '../../components/Node/Node';
+import { bfs, dfs, dijkstra, aStar } from '../../algorithms/algorithms';
 
 const ROW = 50
 const COL = 50
 const algorithms = ['BFS', 'DFS', 'Dijkstra', 'A*']
+
+const algoFunction = {
+  'BFS': bfs,
+  'DFS': dfs,
+  'Dijkstra': dijkstra,
+  'A*': aStar,
+}
 
 function generateGrid(rows, cols) {
     const grid = [];
@@ -23,6 +31,7 @@ function generateGrid(rows, cols) {
 const PathFinderVisualizer = ({
       algo, 
       isAddingWalls,
+      isPlaying, setPlaying,
       clearWalls, setClearWalls,
       reset, setReset,
       nodeStart, setNodeStart,
@@ -31,14 +40,6 @@ const PathFinderVisualizer = ({
   const [grid, setGrid] = useState(generateGrid(ROW, COL)); 
   const [isMousePressed, setMousePressed] = useState(false);
 
-
-
-  useEffect(() => {
-    setGrid(generateGrid(ROW, COL));
-    setReset(false);
-    setNodeStart(null)
-    setNodeFinish(null)
-  }, [reset]);
 
   useEffect(() => {
     if (clearWalls) {
@@ -53,6 +54,24 @@ const PathFinderVisualizer = ({
       setClearWalls(false);
     }
   }, [clearWalls, grid, setClearWalls]);
+
+
+  useEffect(() => {
+    
+    if(isPlaying) executeAlgorithm(algo)
+
+  }, [isPlaying, algo])
+
+  useEffect(() => {
+    setGrid(generateGrid(ROW, COL));
+    setReset(false);
+    setNodeStart(null)
+    setNodeFinish(null)
+  }, [reset]);
+
+  const executeAlgorithm = (algo) => {
+    algoFunction[algo](grid, setGrid, nodeStart, nodeFinish, ROW, COL)
+  } 
 
   const handleMouseDown = (node) => {
 

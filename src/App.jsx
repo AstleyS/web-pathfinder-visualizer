@@ -29,6 +29,7 @@ function App() {
       <PathFinderVisualizer 
         algo = {algo}
         isAddingWalls = {isAddingWalls}
+        isPlaying = {isPlaying} setPlaying = {setPlaying}
         clearWalls = {clearWalls} setClearWalls = {setClearWalls}
         reset = {reset} setReset={setReset}
         nodeStart = {nodeStart} setNodeStart = {setNodeStart}
