@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Navbar, Nav, NavDropdown, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-
 const Header = ({ 
     algo, setAlgo, 
     isAddingWalls, setAddingWalls, 
@@ -19,12 +18,13 @@ const Header = ({
 
     const isAlgoSelected = !algorithms.includes(algo)
 
-
-
+    
+    // UseEffect to catch when the start and finish nodes are selected from the PathFinder component
     useEffect(() => {
       setNodesSelected(nodeStart && nodeFinish)  
     }, [nodeStart, nodeFinish]);
 
+    /* Handlers */
 
     const handleAlgoChange = (algo) => {
         setAlgo(algo);
@@ -45,7 +45,6 @@ const Header = ({
         newState ? setPlayButtonText('Searching for path...') :
                     setPlayButtonText('Play')
     }
-
 
     const handleClearWalls = () => {
         setClearWalls(true);
@@ -80,7 +79,7 @@ const Header = ({
             id="addWalls-btn"
             variant={isAddingWalls ? "warning" : "info"}
             onClick={toggleAddWalls}
-            disabled={isPlaying || isAlgoSelected }
+            disabled={isPlaying || isAlgoSelected } // Disable button if the user is playing or an algorithm is not selected
           >
             {addWallsButtonText}
           </Button>
@@ -88,7 +87,7 @@ const Header = ({
             id="play-btn"
             variant="success"
             onClick={togglePlay}
-            disabled={!isNodeSelected || isAddingWalls || isAlgoSelected}
+            disabled={!isNodeSelected || isAddingWalls || isAlgoSelected} // Disable button if the user is not selecting start and finish nodes, adding walls or an algorithm is not selected
           >
             {playButtonText}
           </Button>
@@ -98,7 +97,7 @@ const Header = ({
             id="clearWalls-btn"
             variant="secondary"
             onClick={handleClearWalls}
-            disabled={isPlaying}
+            disabled={isPlaying} // Disable button if the user is playing
           >
             Clear Walls
           </Button>
@@ -106,7 +105,7 @@ const Header = ({
             id="reset-btn"
             variant="danger"
             onClick={handleReset}
-            disabled={isPlaying || isAddingWalls}
+            disabled={isPlaying || isAddingWalls} // Disable button if the user is playing or adding walls
           >
             Reset
           </Button>

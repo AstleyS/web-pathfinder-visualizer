@@ -1,3 +1,8 @@
+/*
+  Node class to represent each cell in the grid. Each node has a row and column index, and can be of type start, finish, or empty.  
+  The node also keeps track of its previous node, cost, heuristic, and total cost.
+*/
+
 class Node {
     constructor(col, row, isStart = false, isFinish = false) {
       this.col = col;

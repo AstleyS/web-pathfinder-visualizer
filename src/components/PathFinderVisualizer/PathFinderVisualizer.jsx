@@ -7,6 +7,7 @@ const ROW = 50
 const COL = 50
 const algorithms = ['BFS', 'DFS', 'Dijkstra', 'A*']
 
+// Map the algorithm name to the corresponding function
 const algoFunction = {
   'BFS': bfs,
   'DFS': dfs,
@@ -40,7 +41,7 @@ const PathFinderVisualizer = ({
   const [grid, setGrid] = useState(generateGrid(ROW, COL)); 
   const [isMousePressed, setMousePressed] = useState(false);
 
-
+  // UseEffect to catch when the clear walls button is clicked in the Header Component
   useEffect(() => {
     if (clearWalls) {
       const newGrid = grid.map(row =>
@@ -55,13 +56,14 @@ const PathFinderVisualizer = ({
     }
   }, [clearWalls, grid, setClearWalls]);
 
-
+  // UseEffect to catch when the play button is clicked in the Header Component
   useEffect(() => {
     
-    if(isPlaying) executeAlgorithm(algo)
+    //if(isPlaying) executeAlgorithm(algo)
 
   }, [isPlaying, algo])
 
+  // UseEffect to catch when the reset button is clicked in the Header Component
   useEffect(() => {
     setGrid(generateGrid(ROW, COL));
     setReset(false);
@@ -73,8 +75,19 @@ const PathFinderVisualizer = ({
     algoFunction[algo](grid, setGrid, nodeStart, nodeFinish, ROW, COL)
   } 
 
+  /* 
+    Handler for mouse down event
+      MouseDown = when the mouse is pressed down on a node
+      MouseEnter = when the mouse is moved over a node
+      MouseUp = when the mouse is released
+  */
+
   const handleMouseDown = (node) => {
 
+    /*
+      If the start node is not selected, set the node as the start node
+      If the finish node is not selected, set the node as the finish node
+    */
     if (!nodeStart) {
       setNodeStart(node);  
       node.isStart = true;
@@ -89,6 +102,7 @@ const PathFinderVisualizer = ({
         return;
     }
 
+    // If the start and finish nodes are selected, and an algorithm is selected, if the user is adding walls, toggle the wall
     if (nodeStart && nodeFinish && isAlgoSelected && isAddingWalls) {
         node.isWall = !node.isWall; 
         setGrid([...grid]);
@@ -97,13 +111,12 @@ const PathFinderVisualizer = ({
   }
 
   const handleMouseEnter = (node) => {
-
+    // If the mouse is not pressed, or the user is not adding walls, or the start and finish nodes are not selected, return nothing toogle the wall
     if (!isMousePressed || !isAddingWalls || !nodeStart || !nodeFinish) return;
     node.isWall = !node.isWall;
     setGrid([...grid]);
   }
   
-
   const handleMouseUp = () => {
     setMousePressed(false);
   };

@@ -6,7 +6,8 @@ import React, { useState } from 'react';
 import PathFinderVisualizer from './components/PathFinderVisualizer/PathFinderVisualizer';
 
 function App() {
-  
+
+  /* States */
   const [algo, setAlgo] = useState('Select Algorithm');
   const [isAddingWalls, setAddingWalls] = useState(false);
   const [isPlaying, setPlaying] = useState(false);
