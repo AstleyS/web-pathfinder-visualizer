@@ -15,15 +15,13 @@ export default function App() {
   const [startNode, setStartNode] = useState({ row: 10, col: 5 });
   const [finishNode, setFinishNode] = useState({ row: 10, col: 29 });
   const [currentSelection, setCurrentSelection] = useState(NODE_TYPES.WALL);
-  
+
   const animationTimers = useRef([]);
-  
-  // Initialize the grid
+
   useEffect(() => {
     initializeGrid();
-  }, []);
+  }, [startNode, finishNode]); // Reinitialize grid when start/finish changes
 
-  // Reset animation timers when component unmounts
   useEffect(() => {
     return () => {
       animationTimers.current.forEach(timer => clearTimeout(timer));
@@ -54,32 +52,38 @@ export default function App() {
 
   const handleNodeClick = (row, col) => {
     if (isVisualizing) return;
-    
+
     const newGrid = grid.slice();
     const node = newGrid[row][col];
-    
-    // Reset any previous nodes of the same type
+
     if (currentSelection === NODE_TYPES.START) {
+      // Clear old start node
       newGrid[startNode.row][startNode.col].isStart = false;
+      // Set new start node
       node.isStart = true;
+      node.isWall = false; // Start node can't be a wall
       setStartNode({ row, col });
     } else if (currentSelection === NODE_TYPES.FINISH) {
+      // Clear old finish node
       newGrid[finishNode.row][finishNode.col].isFinish = false;
+      // Set new finish node
       node.isFinish = true;
+      node.isWall = false; // Finish node can't be a wall
       setFinishNode({ row, col });
     } else if (currentSelection === NODE_TYPES.WALL) {
-      // Toggle wall
+      // Prevent toggling wall on start or finish nodes
+      if (node.isStart || node.isFinish) return;
       node.isWall = !node.isWall;
     }
-    
+
     setGrid(newGrid);
   };
 
   const resetGrid = () => {
     animationTimers.current.forEach(timer => clearTimeout(timer));
     animationTimers.current = [];
-    
-    const newGrid = grid.map(row => 
+
+    const newGrid = grid.map(row =>
       row.map(node => ({
         ...node,
         isVisited: false,
@@ -88,7 +92,7 @@ export default function App() {
         previousNode: null
       }))
     );
-    
+
     setGrid(newGrid);
     setIsVisualizing(false);
   };
@@ -105,17 +109,16 @@ export default function App() {
       resetGrid();
       return;
     }
-    
+
     resetGrid();
     setIsVisualizing(true);
-    
+
     const startNodeObj = grid[startNode.row][startNode.col];
     const finishNodeObj = grid[finishNode.row][finishNode.col];
-  
 
     const algoFunc = ALGORITHMS[algorithm] || ALGORITHMS["BFS"];
     const visitedNodesInOrder = algoFunc(grid, startNodeObj, finishNodeObj);
-    
+
     const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNodeObj);
     animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
   };
@@ -129,7 +132,7 @@ export default function App() {
         animationTimers.current.push(timer);
         return;
       }
-      
+
       const timer = setTimeout(() => {
         const node = visitedNodesInOrder[i];
         setGrid(prevGrid => {
@@ -142,7 +145,7 @@ export default function App() {
           return newGrid;
         });
       }, speed * i);
-      
+
       animationTimers.current.push(timer);
     }
   };
@@ -160,12 +163,12 @@ export default function App() {
           newGrid[node.row][node.col] = newNode;
           return newGrid;
         });
-        
+
         if (i === nodesInShortestPathOrder.length - 1) {
           setIsVisualizing(false);
         }
       }, speed * i);
-      
+
       animationTimers.current.push(timer);
     }
   };
@@ -181,32 +184,29 @@ export default function App() {
   };
 
   return (
-  <div className="app-container">
-    <div className="app-content">
-      <Header 
-        algorithms={ALGORITHMS_NAMES}
-        speeds={SPEEDS}
-        algorithm={algorithm}
-        speed={speed}
-        isVisualizing={isVisualizing}
-        setAlgorithm={setAlgorithm}
-        setSpeed={setSpeed}
-        visualizeAlgorithm={visualizeAlgorithm}
-        currentSelection={currentSelection}
-        setCurrentSelection={setCurrentSelection}
-        resetFullGrid={resetFullGrid}
-      />
-      
-      <div className="pathfinder-wrapper">
-        <PathFinder 
-          grid={grid}
-          onNodeClick={handleNodeClick}
+    <div className="app-container">
+      <div className="app-content">
+        <Header
+          algorithms={ALGORITHMS_NAMES}
+          speeds={SPEEDS}
+          algorithm={algorithm}
+          speed={speed}
+          isVisualizing={isVisualizing}
+          setAlgorithm={setAlgorithm}
+          setSpeed={setSpeed}
+          visualizeAlgorithm={visualizeAlgorithm}
+          currentSelection={currentSelection}
+          setCurrentSelection={setCurrentSelection}
+          resetFullGrid={resetFullGrid}
         />
+
+        <div className="pathfinder-wrapper">
+          <PathFinder
+            grid={grid}
+            onNodeClick={handleNodeClick}
+          />
+        </div>
       </div>
     </div>
-  </div>
   );
 }
-
-
-

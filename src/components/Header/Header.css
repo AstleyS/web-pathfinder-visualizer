@@ -60,21 +60,14 @@
   background-color: #16a34a; /* green-600 */
 }
 
-.btn-stop {
+.btn-stop, .btn-clear {
   background-color: #ef4444; /* red-500 */
 }
 
-.btn-stop:hover {
+.btn-stop:hover, .btn.clear:hover {
   background-color: #dc2626; /* red-600 */
 }
 
-.btn-clear {
-  background-color: #374151; /* gray-700 */
-}
-
-.btn-clear:hover {
-  background-color: #1f2937; /* gray-800 */
-}
 
 .btn:disabled {
   opacity: 0.5;
