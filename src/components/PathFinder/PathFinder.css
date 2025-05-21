@@ -1,0 +1,16 @@
+.pathfinder-container {
+  display: flex;
+  justify-content: center;
+}
+
+.pathfinder-grid {
+  display: grid;
+  gap: 0;
+  background-color: white;
+  padding: 0.25rem; /* equivalent to Tailwind p-1 */
+}
+
+.pathfinder-row {
+  display: flex;
+  gap: 0;
+}

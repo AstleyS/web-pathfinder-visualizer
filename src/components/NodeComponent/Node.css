@@ -1,0 +1,31 @@
+.node {
+  width: 1.5rem; /* 6 * 0.25rem */
+  height: 1.5rem;
+  border: 1px solid #d1d5db; /* Tailwind gray-300 */
+  transition: background-color 0.3s;
+  cursor: pointer;
+}
+
+.node-start {
+  background-color: #22c55e; /* Tailwind green-500 */
+}
+
+.node-finish {
+  background-color: #ef4444; /* Tailwind red-500 */
+}
+
+.node-wall {
+  background-color: #1f2937; /* Tailwind gray-800 */
+}
+
+.node-path {
+  background-color: #facc15; /* Tailwind yellow-400 */
+}
+
+.node-visited {
+  background-color: #93c5fd; /* Tailwind blue-300 */
+}
+
+.node-default {
+  background-color: white;
+}
