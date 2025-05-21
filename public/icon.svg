@@ -1,0 +1,131 @@
+<svg width="320" height="320" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg" style="background:#eee;">
+  <!-- Grid: 10x10 cells of 30x30 -->
+  <g>
+    <!-- Draw grid cells -->
+    <!-- Using rect to draw all cells -->
+    <!-- 100 cells total -->
+    <!-- Loop simulated by copy-pasting rects -->
+    <!-- x = col*30, y = row*30 -->
+    <!-- Fill white with light gray stroke -->
+    <!-- I’ll generate full grid below -->
+    <!-- Rows -->
+    <rect x="0" y="0" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="30" y="0" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="60" y="0" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="90" y="0" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="120" y="0" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="150" y="0" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="180" y="0" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="210" y="0" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="240" y="0" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="270" y="0" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    
+    <rect x="0" y="30" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="30" y="30" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="60" y="30" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="90" y="30" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="120" y="30" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="150" y="30" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="180" y="30" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="210" y="30" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="240" y="30" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="270" y="30" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    
+    <rect x="0" y="60" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="30" y="60" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="60" y="60" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="90" y="60" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="120" y="60" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="150" y="60" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="180" y="60" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="210" y="60" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="240" y="60" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="270" y="60" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    
+    <rect x="0" y="90" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="30" y="90" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="60" y="90" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="90" y="90" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="120" y="90" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="150" y="90" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="180" y="90" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="210" y="90" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="240" y="90" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="270" y="90" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    
+    <rect x="0" y="120" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="30" y="120" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="60" y="120" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="90" y="120" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="120" y="120" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="150" y="120" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="180" y="120" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="210" y="120" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="240" y="120" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="270" y="120" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    
+    <rect x="0" y="150" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="30" y="150" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="60" y="150" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="90" y="150" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="120" y="150" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="150" y="150" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="180" y="150" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="210" y="150" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="240" y="150" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="270" y="150" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    
+    <rect x="0" y="180" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="30" y="180" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="60" y="180" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="90" y="180" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="120" y="180" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="150" y="180" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="180" y="180" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="210" y="180" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="240" y="180" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="270" y="180" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    
+    <rect x="0" y="210" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="30" y="210" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="60" y="210" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="90" y="210" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="120" y="210" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="150" y="210" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="180" y="210" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="210" y="210" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="240" y="210" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="270" y="210" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    
+    <rect x="0" y="240" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="30" y="240" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="60" y="240" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="90" y="240" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="120" y="240" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="150" y="240" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="180" y="240" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="210" y="240" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="240" y="240" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="270" y="240" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    
+    <rect x="0" y="270" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="30" y="270" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="60" y="270" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="90" y="270" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="120" y="270" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="150" y="270" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="180" y="270" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="210" y="270" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="240" y="270" width="30" height="30" fill="white" stroke="#ccc"></rect>
+    <rect x="270" y="270" width="30" height="30" fill="white" stroke="#ccc"></rect>
+  </g>
+  
+  <!-- Start Node (green) bottom-left cell -->
+  <rect x="0" y="270" width="30" height="30" fill="#22c55e" stroke="#15803d" stroke-width="2" rx="5" ry="5"></rect>
+  
+  <!-- End Node (red) top-right cell -->
+  <rect x="270" y="0" width="30" height="30" fill="#ef4444" stroke="#b91c1c" stroke-width="2" rx="5" ry="5"></rect>
+  
+  <!-- Yellow path line connecting start to end -->
+  <polyline points="15,285 15,15 285,15" fill="none" stroke="#facc15" stroke-width="6" stroke-linecap="round"></polyline>
+</svg>
