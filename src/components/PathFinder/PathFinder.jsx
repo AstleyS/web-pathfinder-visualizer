@@ -1,7 +1,18 @@
-import React from 'react';
 import Node from '../NodeComponent/Node';
 import './PathFinder.css';
 
+/*
+  * PathFinder component represents the grid of nodes for pathfinding visualization.
+  * It takes a grid of nodes and a callback function to handle node clicks.
+  * 
+*/
+
+/*
+  * Props:
+  * grid: array - 2D array representing the grid of nodes
+  * onNodeClick: function - function to call when a node is clicked
+  * 
+*/
 export default function PathFinder({ grid, onNodeClick }) {
   return (
     <div className="pathfinder-container">
@@ -22,8 +33,6 @@ export default function PathFinder({ grid, onNodeClick }) {
               return (
                 <Node 
                   key={nodeIdx}
-                  row={row}
-                  col={col}
                   isStart={isStart}
                   isFinish={isFinish}
                   isWall={isWall}

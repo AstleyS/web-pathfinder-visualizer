@@ -1,6 +1,30 @@
 import { NODE_TYPES } from "../../constant";
 import "./Header.css";
 
+/*
+  * Header component for the Path Finding Visualizer.
+  * Displays the title, algorithm, speed selection.
+  * Includes buttons to visualize the algorithm and clear the grid.
+  * Also shows a legend for different node types.
+  *
+*/
+
+/*
+  * Props:
+  * algorithms: Object containing available algorithms.
+  * speeds: Object containing available speeds.
+  * algorithm: Currently selected algorithm.
+  * speed: Currently selected speed.
+  * isVisualizing: Boolean indicating if visualization is in progress.
+  * setAlgorithm: Function to set the selected algorithm.
+  * setSpeed: Function to set the selected speed.
+  * visualizeAlgorithm: Function to start the visualization.
+  * currentSelection: Currently selected node type for placement.
+  * setCurrentSelection: Function to set the selected node type.
+  * resetFullGrid: Function to reset the grid.
+  * 
+*/
+
 export default function Header({ 
   algorithms, 
   speeds, 
